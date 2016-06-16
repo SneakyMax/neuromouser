@@ -1,36 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Hacker-mouse's interface.
+/// </summary>
 public class HackerInterface : MonoBehaviour
 {
-	public static HackerInterface instance = null;
-	public HackerTerminal[] terminals; // array of hacking terminals
+	/// <summary>
+	/// The singleton instance of the interface.
+	/// </summary>
+	public static HackerInterface Instance = null;
 
-	// Use this for initialization
-	void Awake()
+	/// <summary>
+	/// The array of hacking terminals
+	/// </summary>
+	public HackerTerminal[] Terminals;
+
+	/// <summary>
+	/// Called when the script is loaded
+	/// </summary>
+	private void Awake()
 	{
-		if (instance != null)
+		if (Instance != null)
 		{
 			Destroy(gameObject);
 			return;
 		}
 
-		instance = this;
+		Instance = this;
 		DontDestroyOnLoad(gameObject);
-		if (terminals.Length == 0)
+		if (Terminals.Length == 0)
 		{
 			throw new UnityException("Error: Terminals not set up with HackerInterface!");
 		}
 	}
-
-	private void OnLevelWasLoaded(int loadedLevel)
-	{
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-	}
-
-
 }

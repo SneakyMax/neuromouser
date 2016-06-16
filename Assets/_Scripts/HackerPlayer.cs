@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Hacker-mouse player handling (including input).
+/// </summary>
 public class HackerPlayer : MonoBehaviour
 {
-	public int powerLevelRemaining = 3; // the power level remaining of the hacker
-
-	private int currentTerminal = 0; // the terminal currently being accessed
-
-	public int CurrentTerminal // returns the terminal currently being accessed
+	/// <summary>
+	/// Gets the currently-accessed terminal.
+	/// </summary>
+	/// <value>The currently-accessed terminal.</value>
+	public int CurrentTerminal
 	{
 		get
 		{
@@ -15,83 +18,117 @@ public class HackerPlayer : MonoBehaviour
 		}
 	}
 
-	// head to the next terminal, or wraparound
+	/// <summary>
+	/// The power level remaining for the hacker.
+	/// </summary>
+	public int PowerLevelRemaining = 3;
+
+	/// <summary>
+	/// The currently accessed terminal.
+	/// </summary>
+	private int currentTerminal = 0;
+
+	/// <summary>
+	/// Player can currently move horizontally.
+	/// </summary>
+	private bool canMoveHoriz = true;
+
+	/// <summary>
+	/// Player can currently move vertically.
+	/// </summary>
+	private bool canMoveVert = true;
+
+	/// <summary>
+	/// The repeat time for limiting keystrokes.
+	/// </summary>
+	private float repeatTime = 0.25f;
+
+	/// <summary>
+	/// Head to next terminal.
+	/// </summary>
 	private void GoToNextTerminal()
 	{
-		if ((currentTerminal + 1) == HackerInterface.instance.terminals.Length)
+		if ((currentTerminal + 1) == HackerInterface.Instance.Terminals.Length)
 		{
-			currentTerminal = 0;
+			return;
+			// currentTerminal = 0; // uncomment for wraparound
 		}
-		else
+		else // else kept in case we want wraparound
 		{
 			++currentTerminal;
 		}
 
-		transform.position = HackerInterface.instance.terminals[currentTerminal].transform.position;
+		transform.position = HackerInterface.Instance.Terminals[currentTerminal].transform.position;
 	}
 
-	// head to the previous terminal, or wraparound
+	/// <summary>
+	/// Head to previous terminal.
+	/// </summary>
 	private void GoToPrevTerminal()
 	{
 		if ((currentTerminal - 1) < 0)
 		{
-			currentTerminal = HackerInterface.instance.terminals.Length - 1;
+			return;
+			//currentTerminal = HackerInterface.instance.terminals.Length - 1; // uncomment for wraparound
 		}
-		else
+		else // else kept in case we want wraparound
 		{
 			--currentTerminal;
 		}
-		transform.position = HackerInterface.instance.terminals[currentTerminal].transform.position;
+		transform.position = HackerInterface.Instance.Terminals[currentTerminal].transform.position;
 	}
 
-	// increase the current power level of the terminal
+	/// <summary>
+	/// Increases the terminal power level if possible.
+	/// </summary>
 	private void IncreaseTerminalPowerLevel()
 	{
-		if (powerLevelRemaining <= 0)
+		if (PowerLevelRemaining <= 0)
 		{
 			return;
 		}
 
-		if (HackerInterface.instance.terminals[currentTerminal].IncreasePower() == true)
+		if (HackerInterface.Instance.Terminals[currentTerminal].IncreasePower() == true)
 		{
-			--powerLevelRemaining;
+			--PowerLevelRemaining;
 		}
 	}
 
-	// decrease the current power level of the terminal
+	/// <summary>
+	/// Decreases the terminal power level if possible.
+	/// </summary>
 	private void DecreaseTerminalPowerLevel()
 	{
-		if (HackerInterface.instance.terminals[currentTerminal].DecreasePower() == true)
+		if (HackerInterface.Instance.Terminals[currentTerminal].DecreasePower() == true)
 		{
-			++powerLevelRemaining;
+			++PowerLevelRemaining;
 		}
 	}
 
-	// Use this for initialization
-	void Start()
-	{
-	}
-
-	private bool canMoveHoriz = true;
-
-	IEnumerator HorizontalAxisRepeatSwitch()
+	/// <summary>
+	/// This turns on the horizontal axis for the player after a number of seconds.
+	/// </summary>
+	/// <returns>IEnumerator</returns>
+	private IEnumerator HorizontalAxisRepeatSwitch()
 	{
 		yield return new WaitForSeconds(repeatTime);
 		canMoveHoriz = true;
 	}
 
-	private bool canMoveVert = true;
-
-	IEnumerator VerticalAxisRepeatSwitch()
+	/// <summary>
+	/// This turns on the vertical axis for the player after a number of seconds.
+	/// </summary>
+	/// <returns>IENumerator</returns>
+	private IEnumerator VerticalAxisRepeatSwitch()
 	{
 		yield return new WaitForSeconds(repeatTime);
 		canMoveVert = true;
 	}
-
-	private float repeatTime = 0.25f;
-
-	// Update is called once per frame
-	void Update()
+		
+	/// <summary>
+	/// Update the player this frame.
+	/// </summary>
+	private void Update()
 	{
 		float horizontal = Input.GetAxisRaw("HorizontalHackerAxis");
 		float vertical = Input.GetAxisRaw("VerticalHackerAxis");

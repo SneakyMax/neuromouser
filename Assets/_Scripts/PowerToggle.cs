@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script is used to toggle power of and on to the resources
+/// </summary>
 public class PowerToggle : MonoBehaviour
 {
-	private bool powerOn = false; // is the power on
-	public bool PowerOnStatus // gets and sets the power on status
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="PowerToggle"/> power on status.
+	/// </summary>
+	/// <value><c>true</c> if power on status; otherwise, <c>false</c>.</value>
+	public bool PowerOnStatus
 	{
 		get
 		{
@@ -15,30 +21,28 @@ public class PowerToggle : MonoBehaviour
 			if ( value == true )
 			{
 				powerOn = true;
-				GetComponent<SpriteRenderer>().sprite = powerOnSprite;
+				GetComponent<SpriteRenderer>().sprite = PowerOnSprite;
 			}
 			else
 			{
 				powerOn = false;
-				GetComponent<SpriteRenderer>().sprite = powerOffSprite;
+				GetComponent<SpriteRenderer>().sprite = PowerOffSprite;
 			}
 		}
 	}
 
-	[SerializeField]
-	private Sprite powerOnSprite; // the power on sprite
-	[SerializeField]
-	private Sprite powerOffSprite; // the power off sprite
+	/// <summary>
+	/// The power on sprite.
+	/// </summary>
+	public Sprite PowerOnSprite;
 
-	// Use this for initialization
-	void Start()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-	
-	}
+	/// <summary>
+	/// The power off sprite.
+	/// </summary>
+	public Sprite PowerOffSprite;
+
+	/// <summary>
+	/// Is the power on?
+	/// </summary>
+	private bool powerOn = false;
 }

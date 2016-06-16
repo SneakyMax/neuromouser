@@ -1,36 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Hacker terminal.
+/// </summary>
 public class HackerTerminal : MonoBehaviour
 {
-	[SerializeField]
-	private PowerToggle [] powerToggles = null;
-	// increases the power to the terminal if possible(return true), otherwise can not (return false)
-	public bool IncreasePower()
-	{
-		if ((terminalPower + 1) > powerToggles.Length)
-			return false;
-		
-		powerToggles[terminalPower++].PowerOnStatus = true;
-
-		return true;
-	}
-
-	// decreases the power to the terminal if possible(return true), otherwise can not (return false)
-	public bool DecreasePower()
-	{
-		if ((terminalPower - 1) < 0)
-			return false;
-
-		--terminalPower;
-
-		powerToggles[terminalPower].PowerOnStatus = false;
-
-		return true;
-	}
-
-	private int terminalPower = 0; // amount of power allocated to the terminal
-	public int TerminalPower // returns amount of power allocated to the terminal
+	/// <summary>
+	/// Gets the amount of power allocated to the terminal.
+	/// </summary>
+	/// <value>The terminal power.</value>
+	public int TerminalPower
 	{
 		get
 		{
@@ -38,18 +18,55 @@ public class HackerTerminal : MonoBehaviour
 		}
 	}
 
-	// Use this for initialization
-	void Start()
+	/// <summary>
+	/// The power toggle references.
+	/// </summary>
+	public PowerToggle [] PowerToggles = null;
+
+	/// <summary>
+	/// The amount of power allocated to the terminal.
+	/// </summary>
+	private int terminalPower = 0;
+
+	/// <summary>
+	/// Increases the power if possible.
+	/// </summary>
+	/// <returns><c>true</c>, if power was increased, <c>false</c> otherwise.</returns>
+	public bool IncreasePower()
 	{
-		if ( powerToggles == null )
+		if ((terminalPower + 1) > PowerToggles.Length)
+			return false;
+		
+		PowerToggles[terminalPower++].PowerOnStatus = true;
+
+		return true;
+	}
+
+	/// <summary>
+	/// Decreases the power if possible.
+	/// </summary>
+	/// <returns><c>true</c>, if power was decreased, <c>false</c> otherwise.</returns>
+	public bool DecreasePower()
+	{
+		if ((terminalPower - 1) < 0)
+			return false;
+
+		--terminalPower;
+
+		PowerToggles[terminalPower].PowerOnStatus = false;
+
+		return true;
+	}
+
+	/// <summary>
+	/// Start this instance.
+	/// <exception cref="UnityException">Thrown if there are no powertoggles referenced.</exception>
+	/// </summary>
+	private void Start()
+	{
+		if ( PowerToggles == null )
 		{
 			throw new UnityException("Error: No PowerToggles to use in HackerTerminal");
 		}
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-		// kept for possible animation state
 	}
 }
