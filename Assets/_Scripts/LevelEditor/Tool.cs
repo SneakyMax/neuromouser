@@ -27,5 +27,7 @@ namespace Assets._Scripts.LevelEditor
         }
 
         public abstract void ActivateTool(Vector2 position);
+
+        public abstract void SecondaryActivateTool(Vector2 position);
     }
 }

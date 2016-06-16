@@ -34,9 +34,19 @@ namespace Assets._Scripts.LevelEditor
             transform.position = new Vector3(screenCursorPosition.x, screenCursorPosition.y, 0);
         }
 
+        private bool OneMouseButtonWasPressed()
+        {
+            return Input.GetMouseButtonDown(0) ^ Input.GetMouseButtonDown(1);
+        }
+
+        private bool OneMouseButtonIsDown()
+        {
+            return Input.GetMouseButton(0) ^ Input.GetMouseButton(1);
+        }
+
         private void CheckClick()
         {
-            if (Input.GetMouseButtonDown(0) == false)
+            if(OneMouseButtonWasPressed() == false)
                 return;
             
             if (CursorIsInPalette())
@@ -56,7 +66,7 @@ namespace Assets._Scripts.LevelEditor
 
         private void CheckMovement()
         {
-            var movementWithMouseDown = Input.GetMouseButtonDown(0) == false && Input.GetMouseButton(0);
+            var movementWithMouseDown = OneMouseButtonWasPressed() == false && OneMouseButtonIsDown();
             if (movementWithMouseDown == false || HoldingTool == null || HoldingTool.ShouldSnapToGrid == false || CursorIsInPalette())
                 return;
             
@@ -90,7 +100,14 @@ namespace Assets._Scripts.LevelEditor
             if (HoldingTool == null)
                 return; //todo?
 
-            HoldingTool.ActivateTool(HoldingTool.CurrentPosition);
+            if (Input.GetMouseButton(0))
+            {
+                HoldingTool.ActivateTool(HoldingTool.CurrentPosition);
+            }
+            else
+            {
+                HoldingTool.SecondaryActivateTool(HoldingTool.CurrentPosition);
+            }
         }
 
         public static Vector2 GetWorldPosition()

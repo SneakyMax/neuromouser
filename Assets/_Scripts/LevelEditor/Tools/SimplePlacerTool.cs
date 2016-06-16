@@ -31,5 +31,18 @@ namespace Assets._Scripts.LevelEditor.Tools
                 WorkingLevel.Instance.Place(placed, position.x, position.y);
             }
         }
+
+        public override void SecondaryActivateTool(Vector2 position)
+        {
+            if (SnapToGrid)
+            {
+                var existingObject = WorkingLevel.Instance.GetGridObjectAt(position);
+                if (existingObject != null)
+                {
+                    WorkingLevel.Instance.RemoveGridObjectAt(position);
+                    Destroy(existingObject.UnityObject);
+                }
+            }
+        }
     }
 }
