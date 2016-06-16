@@ -3,15 +3,15 @@ using System.Collections;
 
 public class HackerTerminal : MonoBehaviour
 {
-	//[SerializeField]
-	//private GameObject
+	[SerializeField]
+	private PowerToggle [] powerToggles = null;
 	// increases the power to the terminal if possible(return true), otherwise can not (return false)
 	public bool IncreasePower()
 	{
-		if ((terminalPower + 1) > maxPower)
+		if ((terminalPower + 1) > powerToggles.Length)
 			return false;
 		
-		++terminalPower;
+		powerToggles[terminalPower++].PowerOnStatus = true;
 
 		return true;
 	}
@@ -21,14 +21,13 @@ public class HackerTerminal : MonoBehaviour
 	{
 		if ((terminalPower - 1) < 0)
 			return false;
-		
+
 		--terminalPower;
+
+		powerToggles[terminalPower].PowerOnStatus = false;
 
 		return true;
 	}
-
-	[SerializeField]
-	private int maxPower = 3; // maximum amount of allowable power for this terminal
 
 	private int terminalPower = 0; // amount of power allocated to the terminal
 	public int TerminalPower // returns amount of power allocated to the terminal
@@ -40,12 +39,16 @@ public class HackerTerminal : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
+		if ( powerToggles == null )
+		{
+			throw new UnityException("Error: No PowerToggles to use in HackerTerminal");
+		}
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
 		// kept for possible animation state
 	}
