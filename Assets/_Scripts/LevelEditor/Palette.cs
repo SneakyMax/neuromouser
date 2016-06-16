@@ -3,8 +3,8 @@
 namespace Assets._Scripts.LevelEditor
 {
     [UnityComponent]
-    public class GridPlacement : MonoBehaviour
+    public class Palette : MonoBehaviour
     {
-        
+         
     }
 }
