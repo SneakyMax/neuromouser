@@ -7,6 +7,18 @@ using System.Collections;
 public class HackerTerminal : MonoBehaviour
 {
 	/// <summary>
+	/// Used for calling when the power from the terminal is changed.
+	/// </summary>
+	public delegate void TerminalPowerChange();
+
+	/// <summary>
+	/// This event fires when the power from the terminal is changed.
+	/// Note: I recommend tying into this during Start() instead of OnEnable() to eliminate
+	/// any null reference issues. -Joe
+	/// </summary>
+	public event TerminalPowerChange OnPowerChanged;
+
+	/// <summary>
 	/// Gets the amount of power allocated to the terminal.
 	/// </summary>
 	/// <value>The terminal power.</value>
@@ -39,6 +51,9 @@ public class HackerTerminal : MonoBehaviour
 		
 		PowerToggles[terminalPower++].PowerOnStatus = true;
 
+		if (OnPowerChanged != null)
+			OnPowerChanged();
+
 		return true;
 	}
 
@@ -54,6 +69,9 @@ public class HackerTerminal : MonoBehaviour
 		--terminalPower;
 
 		PowerToggles[terminalPower].PowerOnStatus = false;
+
+		if (OnPowerChanged != null)
+			OnPowerChanged();
 
 		return true;
 	}
