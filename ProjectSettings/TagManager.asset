@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: HackerTerminals
+    uniqueID: 2501112151
+    locked: 0
+  - name: Hacker
+    uniqueID: 3078616343
+    locked: 0
+  - name: HackerUI
+    uniqueID: 2333924515
+    locked: 0
