@@ -75,7 +75,7 @@ namespace Assets._Scripts.LevelEditor
         private void CheckMovement()
         {
             var movementWithMouseDown = OneMouseButtonWasPressed() == false && OneMouseButtonIsDown();
-            if (movementWithMouseDown == false || HoldingTool == null || HoldingTool.ShouldSnapToGrid == false || CursorIsInPalette())
+            if (movementWithMouseDown == false || HoldingTool == null || HoldingTool.ShouldSnapToGrid == false || !CursorIsInWorld())
                 return;
             
             var currentGridPosition = PlacementGrid.Instance.GetGridPosition(HoldingTool.CurrentPosition);
