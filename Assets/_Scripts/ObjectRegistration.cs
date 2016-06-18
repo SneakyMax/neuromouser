@@ -30,6 +30,11 @@ namespace Assets._Scripts
             Instance = this;
         }
 
+        public ObjectRegistrationInfo GetInfo(int id)
+        {
+            return Objects[id];
+        }
+
         public int GetId(GameObject prefab)
         {
             for (var i = 0; i < Objects.Length; i++)

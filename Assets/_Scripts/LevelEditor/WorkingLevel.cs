@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -117,6 +118,55 @@ namespace Assets._Scripts.LevelEditor
         {
             var serialized = new StringBuilder();
 
+            SerializeGridItems(serialized);
+
+            SerializeNonGridItems(serialized);
+
+            return serialized.ToString();
+        }
+
+        public void DeserializeLevel(string levelData)
+        {
+            using (var reader = new StringReader(levelData))
+            {
+                string currentMode = null;
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    switch (line)
+                    {
+                        case "grid:":
+                            currentMode = "grid";
+                            break;
+                        case "nonGrid:":
+                            currentMode = "nonGrid";
+                            break;
+                        default:
+                            HandleLine(line, currentMode);
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void HandleLine(string line, string currentMode)
+        {
+            if (String.IsNullOrEmpty(currentMode))
+                return;
+
+            switch (currentMode)
+            {
+                case "grid":
+                    DeserializeGridItem(line);
+                    break;
+                case "nonGrid":
+                    DeserializeNonGridItem(line);
+                    break;
+            }
+        }
+
+        private void SerializeGridItems(StringBuilder serialized)
+        {
             serialized.AppendLine("grid:");
 
             foreach (var gridItem in grid)
@@ -130,7 +180,30 @@ namespace Assets._Scripts.LevelEditor
                 serialized.Append(gridItem.Value.Serialize());
                 serialized.AppendLine();
             }
+        }
 
+        private void DeserializeGridItem(string line)
+        {
+            var parts = line.Split(',');
+            var x = Convert.ToInt32(parts[0]);
+            var y = Convert.ToInt32(parts[1]);
+            var id = Convert.ToInt32(parts[2]);
+            var serializedObject = String.Join(",", parts.Skip(3).ToArray());
+
+            var info = ObjectRegistration.Instance.GetInfo(id);
+
+            var worldPosition = PlacementGrid.Instance.GetWorldPosition(x, y);
+
+            var instance = (GameObject)Instantiate(info.ObjEditorPrefab, worldPosition, Quaternion.identity);
+
+            var placedObject = instance.GetInterfaceComponent<IPlacedObject>();
+            placedObject.Deserialize(serializedObject);
+
+            PlaceGridObject(placedObject, worldPosition);
+        }
+
+        private void SerializeNonGridItems(StringBuilder serialized)
+        {
             serialized.AppendLine("nonGrid:");
 
             foreach (var item in nonGridObjects)
@@ -144,8 +217,24 @@ namespace Assets._Scripts.LevelEditor
                 serialized.Append(item.PlacedObject.Serialize());
                 serialized.AppendLine();
             }
+        }
 
-            return serialized.ToString();
+        private void DeserializeNonGridItem(string line)
+        {
+            var parts = line.Split(',');
+            var x = Convert.ToSingle(parts[0]);
+            var y = Convert.ToSingle(parts[1]);
+            var id = Convert.ToInt32(parts[2]);
+            var serializedObject = String.Join(",", parts.Skip(3).ToArray());
+
+            var info = ObjectRegistration.Instance.GetInfo(id);
+
+            var instance = (GameObject)Instantiate(info.ObjEditorPrefab, new Vector2(x, y), Quaternion.identity);
+
+            var placedObject = instance.GetInterfaceComponent<IPlacedObject>();
+            placedObject.Deserialize(serializedObject);
+
+            Place(placedObject, x, y);
         }
     }
 }

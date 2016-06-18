@@ -26,12 +26,12 @@ namespace Assets._Scripts.LevelEditor
             File.WriteAllText(fullPath, contents);
         }
 
-        private static void EnsureSaveDirectoryExists()
+        public static void EnsureSaveDirectoryExists()
         {
             Directory.CreateDirectory(GetGameSaveDirectory());
         }
 
-        private static string GetGameSaveDirectory()
+        public static string GetGameSaveDirectory()
         {
             var myGames = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
             return Path.Combine(myGames, "Neuromouser");

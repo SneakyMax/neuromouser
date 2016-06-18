@@ -79,5 +79,15 @@ namespace Assets._Scripts.LevelEditor
         {
             return new GridPosition(Mathf.RoundToInt(alignedWorldPosition.x / GridSize), Mathf.RoundToInt(alignedWorldPosition.y / GridSize));
         }
+
+        public Vector2 GetWorldPosition(int gridX, int gridY)
+        {
+            return new Vector2(gridX * GridSize, gridY * GridSize);
+        }
+
+        public Vector2 GetWorldPosition(GridPosition position)
+        {
+            return new Vector2(position.X * GridSize, position.Y * GridSize);
+        }
     }
 }
