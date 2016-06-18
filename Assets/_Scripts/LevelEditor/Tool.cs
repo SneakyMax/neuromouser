@@ -28,6 +28,16 @@ namespace Assets._Scripts.LevelEditor
 
         public abstract void ActivateTool(Vector2 position);
 
+        protected virtual void PostActivateTool(IPlacedObject placedObject)
+        {
+            
+        }
+
         public abstract void SecondaryActivateTool(Vector2 position);
+
+        public virtual void KeyPressed(KeyCode key)
+        {
+            
+        }
     }
 }

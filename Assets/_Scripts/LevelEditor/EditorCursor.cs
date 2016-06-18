@@ -38,6 +38,7 @@ namespace Assets._Scripts.LevelEditor
             CheckClick();
             CheckMovement();
             CheckPan();
+            CheckKeyPress();
         }
 
         private void SetCursorPosition()
@@ -159,6 +160,22 @@ namespace Assets._Scripts.LevelEditor
         public static Vector2 GetWorldPosition()
         {
             return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+
+        private void CheckKeyPress()
+        {
+            if (HoldingTool == null)
+                return;
+
+            // stupid unity doesn't have a good way for this so we'll just do it manually
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                HoldingTool.KeyPressed(KeyCode.R);
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                HoldingTool.KeyPressed(KeyCode.Space);
+            }
         }
     }
 }

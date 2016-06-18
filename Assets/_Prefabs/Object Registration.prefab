@@ -47,6 +47,21 @@ MonoBehaviour:
   - Name: Floor
     ObjLevelPrefab: {fileID: 190264, guid: f7813d689394066409a86ad8745e49c3, type: 2}
     ObjEditorPrefab: {fileID: 190264, guid: f7813d689394066409a86ad8745e49c3, type: 2}
+  - Name: Door
+    ObjLevelPrefab: {fileID: 159784, guid: e2033cd666d0f6d4e8ade92d574b9707, type: 2}
+    ObjEditorPrefab: {fileID: 159784, guid: e2033cd666d0f6d4e8ade92d574b9707, type: 2}
+  - Name: ChewableWall
+    ObjLevelPrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
+    ObjEditorPrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
+  - Name: PlayerSpawn
+    ObjLevelPrefab: {fileID: 182856, guid: 006b4e98b69394e4eb1fe1b3a5c7e139, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: 006b4e98b69394e4eb1fe1b3a5c7e139, type: 2}
+  - Name: Cat
+    ObjLevelPrefab: {fileID: 120312, guid: fca9c1ee2ca42cd4baf14939ff3b1e3f, type: 2}
+    ObjEditorPrefab: {fileID: 120312, guid: fca9c1ee2ca42cd4baf14939ff3b1e3f, type: 2}
+  - Name: PatrolPoint
+    ObjLevelPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
+    ObjEditorPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
