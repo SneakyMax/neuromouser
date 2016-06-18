@@ -18,5 +18,10 @@ namespace Assets._Scripts.LevelEditor.Objects
         {
             
         }
+
+        public void Destroy()
+        {
+            Destroy(UnityObject);
+        }
     }
 }

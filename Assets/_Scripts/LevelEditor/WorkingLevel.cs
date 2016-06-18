@@ -110,6 +110,16 @@ namespace Assets._Scripts.LevelEditor
 
         public void Reset()
         {
+            foreach (var placedObject in grid.Values)
+            {
+                placedObject.Destroy();
+            }
+
+            foreach (var placedObject in nonGridObjects)
+            {
+                placedObject.PlacedObject.Destroy();
+            }
+
             grid.Clear();
             nonGridObjects.Clear();
         }

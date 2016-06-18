@@ -11,5 +11,7 @@ namespace Assets._Scripts.LevelEditor
         string Serialize();
 
         void Deserialize(string serialized);
+
+        void Destroy();
     }
 }
