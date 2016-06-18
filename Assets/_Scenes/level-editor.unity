@@ -1182,6 +1182,7 @@ MonoBehaviour:
   HoldingTool: {fileID: 0}
   PaletteArea: {fileID: 1251343179}
   WorldArea: {fileID: 1761564263}
+  PanSpeed: 2.26
 --- !u!114 &1051251530
 MonoBehaviour:
   m_ObjectHideFlags: 0

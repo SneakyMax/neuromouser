@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor
@@ -17,6 +18,13 @@ namespace Assets._Scripts.LevelEditor
 
         private GridPosition lastGridLocation;
 
+        private bool isPanning;
+        private Vector2 startPanMousePosition;
+        private Vector3 startPanCameraPosition;
+
+        [AssignedInUnity, Range(1, 4)]
+        public float PanSpeed;
+
         [UnityMessage]
         public void Awake()
         {
@@ -29,6 +37,7 @@ namespace Assets._Scripts.LevelEditor
             SetCursorPosition();
             CheckClick();
             CheckMovement();
+            CheckPan();
         }
 
         private void SetCursorPosition()
@@ -86,6 +95,33 @@ namespace Assets._Scripts.LevelEditor
             }
 
             lastGridLocation = currentGridPosition;
+        }
+
+        private void CheckPan()
+        {
+            if (Input.GetMouseButton(2) == false)
+                isPanning = false;
+
+            if (CursorIsInWorld() == false)
+                return;
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                isPanning = true;
+                startPanMousePosition = Input.mousePosition;
+                startPanCameraPosition = Camera.main.transform.position;
+            }
+
+            if (isPanning)
+            {
+                var mousePanDelta = startPanMousePosition - (Vector2)Input.mousePosition;
+                var scrollDelta = mousePanDelta * (PanSpeed / 100f);
+                var newCameraPosition = (Vector2)startPanCameraPosition + scrollDelta;
+
+                Debug.Log(String.Format("Start Camera Position: {3}, Pan Delta: {0}, Scroll Delta: {1}, new camera position: {2}", mousePanDelta, scrollDelta, newCameraPosition, startPanCameraPosition));
+
+                Camera.main.transform.position = new Vector3(newCameraPosition.x, newCameraPosition.y, startPanCameraPosition.z);
+            }
         }
 
         private void HandlePalleteClick(Vector2 mousePosition)

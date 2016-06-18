@@ -19,8 +19,6 @@ namespace Assets._Scripts.LevelEditor
             var leftBounds = (Vector2)Camera.main.transform.position - halfSize;
             var rightBounds = (Vector2)Camera.main.transform.position + halfSize;
 
-            Debug.Log(leftBounds);
-
             var gridSize = PlacementGrid.Instance.GridSize;
             var offset = gridSize / 2f;
 
