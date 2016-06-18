@@ -1,42 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor
 {
-    public struct GridPosition
-    {
-        public readonly int X;
-        public readonly int Y;
-
-        public GridPosition(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public override int GetHashCode()
-        {
-            return X ^ Y;
-        }
-
-        public override string ToString()
-        {
-            return "" + X + ", " + Y;
-        }
-
-        public static bool operator ==(GridPosition a, GridPosition b)
-        {
-            return a.X == b.X && a.Y == b.Y;
-        }
-
-        public static bool operator !=(GridPosition a, GridPosition b)
-        {
-            return a.X != b.X || a.Y != b.Y;
-        }
-    }
-
     public class PrecisedPlacedObject
     {
         public float X { get; set; }
@@ -144,9 +113,39 @@ namespace Assets._Scripts.LevelEditor
             nonGridObjects.Clear();
         }
 
-        public void Load(IDictionary<GridPosition, IPlacedObject> map)
+        public string SerializeLevel()
         {
-            throw new NotImplementedException();
-        } 
+            var serialized = new StringBuilder();
+
+            serialized.AppendLine("grid:");
+
+            foreach (var gridItem in grid)
+            {
+                serialized.Append(gridItem.Key.X);
+                serialized.Append(',');
+                serialized.Append(gridItem.Key.Y);
+                serialized.Append(',');
+                serialized.Append(ObjectRegistration.Instance.GetId(gridItem.Value.Type));
+                serialized.Append(',');
+                serialized.Append(gridItem.Value.Serialize());
+                serialized.AppendLine();
+            }
+
+            serialized.AppendLine("nonGrid:");
+
+            foreach (var item in nonGridObjects)
+            {
+                serialized.Append(item.X);
+                serialized.Append(',');
+                serialized.Append(item.Y);
+                serialized.Append(',');
+                serialized.Append(ObjectRegistration.Instance.GetId(item.PlacedObject.Type));
+                serialized.Append(',');
+                serialized.Append(item.PlacedObject.Serialize());
+                serialized.AppendLine();
+            }
+
+            return serialized.ToString();
+        }
     }
 }

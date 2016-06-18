@@ -1,4 +1,4 @@
-﻿using Assets._Scripts.LevelEditor.Objects;
+﻿using System;
 using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor.Tools
@@ -14,13 +14,20 @@ namespace Assets._Scripts.LevelEditor.Tools
 
         public override bool ShouldSnapToGrid { get { return SnapToGrid; } }
 
+        [UnityMessage]
+        public void Start()
+        {
+            if(ThingToPlacePrefab.GetInterfaceComponent<IPlacedObject>() == null)
+                throw new InvalidOperationException("Missing IPlacedObject component on " + ThingToPlacePrefab.name);
+        }
+
         public override void ActivateTool(Vector2 position)
         {
             if (SnapToGrid && WorkingLevel.Instance.IsGridObjectAt(position))
                 return;
 
             var instance = (GameObject)Instantiate(ThingToPlacePrefab, position, Quaternion.identity);
-            var placed = new PlacedWall(instance);
+            var placed = instance.GetInterfaceComponent<IPlacedObject>();
 
             if (SnapToGrid)
             {

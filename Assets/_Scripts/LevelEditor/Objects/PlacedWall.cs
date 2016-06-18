@@ -2,20 +2,21 @@
 
 namespace Assets._Scripts.LevelEditor.Objects
 {
-    public class PlacedWall : IPlacedObject
+    [UnityComponent]
+    public class PlacedWall : MonoBehaviour, IPlacedObject
     {
-        public GameObject UnityObject { get; private set; }
+        public GameObject UnityObject { get { return gameObject; } }
 
         public string Type { get { return "Wall"; } }
-
-        public PlacedWall(GameObject levelEditorObject)
-        {
-            UnityObject = levelEditorObject;
-        }
-
+        
         public string Serialize()
         {
-            throw new System.NotImplementedException();
+            return "";
+        }
+
+        public void Deserialize(string serialized)
+        {
+            
         }
     }
 }

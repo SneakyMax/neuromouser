@@ -12,6 +12,9 @@ namespace Assets._Scripts.LevelEditor
         [AssignedInUnity]
         public RectTransform PaletteArea;
 
+        [AssignedInUnity]
+        public RectTransform WorldArea;
+
         private GridPosition lastGridLocation;
 
         [UnityMessage]
@@ -53,10 +56,15 @@ namespace Assets._Scripts.LevelEditor
             {
                 HandlePalleteClick(Input.mousePosition);
             }
-            else
+            else if(CursorIsInWorld())
             {
                 HandleWorldClick();
             }
+        }
+
+        private bool CursorIsInWorld()
+        {
+            return WorldArea.GetWorldRect().Contains((Vector2)Input.mousePosition);
         }
 
         private bool CursorIsInPalette()
@@ -76,6 +84,8 @@ namespace Assets._Scripts.LevelEditor
             {
                 HandleWorldClick();
             }
+
+            lastGridLocation = currentGridPosition;
         }
 
         private void HandlePalleteClick(Vector2 mousePosition)

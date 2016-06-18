@@ -9,5 +9,7 @@ namespace Assets._Scripts.LevelEditor
         string Type { get; }
 
         string Serialize();
+
+        void Deserialize(string serialized);
     }
 }

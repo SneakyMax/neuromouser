@@ -3,20 +3,21 @@ using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor.Objects
 {
-    public class PlacedFloor : IPlacedObject
+    [UnityComponent]
+    public class PlacedFloor : MonoBehaviour, IPlacedObject
     {
-        public GameObject UnityObject { get; private set; }
+        public GameObject UnityObject { get { return gameObject; } }
 
         public string Type { get { return "Floor"; } }
 
-        public PlacedFloor(GameObject levelEditorObject)
-        {
-            UnityObject = levelEditorObject;
-        }
-
         public string Serialize()
         {
-            throw new NotImplementedException();
+            return "";
+        }
+
+        public void Deserialize(string serialized)
+        {
+            
         }
     }
 }

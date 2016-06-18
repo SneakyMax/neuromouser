@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Assets._Scripts
 {
@@ -13,6 +14,16 @@ namespace Assets._Scripts
             var height = corners[2].y - corners[0].y;
 
             return new Rect(corners[0].x, corners[0].y, width, height);
+        }
+
+        public static T GetInterfaceComponent<T>(this Behaviour component)
+        {
+            return component.GetComponents<MonoBehaviour>().OfType<T>().FirstOrDefault();
+        }
+
+        public static T GetInterfaceComponent<T>(this GameObject component)
+        {
+            return component.GetComponents<MonoBehaviour>().OfType<T>().FirstOrDefault();
         }
     }
 }
