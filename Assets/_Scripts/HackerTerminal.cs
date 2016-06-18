@@ -9,7 +9,7 @@ public class HackerTerminal : MonoBehaviour
 	/// <summary>
 	/// Used for calling when the power from the terminal is changed.
 	/// </summary>
-	public delegate void TerminalPowerChange();
+	public delegate void TerminalPowerChange(int currentPower);
 
 	/// <summary>
 	/// This event fires when the power from the terminal is changed.
@@ -31,9 +31,24 @@ public class HackerTerminal : MonoBehaviour
 	}
 
 	/// <summary>
-	/// The power toggle references.
+	/// PowerToggle level 1 instance.
 	/// </summary>
-	public PowerToggle [] PowerToggles = null;
+	public PowerToggle PowerToggle1 = null;
+
+	/// <summary>
+	/// PowerToggle level 2 instance.
+	/// </summary>
+	public PowerToggle PowerToggle2 = null;
+
+	/// <summary>
+	/// PowerToggle level 3 instance.
+	/// </summary>
+	public PowerToggle PowerToggle3 = null;
+
+	/// <summary>
+	/// The ICE instance.
+	/// </summary>
+	public ICEHandler PowerReader = null;
 
 	/// <summary>
 	/// The amount of power allocated to the terminal.
@@ -41,50 +56,64 @@ public class HackerTerminal : MonoBehaviour
 	private int terminalPower = 0;
 
 	/// <summary>
-	/// Increases the power if possible.
+	/// Does basic error checking.
 	/// </summary>
-	/// <returns><c>true</c>, if power was increased, <c>false</c> otherwise.</returns>
-	public bool IncreasePower()
+	/// <exception cref="UnityException">Throws if instances aren't set.</exception>
+	private void Awake()
 	{
-		if ((terminalPower + 1) > PowerToggles.Length)
-			return false;
-		
-		PowerToggles[terminalPower++].PowerOnStatus = true;
-
-		if (OnPowerChanged != null)
-			OnPowerChanged();
-
-		return true;
+		if ((PowerToggle1 == null) || (PowerToggle2 == null) || (PowerToggle3 == null))
+		{
+			throw new UnityException("PowerToggles not set for terminal.");
+		}
+		if (PowerReader == null)
+		{
+			throw new UnityException("PowerReader not set for terminal");
+		}
 	}
 
 	/// <summary>
-	/// Decreases the power if possible.
-	/// </summary>
-	/// <returns><c>true</c>, if power was decreased, <c>false</c> otherwise.</returns>
-	public bool DecreasePower()
-	{
-		if ((terminalPower - 1) < 0)
-			return false;
-
-		--terminalPower;
-
-		PowerToggles[terminalPower].PowerOnStatus = false;
-
-		if (OnPowerChanged != null)
-			OnPowerChanged();
-
-		return true;
-	}
-
-	/// <summary>
-	/// Start this instance.
-	/// <exception cref="UnityException">Thrown if there are no powertoggles referenced.</exception>
+	/// Sets up the callback.
 	/// </summary>
 	private void Start()
 	{
-		if ( PowerToggles == null )
+		PowerReader.OnPowerChange += OnPowerChange;
+	}
+
+	/// <summary>
+	/// Handles the OnPowerChange event
+	/// </summary>
+	/// <param name="newPower">New power value.</param>
+	/// <exception cref="UnityException">If newPower is not value from 0-3.</exception>
+	private void OnPowerChange(int newPower)
+	{
+		terminalPower = newPower;
+
+		switch (newPower)
 		{
-			throw new UnityException("Error: No PowerToggles to use in HackerTerminal");
+			case 0:
+				PowerToggle1.PowerOnStatus = false;
+				PowerToggle2.PowerOnStatus = false;
+				PowerToggle3.PowerOnStatus = false;
+				break;
+			case 1:
+				PowerToggle1.PowerOnStatus = true;
+				PowerToggle2.PowerOnStatus = false;
+				PowerToggle3.PowerOnStatus = false;
+				break;
+			case 2:
+				PowerToggle1.PowerOnStatus = true;
+				PowerToggle2.PowerOnStatus = true;
+				PowerToggle3.PowerOnStatus = false;
+				break;
+			case 3:
+				PowerToggle1.PowerOnStatus = true;
+				PowerToggle2.PowerOnStatus = true;
+				PowerToggle3.PowerOnStatus = true;
+				break;
+			default:
+				throw new UnityException("Terminal OnPowerChange received invalid power value.");
 		}
+
+		OnPowerChanged(terminalPower);
 	}
 }

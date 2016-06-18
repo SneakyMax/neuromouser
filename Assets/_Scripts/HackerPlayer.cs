@@ -7,162 +7,212 @@ using System.Collections;
 public class HackerPlayer : MonoBehaviour
 {
 	/// <summary>
-	/// Gets the currently-accessed terminal.
+	/// The type of attached terminal.
 	/// </summary>
-	/// <value>The currently-accessed terminal.</value>
-	public int CurrentTerminal
+	private enum TerminalType
 	{
-		get
-		{
-			return currentTerminal;
-		}
+		Cameras,
+		Doors,
+		Traps,
+		Cats
 	}
 
 	/// <summary>
-	/// The power level remaining for the hacker.
+	/// The regular shot prefab to instantiate when firing.
 	/// </summary>
-	public int PowerLevelRemaining = 3;
+	public GameObject RegularShot = null;
+
+	/// <summary>
+	/// The burst shot prefab to instantiate when firing.
+	/// </summary>
+	public GameObject BurstShot = null;
+
+	/// <summary>
+	/// The repeat time for limiting movement presses.
+	/// </summary>
+	public float MoveRepeatTime = 0.25f;
+
+	/// <summary>
+	/// The time in seconds for a burst to reach completeness.
+	/// </summary>
+	public float FullBurstTime = 2f;
+
+	/// <summary>
+	/// Where above the center of the player to start the shot.
+	/// </summary>
+	public float ShotStartYOffset = .25f;
+
+	/// <summary>
+	/// The current held shot time.
+	/// </summary>
+	private float currentShotTime = 0f;
 
 	/// <summary>
 	/// The currently accessed terminal.
 	/// </summary>
-	private int currentTerminal = 0;
+	private TerminalType currentTerminal = TerminalType.Cameras;
 
 	/// <summary>
-	/// Player can currently move horizontally.
+	/// The coroutine set for limiting keystrokes.
 	/// </summary>
-	private bool canMoveHoriz = true;
-
-	/// <summary>
-	/// Player can currently move vertically.
-	/// </summary>
-	private bool canMoveVert = true;
-
-	/// <summary>
-	/// The repeat time for limiting keystrokes.
-	/// </summary>
-	private float repeatTime = 0.25f;
+	private IEnumerator cantMove = null;
 
 	/// <summary>
 	/// Head to next terminal.
 	/// </summary>
 	private void GoToNextTerminal()
 	{
-		if ((currentTerminal + 1) == HackerInterface.Instance.Terminals.Length)
+		switch (currentTerminal)
 		{
-			return;
-			// currentTerminal = 0; // uncomment for wraparound
+			case (TerminalType.Cameras):
+				currentTerminal = TerminalType.Doors;
+				transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
+				break;
+			case (TerminalType.Doors):
+				currentTerminal = TerminalType.Traps;
+				transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
+				break;
+			case (TerminalType.Traps):
+				currentTerminal = TerminalType.Cats;
+				transform.position = HackerInterface.Instance.TerminalCats.transform.position;
+				break;
+			default:
+				break;
 		}
-		else // else kept in case we want wraparound
-		{
-			++currentTerminal;
-		}
-
-		transform.position = HackerInterface.Instance.Terminals[currentTerminal].transform.position;
 	}
 
 	/// <summary>
 	/// Head to previous terminal.
 	/// </summary>
-	private void GoToPrevTerminal()
+	private void GoToPreviousTerminal()
 	{
-		if ((currentTerminal - 1) < 0)
+		switch ( currentTerminal )
 		{
-			return;
-			//currentTerminal = HackerInterface.instance.terminals.Length - 1; // uncomment for wraparound
-		}
-		else // else kept in case we want wraparound
-		{
-			--currentTerminal;
-		}
-		transform.position = HackerInterface.Instance.Terminals[currentTerminal].transform.position;
-	}
-
-	/// <summary>
-	/// Increases the terminal power level if possible.
-	/// </summary>
-	private void IncreaseTerminalPowerLevel()
-	{
-		if (PowerLevelRemaining <= 0)
-		{
-			return;
-		}
-
-		if (HackerInterface.Instance.Terminals[currentTerminal].IncreasePower() == true)
-		{
-			--PowerLevelRemaining;
+			case (TerminalType.Doors):
+				currentTerminal = TerminalType.Cameras;
+				transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
+				break;
+			case (TerminalType.Traps):
+				currentTerminal = TerminalType.Doors;
+				transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
+				break;
+			case (TerminalType.Cats):
+				currentTerminal = TerminalType.Traps;
+				transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
+				break;
+			default:
+				break;
 		}
 	}
 
 	/// <summary>
-	/// Decreases the terminal power level if possible.
-	/// </summary>
-	private void DecreaseTerminalPowerLevel()
-	{
-		if (HackerInterface.Instance.Terminals[currentTerminal].DecreasePower() == true)
-		{
-			++PowerLevelRemaining;
-		}
-	}
-
-	/// <summary>
-	/// This turns on the horizontal axis for the player after a number of seconds.
+	/// This turns on the horizontal axis for the player for MoveRepeatTime number of seconds.
 	/// </summary>
 	/// <returns>IEnumerator</returns>
 	private IEnumerator HorizontalAxisRepeatSwitch()
 	{
-		yield return new WaitForSeconds(repeatTime);
-		canMoveHoriz = true;
+		yield return new WaitForSeconds(MoveRepeatTime);
+		cantMove = null;
 	}
 
 	/// <summary>
-	/// This turns on the vertical axis for the player after a number of seconds.
+	/// Checks prefabs.
 	/// </summary>
-	/// <returns>IENumerator</returns>
-	private IEnumerator VerticalAxisRepeatSwitch()
+	/// <exception cref="UnityException">Thrown if Shot prefabs are not specified.</exception>
+	private void Awake()
 	{
-		yield return new WaitForSeconds(repeatTime);
-		canMoveVert = true;
+		if (RegularShot == null)
+		{
+			throw new UnityException("Error: RegularShot prefab not specified in HackerPlayer.");
+		}
+		else if (BurstShot == null)
+		{
+			throw new UnityException("Error: BurstShot prefab not specified in HackerPlayer.");
+		}
 	}
-		
+
+	/// <summary>
+	/// Sets the starting player location.
+	/// </summary>
+	private void Start()
+	{
+		transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
+	}
+
 	/// <summary>
 	/// Update the player this frame.
 	/// </summary>
 	private void Update()
 	{
 		float horizontal = Input.GetAxisRaw("HorizontalHackerAxis");
-		float vertical = Input.GetAxisRaw("VerticalHackerAxis");
-		if (canMoveHoriz == true)
+
+		if (cantMove == null)
 		{
 			if (horizontal > float.Epsilon)
 			{
 				GoToNextTerminal();
-				canMoveHoriz = false;
-				StartCoroutine("HorizontalAxisRepeatSwitch");
+				TempStopMove();
 			}
-			else if (horizontal < -(float.Epsilon))
+			else if (horizontal < -float.Epsilon)
 			{
-				GoToPrevTerminal();
-				canMoveHoriz = false;
-				StartCoroutine("HorizontalAxisRepeatSwitch");
+				GoToPreviousTerminal();
+				TempStopMove();
 			}
 		}
-
-		if (canMoveVert == true)
+		else if (Mathf.Abs(horizontal) <= float.Epsilon)
 		{
-			if (vertical > float.Epsilon)
-			{
-				IncreaseTerminalPowerLevel();
-				canMoveVert = false;
-				StartCoroutine("VerticalAxisRepeatSwitch");
-			}
-			else if (vertical < -(float.Epsilon))
-			{
-				DecreaseTerminalPowerLevel();
-				canMoveVert = false;
-				StartCoroutine("VerticalAxisRepeatSwitch");
-			}
+			StopCoroutine(cantMove);
+			cantMove = null;
 		}
 
+		// current shot time full burst time
+		if (Input.GetButton("Fire1"))
+		{
+			if (currentShotTime <= float.Epsilon)
+			{
+				ShootNormal();
+			}
+			else
+			{
+				currentShotTime += Time.deltaTime;
+			}
+		}
+		else if (currentShotTime >= FullBurstTime)
+		{
+			ShootBurst();
+		}
+		else
+		{
+			currentShotTime = 0f;
+		}
+
+	}
+
+	/// <summary>
+	/// Shoots a normal shot.
+	/// </summary>
+	private void ShootNormal()
+	{
+		RegularShot.transform.position = new Vector3(transform.position.x, transform.position.y + ShotStartYOffset);
+		Instantiate(RegularShot);
+	}
+
+	/// <summary>
+	/// Shoots a burst shot.
+	/// </summary>
+	private void ShootBurst()
+	{
+		BurstShot.transform.position = new Vector3(transform.position.x, transform.position.y + ShotStartYOffset);
+		Instantiate(BurstShot);
+	}
+
+	/// <summary>
+	/// Puts a temporary stop in place for repeating keystrokes by starting HorizontalAxisRepeatSwitch()
+	/// as a coroutine.
+	/// </summary>
+	private void TempStopMove()
+	{
+		cantMove = HorizontalAxisRepeatSwitch();
+		StartCoroutine(cantMove);
 	}
 }
