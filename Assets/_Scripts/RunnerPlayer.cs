@@ -84,25 +84,25 @@ public class RunnerPlayer : MonoBehaviour
 		float horizontalAxis = Input.GetAxisRaw("Horizontal");
 		float verticalAxis = Input.GetAxisRaw("Vertical");
 
-		if ( horizontalAxis > float.Epsilon )
+		if (horizontalAxis > float.Epsilon)
 		{
-			horizontalAxis = ( RunningSpeed * Time.deltaTime );
+			horizontalAxis = (RunningSpeed * Time.deltaTime);
 			facing = CurrentFacing.Right;
 		}
-		else if ( horizontalAxis < -float.Epsilon )
+		else if (horizontalAxis < -float.Epsilon)
 		{
-			horizontalAxis = ( -RunningSpeed * Time.deltaTime );
+			horizontalAxis = (-RunningSpeed * Time.deltaTime);
 			facing = CurrentFacing.Left;
 		}
 		// vertical facing > horizontal facing
-		if ( verticalAxis > float.Epsilon )
+		if (verticalAxis > float.Epsilon)
 		{
-			verticalAxis = ( RunningSpeed * Time.deltaTime );
+			verticalAxis = (RunningSpeed * Time.deltaTime);
 			facing = CurrentFacing.Up;
 		}
-		else if ( verticalAxis < -float.Epsilon )
+		else if (verticalAxis < -float.Epsilon)
 		{
-			verticalAxis = ( -RunningSpeed * Time.deltaTime );
+			verticalAxis = (-RunningSpeed * Time.deltaTime);
 			facing = CurrentFacing.Down;
 		}
 		GetComponent<Rigidbody2D>().MovePosition(new Vector2((transform.position.x + horizontalAxis),
