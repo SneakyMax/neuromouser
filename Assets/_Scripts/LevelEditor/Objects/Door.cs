@@ -21,6 +21,9 @@ namespace Assets._Scripts.LevelEditor.Objects
 
         public bool IsHorizontal { get; set; }
 
+        private static readonly int[] layers = { 1, 2, 3 };
+        public override int[] Layers { get { return layers; } }
+
         public override string Serialize()
         {
             return String.Format("{0},{1}", Level, IsHorizontal);

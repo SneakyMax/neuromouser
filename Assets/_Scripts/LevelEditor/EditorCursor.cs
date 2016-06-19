@@ -7,6 +7,8 @@ namespace Assets._Scripts.LevelEditor
     [UnityComponent]
     public class EditorCursor : MonoBehaviour
     {
+        public static EditorCursor Instance { get; private set; }
+
         public Tool HoldingTool;
 
         /// <summary>Clicks won't go to the game world in the palette area.</summary>
@@ -28,6 +30,7 @@ namespace Assets._Scripts.LevelEditor
         [UnityMessage]
         public void Awake()
         {
+            Instance = this;
             Cursor.visible = false;
         }
 

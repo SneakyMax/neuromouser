@@ -25,7 +25,9 @@ namespace Assets._Scripts.LevelEditor.Tools
 
         public override void ActivateTool(Vector2 position)
         {
-            if (SnapToGrid && WorkingLevel.Instance.IsGridObjectAt(position))
+            var layersObjectWillOccupy = ThingToPlacePrefab.GetInterfaceComponent<IPlacedObject>().Layers;
+
+            if (SnapToGrid && WorkingLevel.Instance.IsAnyGridObjectAt(position, layersObjectWillOccupy))
                 return;
 
             var instance = (GameObject)Instantiate(ThingToPlacePrefab, position, Quaternion.identity);
@@ -53,12 +55,7 @@ namespace Assets._Scripts.LevelEditor.Tools
         {
             if (SnapToGrid)
             {
-                var existingObject = WorkingLevel.Instance.GetGridObjectAt(position);
-                if (existingObject != null)
-                {
-                    WorkingLevel.Instance.RemoveGridObjectAt(position);
-                    Destroy(existingObject.UnityObject);
-                }
+                WorkingLevel.Instance.RemoveTopmostGridObjectAt(position);
             }
         }
 

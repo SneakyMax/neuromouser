@@ -18,7 +18,7 @@ namespace Assets._Scripts.LevelEditor
     {
         public static WorkingLevel Instance { get; private set; }
 
-        private IDictionary<GridPosition, IPlacedObject> grid;
+        private IDictionary<GridPosition, IList<IPlacedObject>> grid;
         private IList<PrecisedPlacedObject> nonGridObjects;
 
         [UnityMessage]
@@ -31,7 +31,7 @@ namespace Assets._Scripts.LevelEditor
         public void Start()
         {
             nonGridObjects = new List<PrecisedPlacedObject>();
-            grid = new Dictionary<GridPosition, IPlacedObject>();
+            grid = new Dictionary<GridPosition, IList<IPlacedObject>>();
         }
 
         private GridPosition GetGridPosition(Vector2 worldPosition)
@@ -44,44 +44,97 @@ namespace Assets._Scripts.LevelEditor
             nonGridObjects.Add(new PrecisedPlacedObject { X = x, Y = y, PlacedObject = obj });
         }
 
-        public bool IsGridObjectAt(Vector2 worldPosition)
+        public bool IsGridObjectAt(Vector2 worldPosition, int layer)
         {
             var gridPosition = GetGridPosition(worldPosition);
-            return IsGridObjectAt(gridPosition.X, gridPosition.Y);
+            return IsGridObjectAt(gridPosition.X, gridPosition.Y, layer);
         }
 
-        public bool IsGridObjectAt(int x, int y)
+        public bool IsGridObjectAt(int x, int y, int layer)
         {
-            return grid.ContainsKey(new GridPosition(x, y));
+            var position = new GridPosition(x, y);
+            return grid.ContainsKey(position) && grid[position].Any(o => o.IsInLayer(layer));
         }
 
-        public IPlacedObject GetGridObjectAt(Vector2 worldPosition)
+        public bool IsAnyGridObjectAt(Vector2 worldPosition, int[] layers)
         {
             var gridPosition = GetGridPosition(worldPosition);
-            return GetGridObjectAt(gridPosition.X, gridPosition.Y);
+            return IsAnyGridObjectAt(gridPosition.X, gridPosition.Y, layers);
         }
 
-        public IPlacedObject GetGridObjectAt(int x, int y)
+        public bool IsAnyGridObjectAt(int x, int y, int[] layers)
         {
-            IPlacedObject obj;
-            grid.TryGetValue(new GridPosition(x, y), out obj);
-            return obj;
+            var position = new GridPosition(x, y);
+            return grid.ContainsKey(position) && grid[position].Any(o => layers.Any(o.IsInLayer));
+        }
+
+        public IPlacedObject GetGridObjectAt(Vector2 worldPosition, int layer)
+        {
+            var gridPosition = GetGridPosition(worldPosition);
+            return GetGridObjectAt(gridPosition.X, gridPosition.Y, layer);
+        }
+
+        public IPlacedObject GetGridObjectAt(int x, int y, int layer)
+        {
+            IList<IPlacedObject> gridPositionObjects;
+            grid.TryGetValue(new GridPosition(x, y), out gridPositionObjects);
+
+            if (gridPositionObjects == null)
+                return null;
+
+            return gridPositionObjects.FirstOrDefault(o => o.IsInLayer(layer));
         }
 
         public void PlaceGridObject(IPlacedObject obj, Vector2 worldPosition)
         {
-            grid[GetGridPosition(worldPosition)] = obj;
+            var gridPosition = GetGridPosition(worldPosition);
+            if (grid.ContainsKey(gridPosition) == false)
+                grid[gridPosition] = new List<IPlacedObject>();
+
+            if (IsAnyGridObjectAt(gridPosition.X, gridPosition.Y, obj.Layers))
+                return;
+
+            grid[gridPosition].Add(obj);
         }
 
-        public void RemoveGridObjectAt(Vector2 worldPosition)
+        public void RemoveGridObjectAt(Vector2 worldPosition, int layer)
         {
             var gridPosition = GetGridPosition(worldPosition);
-            RemoveGridObjectAt(gridPosition.X, gridPosition.Y);
+
+            IList<IPlacedObject> gridPositionObjects;
+            grid.TryGetValue(gridPosition, out gridPositionObjects);
+
+            if (gridPositionObjects == null || gridPositionObjects.Count == 0)
+                return;
+
+            var match = gridPositionObjects.FirstOrDefault(x => x.Layers.Contains(layer));
+
+            if (match == null)
+                return;
+
+            gridPositionObjects.Remove(match);
+            match.Destroy();
         }
 
-        public void RemoveGridObjectAt(int x, int y)
+        public void RemoveTopmostGridObjectAt(Vector2 worldPosition)
         {
-            grid.Remove(new GridPosition(x, y));
+            var gridPosition = GetGridPosition(worldPosition);
+
+            IList<IPlacedObject> gridPositionObjects;
+            grid.TryGetValue(gridPosition, out gridPositionObjects);
+
+            if (gridPositionObjects == null || gridPositionObjects.Count == 0)
+                return;
+
+            var maxLayer = gridPositionObjects.Max(x => x.Layers.Max(y => y));
+            var topmost = gridPositionObjects.FirstOrDefault(x => x.Layers.Contains(maxLayer));
+
+            if (topmost == null)
+                return;
+
+            gridPositionObjects.Remove(topmost);
+
+            topmost.Destroy();
         }
 
         public void Remove(IPlacedObject obj)
@@ -101,18 +154,33 @@ namespace Assets._Scripts.LevelEditor
                 return;
             }
 
-            if (grid.Any(x => x.Value == obj))
+            IPlacedObject foundPlaced = null;
+            foreach (var objects in grid.Values)
             {
-                var key = grid.FirstOrDefault(x => x.Value == obj);
-                grid.Remove(key);
+                foreach(var placedObj in objects)
+                {
+                    if (placedObj == obj)
+                    {
+                        foundPlaced = placedObj;
+                        break;
+                    }
+                }
+                if (foundPlaced != null)
+                {
+                    objects.Remove(foundPlaced);
+                    foundPlaced.Destroy();
+                }
             }
         }
 
         public void Reset()
         {
-            foreach (var placedObject in grid.Values)
+            foreach (var placedObjects in grid.Values)
             {
-                placedObject.Destroy();
+                foreach (var placedObject in placedObjects)
+                {
+                    placedObject.Destroy();
+                }
             }
 
             foreach (var placedObject in nonGridObjects)
@@ -179,16 +247,20 @@ namespace Assets._Scripts.LevelEditor
         {
             serialized.AppendLine("grid:");
 
-            foreach (var gridItem in grid)
+            foreach (var pairs in grid)
             {
-                serialized.Append(gridItem.Key.X);
-                serialized.Append(',');
-                serialized.Append(gridItem.Key.Y);
-                serialized.Append(',');
-                serialized.Append(ObjectRegistration.Instance.GetId(gridItem.Value.Type));
-                serialized.Append(',');
-                serialized.Append(gridItem.Value.Serialize());
-                serialized.AppendLine();
+                foreach (var gridItem in pairs.Value)
+                {
+                    serialized.Append(pairs.Key.X);
+                    serialized.Append(',');
+                    serialized.Append(pairs.Key.Y);
+                    serialized.Append(',');
+                    serialized.Append(ObjectRegistration.Instance.GetId(gridItem.Type));
+                    serialized.Append(',');
+                    serialized.Append(gridItem.Serialize());
+                    serialized.AppendLine();
+                }
+                
             }
         }
 

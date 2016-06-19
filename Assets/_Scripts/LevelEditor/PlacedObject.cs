@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor
 {
@@ -8,6 +9,14 @@ namespace Assets._Scripts.LevelEditor
         public GameObject UnityObject { get { return gameObject; } }
 
         public virtual string Type { get { return GetType().Name; } }
+
+        public abstract int[] Layers { get; }
+
+        [UnityMessage]
+        public void Start()
+        {
+            GetComponent<SpriteRenderer>().sortingLayerName = "LevelLayer" + Layers.Max(x => x);
+        }
 
         public virtual string Serialize()
         {
