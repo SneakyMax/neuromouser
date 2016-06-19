@@ -100,13 +100,19 @@ namespace Assets._Scripts.LevelEditor
 
         private void CheckPan()
         {
-            if (Input.GetMouseButton(2) == false)
+            var middleClickOrCommandClick = Input.GetMouseButton(2) ||
+                                            (Input.GetMouseButton(0) && (Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftAlt)));
+
+            if (middleClickOrCommandClick == false)
                 isPanning = false;
 
             if (CursorIsInWorld() == false)
                 return;
 
-            if (Input.GetMouseButtonDown(2))
+            var middleClickOrCommandClickDown = Input.GetMouseButtonDown(2) ||
+                                                (Input.GetMouseButtonDown(0) && (Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftAlt)));
+
+            if (middleClickOrCommandClickDown)
             {
                 isPanning = true;
                 startPanMousePosition = Input.mousePosition;
@@ -147,11 +153,16 @@ namespace Assets._Scripts.LevelEditor
             if (HoldingTool == null)
                 return; //todo?
 
+            var alternatePressed = Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftAlt);
+
+            if (alternatePressed)
+                return;
+
             if (Input.GetMouseButton(0))
             {
                 HoldingTool.ActivateTool(HoldingTool.CurrentPosition);
             }
-            else
+            else if(Input.GetMouseButton(1))
             {
                 HoldingTool.SecondaryActivateTool(HoldingTool.CurrentPosition);
             }
