@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21222678}
   - 114: {fileID: 11495884}
   m_Layer: 0
-  m_Name: Chewable Wall
+  m_Name: Wall Nice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 735a00beef71a8b42a2ecdd0f9331c1d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3ea821ec44da482c8d07cc73c469b2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

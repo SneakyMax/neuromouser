@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 452348}
   - 114: {fileID: 11474384}
   m_Layer: 0
-  m_Name: Wall Placer
+  m_Name: Wall Metal Placer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionOffset: {x: 0, y: 0}
-  ThingToPlacePrefab: {fileID: 106260, guid: 8b3350e6a0956b246952c28e43b447de, type: 2}
+  ThingToPlacePrefab: {fileID: 109350, guid: 5c311f6ecd84c432f89a5be8b879b3b8, type: 2}
   SnapToGrid: 1
 --- !u!212 &21268744
 SpriteRenderer:
