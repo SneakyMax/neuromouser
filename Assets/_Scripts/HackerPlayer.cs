@@ -58,6 +58,11 @@ public class HackerPlayer : MonoBehaviour
 	private IEnumerator cantMove = null;
 
 	/// <summary>
+	/// Set if the player is charging a shot.
+	/// </summary>
+	private bool chargingShot = false;
+
+	/// <summary>
 	/// Head to next terminal.
 	/// </summary>
 	private void GoToNextTerminal()
@@ -166,24 +171,22 @@ public class HackerPlayer : MonoBehaviour
 		}
 
 		// current shot time full burst time
-		if (Input.GetButton("Fire1"))
+		if (Input.GetButtonDown("Fire1"))
 		{
-			if (currentShotTime <= float.Epsilon)
-			{
-				ShootNormal();
-			}
-			else
-			{
-				currentShotTime += Time.deltaTime;
-			}
+			chargingShot = true;
+			ShootNormal();
+			currentShotTime = Time.deltaTime;
 		}
-		else if (currentShotTime >= FullBurstTime)
+		if (Input.GetButtonUp("Fire1"))
 		{
-			ShootBurst();
+			if (chargingShot && (currentShotTime >= FullBurstTime))
+				ShootBurst();
+
+			chargingShot = false;
 		}
-		else
+		else if (chargingShot)
 		{
-			currentShotTime = 0f;
+			currentShotTime += Time.deltaTime;
 		}
 
 	}
