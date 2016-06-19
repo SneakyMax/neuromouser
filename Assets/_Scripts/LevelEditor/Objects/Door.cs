@@ -16,10 +16,11 @@ namespace Assets._Scripts.LevelEditor.Objects
         public Sprite Level3;
 
         private int level;
+        private bool isHorizontal;
 
-        public int Level { get { return level; } set { level = value; LevelChanged(level); } }
+        public int Level { get { return level; } set { level = value; Refresh(); } }
 
-        public bool IsHorizontal { get; set; }
+        public bool IsHorizontal { get { return isHorizontal; } set { isHorizontal = value; Refresh(); } }
 
         private static readonly int[] layers = { 1, 2, 3 };
         public override int[] Layers { get { return layers; } }
@@ -41,16 +42,19 @@ namespace Assets._Scripts.LevelEditor.Objects
             }
         }
 
-        private void LevelChanged(int newLevel)
+        private void Refresh()
         {
             var spriteRenderer = GetComponent<SpriteRenderer>();
 
-            if (newLevel == 1)
+            if (Level == 1)
                 spriteRenderer.sprite = Level1;
-            else if (newLevel == 2)
+            else if (Level == 2)
                 spriteRenderer.sprite = Level2;
-            else if (newLevel == 3)
+            else if (Level == 3)
                 spriteRenderer.sprite = Level3;
+
+
+            transform.rotation = Quaternion.AngleAxis(IsHorizontal ? 90 : 0, Vector3.forward);
         }
     }
 }
