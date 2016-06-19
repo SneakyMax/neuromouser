@@ -61,10 +61,6 @@ public class HackerTerminal : MonoBehaviour
 	/// <exception cref="UnityException">Throws if instances aren't set.</exception>
 	private void Awake()
 	{
-		if ((PowerToggle1 == null) || (PowerToggle2 == null) || (PowerToggle3 == null))
-		{
-			throw new UnityException("PowerToggles not set for terminal.");
-		}
 		if (PowerReader == null)
 		{
 			throw new UnityException("PowerReader not set for terminal");
@@ -86,6 +82,9 @@ public class HackerTerminal : MonoBehaviour
 	/// <exception cref="UnityException">If newPower is not value from 0-3.</exception>
 	private void OnPowerChange(int newPower)
 	{
+	    if (PowerToggle1 == null || PowerToggle2 == null || PowerToggle3 == null)
+	        return;
+
 		terminalPower = newPower;
 
 		switch (newPower)

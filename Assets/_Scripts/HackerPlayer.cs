@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets._Scripts;
 
 /// <summary>
 /// Hacker-mouse player handling (including input).
@@ -62,6 +63,8 @@ public class HackerPlayer : MonoBehaviour
 	/// </summary>
 	private bool chargingShot = false;
 
+    private HackerTerminal currentTerminalObject;
+
 	/// <summary>
 	/// Head to next terminal.
 	/// </summary>
@@ -71,15 +74,18 @@ public class HackerPlayer : MonoBehaviour
 		{
 			case (TerminalType.Cameras):
 				currentTerminal = TerminalType.Doors;
+		        currentTerminalObject = HackerInterface.Instance.TerminalDoors;
 				transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
 				break;
 			case (TerminalType.Doors):
 				currentTerminal = TerminalType.Traps;
-				transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
+                currentTerminalObject = HackerInterface.Instance.TerminalTraps;
+                transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
 				break;
 			case (TerminalType.Traps):
 				currentTerminal = TerminalType.Cats;
-				transform.position = HackerInterface.Instance.TerminalCats.transform.position;
+                currentTerminalObject = HackerInterface.Instance.TerminalCats;
+                transform.position = HackerInterface.Instance.TerminalCats.transform.position;
 				break;
 			default:
 				break;
@@ -95,15 +101,18 @@ public class HackerPlayer : MonoBehaviour
 		{
 			case (TerminalType.Doors):
 				currentTerminal = TerminalType.Cameras;
-				transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
+                currentTerminalObject = HackerInterface.Instance.TerminalCamera;
+                transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
 				break;
 			case (TerminalType.Traps):
 				currentTerminal = TerminalType.Doors;
-				transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
+                currentTerminalObject = HackerInterface.Instance.TerminalDoors;
+                transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
 				break;
 			case (TerminalType.Cats):
 				currentTerminal = TerminalType.Traps;
-				transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
+                currentTerminalObject = HackerInterface.Instance.TerminalTraps;
+                transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
 				break;
 			default:
 				break;
@@ -142,6 +151,8 @@ public class HackerPlayer : MonoBehaviour
 	private void Start()
 	{
 		transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
+	    currentTerminalObject = HackerInterface.Instance.TerminalCamera;
+        currentTerminal = TerminalType.Cameras;
 	}
 
 	/// <summary>
@@ -196,8 +207,12 @@ public class HackerPlayer : MonoBehaviour
 	/// </summary>
 	private void ShootNormal()
 	{
-		RegularShot.transform.position = new Vector3(transform.position.x, transform.position.y + ShotStartYOffset);
-		Instantiate(RegularShot);
+	    var shotInstance = Instantiate(RegularShot);
+
+	    var firstPosition = currentTerminalObject.PowerReader.GetComponent<PowerLevelIndicator>().StartPosition.position;
+
+        shotInstance.transform.position = firstPosition;
+	    shotInstance.GetComponent<HackerShot>().ParentTerminal = currentTerminalObject;
 	}
 
 	/// <summary>

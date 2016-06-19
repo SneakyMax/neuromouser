@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using Assets._Scripts;
 
 /// <summary>
 /// Handles ICEs.
@@ -15,6 +17,9 @@ public class ICEHandler : MonoBehaviour
 	/// Fires when the power changes settings.
 	/// </summary>
 	public event PowerLevelCallback OnPowerChange;
+
+    /// <summary>Called when the raw power number changes.</summary>
+    public event Action<int> PowerChanged;
 
 	/// <summary>
 	/// Gets the power level.
@@ -33,20 +38,18 @@ public class ICEHandler : MonoBehaviour
 	/// </summary>
 	public float MaxPower = 16.0f;
 
-	/// <summary>
-	/// The level1 power minimum.
-	/// </summary>
-	public float Level1PowerMin = 4f;
+	/// <summary>The level1 power minimum.</summary>
+	public int Level1PowerMin = 4;
 
 	/// <summary>
 	/// The level2 power minimum.
 	/// </summary>
-	public float Level2PowerMin = 8f;
+	public int Level2PowerMin = 8;
 
 	/// <summary>
 	/// The level3 power minimum.
 	/// </summary>
-	public float Level3PowerMin = 12f;
+	public int Level3PowerMin = 12;
 
 	/// <summary>
 	/// The max y value for positioning. Will reach this at MaxPower.
@@ -76,7 +79,7 @@ public class ICEHandler : MonoBehaviour
 	/// <summary>
 	/// The current power.
 	/// </summary>
-	private float currentPower = 0.0f;
+	public float CurrentPower = 0.0f;
 
 	/// <summary>
 	/// The current power level.
@@ -96,20 +99,10 @@ public class ICEHandler : MonoBehaviour
 		origin = transform.position;
 	}
 
-	/// <summary>
-	/// Called when the ICE collides with something.
-	/// </summary>
-	/// <param name="collidedObject">Object collided with.</param>
-	private void OnTriggerEnter2D(Collider2D collidedObject)
-	{
-		if (collidedObject.gameObject.tag == "HackerShot")
-		{
-			currentPower += collidedObject.GetComponent<HackerShot>().PowerValue;
-			if (currentPower > MaxPower)
-				currentPower = MaxPower;
-			Destroy(collidedObject.gameObject);
-		}
-	}
+    public void AbsorbPower(float power)
+    {
+        CurrentPower = Mathf.Min(MaxPower, CurrentPower + power);
+    }
 
 	/// <summary>
 	/// Changes the power level and updates subscribers to OnPowerChange.
@@ -127,17 +120,17 @@ public class ICEHandler : MonoBehaviour
 	/// </summary>
 	private void UpdatePowerLevel()
 	{
-		if (currentPower >= Level3PowerMin)
+		if (CurrentPower >= Level3PowerMin)
 		{
 			if (currentPowerLevel != 3)
 				ChangePowerLevel(3);
 		}
-		else if (currentPower >= Level2PowerMin)
+		else if (CurrentPower >= Level2PowerMin)
 		{
 			if (currentPowerLevel != 2)
 				ChangePowerLevel(2);
 		}
-		else if (currentPower >= Level1PowerMin )
+		else if (CurrentPower >= Level1PowerMin )
 		{
 			if (currentPowerLevel != 1)
 				ChangePowerLevel(1);
@@ -154,19 +147,19 @@ public class ICEHandler : MonoBehaviour
 	/// </summary>
 	private void HandlePowerDecay()
 	{
-		if ( currentPower >= Level3PowerMin )
-			currentPower += ( Time.deltaTime * Level3PowerDecay );
-		else if ( currentPower >= Level2PowerMin )
-			currentPower += ( Time.deltaTime * Level2PowerDecay );
-		else if ( currentPower >= Level1PowerMin )
-			currentPower += ( Time.deltaTime * Level1PowerDecay );
+		if ( CurrentPower >= Level3PowerMin )
+			CurrentPower += ( Time.deltaTime * Level3PowerDecay );
+		else if ( CurrentPower >= Level2PowerMin )
+			CurrentPower += ( Time.deltaTime * Level2PowerDecay );
+		else if ( CurrentPower >= Level1PowerMin )
+			CurrentPower += ( Time.deltaTime * Level1PowerDecay );
 		else
 		{
-			currentPower += ( Time.deltaTime * Level0PowerDecay );
+			CurrentPower += ( Time.deltaTime * Level0PowerDecay );
 		}
 
-		if ( currentPower < float.Epsilon )
-			currentPower = 0f;
+		if ( CurrentPower < float.Epsilon )
+			CurrentPower = 0f;
 
 		UpdatePowerLevel();
 	}
@@ -176,7 +169,9 @@ public class ICEHandler : MonoBehaviour
 	/// </summary>
 	private void FixedUpdate()
 	{
+        //if(CurrentPower < MaxPower)
+	        //CurrentPower += 0.2f;
 		HandlePowerDecay();
-		transform.position = new Vector3(origin.x, origin.y + ((currentPower / MaxPower) * MaxY));
+		//transform.position = new Vector3(origin.x, origin.y + ((CurrentPower / MaxPower) * MaxY));
 	}
 }
