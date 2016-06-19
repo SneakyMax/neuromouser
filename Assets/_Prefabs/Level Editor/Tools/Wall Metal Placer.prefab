@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 452348}
-  - 114: {fileID: 11474384}
+  - 114: {fileID: 11410918}
   m_Layer: 0
   m_Name: Wall Metal Placer
   m_TagString: Untagged
@@ -59,7 +59,7 @@ Transform:
   - {fileID: 428818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11474384
+--- !u!114 &11410918
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -67,12 +67,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 104502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3586e1825a25b3d4a80807ac18d88aef, type: 3}
+  m_Script: {fileID: 11500000, guid: ce313cac3d272dd4d9a5ed64a572f575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PositionOffset: {x: 0, y: 0}
-  ThingToPlacePrefab: {fileID: 109350, guid: 5c311f6ecd84c432f89a5be8b879b3b8, type: 2}
+  ThingToPlacePrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
   SnapToGrid: 1
+  WallType: 2
 --- !u!212 &21268744
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -99,7 +100,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 37b6e0cb2aad1704e9805a95f1445ae6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20e98ee4ff91e4569a78044fb0484be6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.484}
   m_FlipX: 0
   m_FlipY: 0

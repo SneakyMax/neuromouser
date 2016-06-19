@@ -62,6 +62,21 @@ MonoBehaviour:
   - Name: PatrolPoint
     ObjLevelPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
     ObjEditorPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
+  - Name: TrapAlarm
+    ObjLevelPrefab: {fileID: 182856, guid: b8b7f4a1ef0694b0bb9e1b72410aebd2, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: b8b7f4a1ef0694b0bb9e1b72410aebd2, type: 2}
+  - Name: TrapCatnip
+    ObjLevelPrefab: {fileID: 182856, guid: e32517fce29dc44d1b01d2209147e18f, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: e32517fce29dc44d1b01d2209147e18f, type: 2}
+  - Name: TrapGlue
+    ObjLevelPrefab: {fileID: 182856, guid: 675a14295a94643f28ec4f9f83286e34, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: 675a14295a94643f28ec4f9f83286e34, type: 2}
+  - Name: TrapLaserGrid
+    ObjLevelPrefab: {fileID: 182856, guid: c1a79c575f1154fc4b1c2738b2fe0865, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: c1a79c575f1154fc4b1c2738b2fe0865, type: 2}
+  - Name: TrapSnap
+    ObjLevelPrefab: {fileID: 182856, guid: 0b621e506cae24f8cbfc210d8f5a9d90, type: 2}
+    ObjEditorPrefab: {fileID: 182856, guid: 0b621e506cae24f8cbfc210d8f5a9d90, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21222678}
   - 114: {fileID: 11495884}
   m_Layer: 0
-  m_Name: Wall Nice
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,9 +38,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 109350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42fb235da548f1242963f2f74eef496d, type: 3}
+  m_Script: {fileID: 11500000, guid: 04aa51d63970df748aff882e10975ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlassWallSprite: {fileID: 21300000, guid: 37b6e0cb2aad1704e9805a95f1445ae6, type: 3}
+  CardboardWallSprite: {fileID: 21300000, guid: a3bd7d8f3bc2646c79bf5cc87dda8d2d,
+    type: 3}
+  MetalWallSprite: {fileID: 21300000, guid: 20e98ee4ff91e4569a78044fb0484be6, type: 3}
+  NiceWallSprite: {fileID: 21300000, guid: b3ea821ec44da482c8d07cc73c469b2e, type: 3}
 --- !u!212 &21222678
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -67,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b3ea821ec44da482c8d07cc73c469b2e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3bd7d8f3bc2646c79bf5cc87dda8d2d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
