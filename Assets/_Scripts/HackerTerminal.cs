@@ -82,11 +82,14 @@ public class HackerTerminal : MonoBehaviour
 	/// <exception cref="UnityException">If newPower is not value from 0-3.</exception>
 	private void OnPowerLevelChange(int newPower)
 	{
-	    if (PowerToggle1 == null || PowerToggle2 == null || PowerToggle3 == null)
+        terminalPower = newPower;
+
+        if (OnPowerChanged != null)
+            OnPowerChanged(terminalPower);
+
+        if (PowerToggle1 == null || PowerToggle2 == null || PowerToggle3 == null)
 	        return;
-
-		terminalPower = newPower;
-
+        
 		switch (newPower)
 		{
 			case 0:
@@ -112,7 +115,5 @@ public class HackerTerminal : MonoBehaviour
 			default:
 				throw new UnityException("Terminal OnPowerChange received invalid power value.");
 		}
-
-		OnPowerChanged(terminalPower);
 	}
 }

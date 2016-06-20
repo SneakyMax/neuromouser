@@ -1353,6 +1353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7b557a9fd010449a50cf32454483e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RunnerCamera: {fileID: 1115547539}
+  Level0CameraZoom: 1
+  Level1CameraZoom: 2
+  Level2CameraZoom: 3
+  Level3CameraZoom: 4
   TerminalCamera: {fileID: 2051806255}
   TerminalTraps: {fileID: 349574275}
   TerminalDoors: {fileID: 1715443357}

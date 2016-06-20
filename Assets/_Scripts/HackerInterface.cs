@@ -169,9 +169,9 @@ public class HackerInterface : MonoBehaviour
 	private void Start()
 	{
 		initialCameraSize = RunnerCamera.orthographicSize;
-		TerminalCamera.OnPowerChanged += OnCatPowerChange;
+		TerminalCamera.OnPowerChanged += OnCameraPowerChange;
 		TerminalTraps.OnPowerChanged += OnTrapPowerChange;
 		TerminalDoors.OnPowerChanged += OnDoorPowerChange;
-		TerminalCats.OnPowerChanged += OnCameraPowerChange;
+		TerminalCats.OnPowerChanged += OnCatPowerChange;
 	}
 }
