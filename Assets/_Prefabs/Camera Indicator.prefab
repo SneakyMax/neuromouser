@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 451626}
   - 212: {fileID: 21254564}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Camera Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}

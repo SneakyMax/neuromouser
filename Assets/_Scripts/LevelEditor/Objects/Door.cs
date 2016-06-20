@@ -35,11 +35,8 @@ namespace Assets._Scripts.LevelEditor.Objects
             var split = serialized.Split(',');
             Level = Convert.ToInt32(split[0]);
             IsHorizontal = Convert.ToBoolean(split[1]);
-
-            if (IsHorizontal)
-            {
-                UnityObject.transform.localRotation = Quaternion.AngleAxis(90, Vector3.forward);
-            }
+            
+            Refresh();
         }
 
         private void Refresh()

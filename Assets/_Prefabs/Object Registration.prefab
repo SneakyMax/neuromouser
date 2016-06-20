@@ -42,40 +42,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Objects:
   - Name: Wall
-    ObjLevelPrefab: {fileID: 106260, guid: 8b3350e6a0956b246952c28e43b447de, type: 2}
-    ObjEditorPrefab: {fileID: 106260, guid: 8b3350e6a0956b246952c28e43b447de, type: 2}
+    ObjLevelPrefab: {fileID: 173942, guid: 875a2a15aaa0f944da6d6d7e850166b4, type: 2}
+    ObjEditorPrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
   - Name: Floor
-    ObjLevelPrefab: {fileID: 190264, guid: f7813d689394066409a86ad8745e49c3, type: 2}
+    ObjLevelPrefab: {fileID: 141426, guid: b8060b34b2dd81f4a976c00231893384, type: 2}
     ObjEditorPrefab: {fileID: 190264, guid: f7813d689394066409a86ad8745e49c3, type: 2}
   - Name: Door
-    ObjLevelPrefab: {fileID: 159784, guid: e2033cd666d0f6d4e8ade92d574b9707, type: 2}
+    ObjLevelPrefab: {fileID: 118946, guid: a6a855015f4ef024980b90d9cff56239, type: 2}
     ObjEditorPrefab: {fileID: 159784, guid: e2033cd666d0f6d4e8ade92d574b9707, type: 2}
-  - Name: ChewableWall
-    ObjLevelPrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
-    ObjEditorPrefab: {fileID: 109350, guid: 1426a5b273e378e43b41c5b0ca07e199, type: 2}
+  - Name: Empty
+    ObjLevelPrefab: {fileID: 0}
+    ObjEditorPrefab: {fileID: 0}
   - Name: PlayerSpawn
-    ObjLevelPrefab: {fileID: 182856, guid: 006b4e98b69394e4eb1fe1b3a5c7e139, type: 2}
+    ObjLevelPrefab: {fileID: 113008, guid: 7f55ef0d11a94b44b9684d32ea566655, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: 006b4e98b69394e4eb1fe1b3a5c7e139, type: 2}
   - Name: Cat
-    ObjLevelPrefab: {fileID: 120312, guid: fca9c1ee2ca42cd4baf14939ff3b1e3f, type: 2}
+    ObjLevelPrefab: {fileID: 192174, guid: 65d62b9d4b4d99046b48be25f211fb0a, type: 2}
     ObjEditorPrefab: {fileID: 120312, guid: fca9c1ee2ca42cd4baf14939ff3b1e3f, type: 2}
   - Name: PatrolPoint
-    ObjLevelPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
+    ObjLevelPrefab: {fileID: 193806, guid: 1a514b9c29e940643be837ef4299cebf, type: 2}
     ObjEditorPrefab: {fileID: 111770, guid: e6f4bc1e172a76042919e1414f31d8b9, type: 2}
   - Name: TrapAlarm
-    ObjLevelPrefab: {fileID: 182856, guid: b8b7f4a1ef0694b0bb9e1b72410aebd2, type: 2}
+    ObjLevelPrefab: {fileID: 150984, guid: 9ed2f57727e82d749ab9c65b95b336ff, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: b8b7f4a1ef0694b0bb9e1b72410aebd2, type: 2}
   - Name: TrapCatnip
-    ObjLevelPrefab: {fileID: 182856, guid: e32517fce29dc44d1b01d2209147e18f, type: 2}
+    ObjLevelPrefab: {fileID: 100230, guid: a02fb6827e48388458d5fd3604b0523e, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: e32517fce29dc44d1b01d2209147e18f, type: 2}
   - Name: TrapGlue
-    ObjLevelPrefab: {fileID: 182856, guid: 675a14295a94643f28ec4f9f83286e34, type: 2}
+    ObjLevelPrefab: {fileID: 109296, guid: 25791caa08b48ab448e83fddc7b6453a, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: 675a14295a94643f28ec4f9f83286e34, type: 2}
   - Name: TrapLaserGrid
-    ObjLevelPrefab: {fileID: 182856, guid: c1a79c575f1154fc4b1c2738b2fe0865, type: 2}
+    ObjLevelPrefab: {fileID: 158200, guid: 9ba851e5750e7f9488825993f7d7ea85, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: c1a79c575f1154fc4b1c2738b2fe0865, type: 2}
   - Name: TrapSnap
-    ObjLevelPrefab: {fileID: 182856, guid: 0b621e506cae24f8cbfc210d8f5a9d90, type: 2}
+    ObjLevelPrefab: {fileID: 139874, guid: 9aeb4974186cb9e4489495a9ecc70dec, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: 0b621e506cae24f8cbfc210d8f5a9d90, type: 2}
 --- !u!1001 &100100000
 Prefab:
