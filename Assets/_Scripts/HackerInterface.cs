@@ -37,6 +37,13 @@ public class HackerInterface : MonoBehaviour
 	/// </summary>
 	public static HackerInterface Instance = null;
 
+	public Camera RunnerCamera = null;
+
+	public float Level0CameraZoom = 1f;
+	public float Level1CameraZoom = 2f;
+	public float Level2CameraZoom = 3f;
+	public float Level3CameraZoom = 4f;
+
 	/// <summary>
 	/// The camera terminal.
 	/// </summary>
@@ -58,7 +65,12 @@ public class HackerInterface : MonoBehaviour
 	public HackerTerminal TerminalCats = null;
 
 	/// <summary>
-	/// Raises the camera power changed event.
+	/// Holds the initial orthographic size of the camera.
+	/// </summary>
+	private float initialCameraSize = 0f;
+
+	/// <summary>
+	/// Raises the camera power changed event, changing the orthographic size of the camera.
 	/// </summary>
 	/// <param name="currentPower">Current camera terminal power.</param>
 	public void OnCameraPowerChange(int currentPower)
@@ -66,6 +78,22 @@ public class HackerInterface : MonoBehaviour
 		if (OnCameraPowerChanged != null)
 		{
 			OnCameraPowerChanged(currentPower);
+		}
+
+		switch (currentPower)
+		{
+			case 3:
+				RunnerCamera.orthographicSize = initialCameraSize * Level3CameraZoom;
+				break;
+			case 2:
+				RunnerCamera.orthographicSize = initialCameraSize * Level2CameraZoom;
+				break;
+			case 1:
+				RunnerCamera.orthographicSize = initialCameraSize * Level1CameraZoom;
+				break;
+			default:
+				RunnerCamera.orthographicSize = initialCameraSize * Level0CameraZoom;
+				break;
 		}
 	}
 
@@ -108,7 +136,8 @@ public class HackerInterface : MonoBehaviour
 	/// <summary>
 	/// Called when the script is loaded
 	/// </summary>
-	/// <exception cref="UnityException">Thrown if any terminal is unassociated.</exception>
+	/// <exception cref="UnityException">Thrown if any terminal or the camera is unassociated, or if
+	/// the camera is non-orthographic.</exception>
 	private void Awake()
 	{
 		if (Instance != null)
@@ -123,6 +152,15 @@ public class HackerInterface : MonoBehaviour
 		{
 			throw new UnityException("Error: Terminals not set up with HackerInterface!");
 		}
+
+		if (RunnerCamera == null)
+		{
+			throw new UnityException("Error: HackerInterface Runner must have an associated camera!");
+		}
+		else if (RunnerCamera.orthographic == false)
+		{
+			throw new UnityException("Error: RunnerCamera must be set to orthographic.");
+		}
 	}
 
 	/// <summary>
@@ -130,6 +168,7 @@ public class HackerInterface : MonoBehaviour
 	/// </summary>
 	private void Start()
 	{
+		initialCameraSize = RunnerCamera.orthographicSize;
 		TerminalCamera.OnPowerChanged += OnCatPowerChange;
 		TerminalTraps.OnPowerChanged += OnTrapPowerChange;
 		TerminalDoors.OnPowerChanged += OnDoorPowerChange;
