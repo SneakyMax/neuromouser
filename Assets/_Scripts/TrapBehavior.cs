@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Trap behavior base class for trap arming and disarming based on trap terminal power.
+/// </summary>
 public class TrapBehavior : MonoBehaviour
 {
 	public int TrapLevel
@@ -11,7 +14,7 @@ public class TrapBehavior : MonoBehaviour
 		}
 	}
 
-	protected bool armed = false;
+	protected bool armed = true;
 	protected int trapLevel = 1;
 
 	/// <summary>
@@ -49,13 +52,11 @@ public class TrapBehavior : MonoBehaviour
 	{
 		if ((trapLevel > newTrapPower) && !armed)
 		{
-			trapLevel = newTrapPower;
 			armed = true;
 			Arm();
 		}
-		else if ((trapLevel < newTrapPower) && armed)
+		else if ((trapLevel <= newTrapPower) && armed)
 		{
-			trapLevel = newTrapPower;
 			armed = false;
 			Disarm();
 		}
