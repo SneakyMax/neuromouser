@@ -728,6 +728,10 @@ Prefab:
       propertyPath: IndicatorPrefab
       value: 
       objectReference: {fileID: 113280, guid: 7026b774267755747852629b4294b226, type: 2}
+    - target: {fileID: 11404282, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
+      propertyPath: MaxPower
+      value: 47
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_IsPrefabParent: 0

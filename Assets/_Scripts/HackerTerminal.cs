@@ -72,7 +72,7 @@ public class HackerTerminal : MonoBehaviour
 	/// </summary>
 	private void Start()
 	{
-		PowerReader.OnPowerChange += OnPowerChange;
+		PowerReader.OnPowerLevelChange += OnPowerLevelChange;
 	}
 
 	/// <summary>
@@ -80,7 +80,7 @@ public class HackerTerminal : MonoBehaviour
 	/// </summary>
 	/// <param name="newPower">New power value.</param>
 	/// <exception cref="UnityException">If newPower is not value from 0-3.</exception>
-	private void OnPowerChange(int newPower)
+	private void OnPowerLevelChange(int newPower)
 	{
 	    if (PowerToggle1 == null || PowerToggle2 == null || PowerToggle3 == null)
 	        return;

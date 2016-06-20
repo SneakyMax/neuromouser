@@ -1,42 +1,16 @@
 ﻿using System;
-using UnityEngine;
-using System.Collections;
 using Assets._Scripts;
+using UnityEngine;
 
-/// <summary>
-/// Handles ICEs.
-/// </summary>
 public class ICEHandler : MonoBehaviour
 {
-	/// <summary>
-	/// Power level callback delegate for the OnPowerChange event
-	/// </summary>
-	public delegate void PowerLevelCallback(int currentPowerLevel);
+	/// <summary>Fires when the power changes settings.</summary>
+	public event Action<int> OnPowerLevelChange;
 
-	/// <summary>
-	/// Fires when the power changes settings.
-	/// </summary>
-	public event PowerLevelCallback OnPowerChange;
-
-    /// <summary>Called when the raw power number changes.</summary>
-    public event Action<int> PowerChanged;
-
-	/// <summary>
-	/// Gets the power level.
-	/// </summary>
-	/// <value>The power level.</value>
-	public int PowerLevel
-	{
-		get
-		{
-			return currentPowerLevel;
-		}
-	}
-
-	/// <summary>
-	/// The max power.
-	/// </summary>
-	public float MaxPower = 16.0f;
+    /// <summary>Current power level - 0, 1, 2, 3</summary>
+	public int PowerLevel {get { return currentPowerLevel; } }
+    
+	public int MaxPower = 16;
 
 	/// <summary>The level1 power minimum.</summary>
 	public int Level1PowerMin = 4;
@@ -56,52 +30,45 @@ public class ICEHandler : MonoBehaviour
 	/// </summary>
 	public float MaxY = 0f;
 
-	/// <summary>
-	/// The level0 power decay per second.
-	/// </summary>
-	public float Level0PowerDecay = -0.5f;
+    /// <summary>Seconds between level 0 decay pulses.</summary>
+    [Range(0, 5)]
+    public float Level0PowerDecayRate = 3.0f;
 
-	/// <summary>
-	/// The level1 power decay per second.
-	/// </summary>
-	public float Level1PowerDecay = -1f;
+    /// <summary>Seconds between level 1 decay pulses.</summary>
+    [Range(0, 5)]
+    public float Level1PowerDecayRate = 2.0f;
 
-	/// <summary>
-	/// The level2 power decay per second.
-	/// </summary>
-	public float Level2PowerDecay = -2f;
+    /// <summary>Seconds between level 2 decay pulses.</summary>
+    [Range(0, 5)]
+    public float Level2PowerDecayRate = 1.0f;
 
-	/// <summary>
-	/// The level3 power decay per second.
-	/// </summary>
-	public float Level3PowerDecay = -3f;
+    /// <summary>Seconds between level 3 decay pulses.</summary>
+    [Range(0, 5)]
+    public float Level3PowerDecayRate = 0.5f;
+    
+	public float CurrentPower;
+    
+	private int currentPowerLevel;
+    
+    [AssignedInUnity]
+    public GameObject CounterPulsePrefab;
 
-	/// <summary>
-	/// The current power.
-	/// </summary>
-	public float CurrentPower = 0.0f;
+    private float timeUntilNextPulse;
+    private float pulseTimeAccumulator;
 
-	/// <summary>
-	/// The current power level.
-	/// </summary>
-	private int currentPowerLevel = 0;
-
-	/// <summary>
-	/// The origin.
-	/// </summary>
-	private Vector3 origin;
-
-	/// <summary>
-	/// This Start() sets up the origin.
-	/// </summary>
-	private void Start()
-	{
-		origin = transform.position;
-	}
+    private PowerLevelIndicator powerLevelIndicator;
 
     public void AbsorbPower(float power)
     {
-        CurrentPower = Mathf.Min(MaxPower, CurrentPower + power);
+        CurrentPower = Mathf.Clamp(CurrentPower + power, 0, MaxPower);
+    }
+
+    [UnityMessage]
+    public void Start()
+    {
+        powerLevelIndicator = GetComponent<PowerLevelIndicator>();
+
+        ChangePowerLevel(0);
     }
 
 	/// <summary>
@@ -111,8 +78,17 @@ public class ICEHandler : MonoBehaviour
 	private void ChangePowerLevel(int newPowerLevel)
 	{
 		currentPowerLevel = newPowerLevel;
-		if (OnPowerChange != null)
-			OnPowerChange(currentPowerLevel);
+
+        timeUntilNextPulse = newPowerLevel == 0 ?
+            Level0PowerDecayRate : newPowerLevel == 1 ?
+            Level1PowerDecayRate : newPowerLevel == 2 ?
+            Level2PowerDecayRate : newPowerLevel == 3 ?
+            Level3PowerDecayRate : 0;
+
+	    pulseTimeAccumulator = 0;
+
+		if (OnPowerLevelChange != null)
+			OnPowerLevelChange(currentPowerLevel);
 	}
 
 	/// <summary>
@@ -142,36 +118,33 @@ public class ICEHandler : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Handles the power decay.
-	/// </summary>
+    [UnityMessage]
+    public void Update()
+    {
+        UpdatePowerLevel();
+        HandlePowerDecay();
+    }
+    
 	private void HandlePowerDecay()
 	{
-		if ( CurrentPower >= Level3PowerMin )
-			CurrentPower += ( Time.deltaTime * Level3PowerDecay );
-		else if ( CurrentPower >= Level2PowerMin )
-			CurrentPower += ( Time.deltaTime * Level2PowerDecay );
-		else if ( CurrentPower >= Level1PowerMin )
-			CurrentPower += ( Time.deltaTime * Level1PowerDecay );
-		else
-		{
-			CurrentPower += ( Time.deltaTime * Level0PowerDecay );
-		}
+	    if (timeUntilNextPulse < float.Epsilon)
+	        return;
 
-		if ( CurrentPower < float.Epsilon )
-			CurrentPower = 0f;
+	    pulseTimeAccumulator += Time.deltaTime;
 
-		UpdatePowerLevel();
+	    if (pulseTimeAccumulator >= timeUntilNextPulse)
+	    {
+	        CreatePulse();
+	        pulseTimeAccumulator -= timeUntilNextPulse;
+	    }
 	}
 
-	/// <summary>
-	/// Sets the position of the ICE every frame.
-	/// </summary>
-	private void FixedUpdate()
-	{
-        //if(CurrentPower < MaxPower)
-	        //CurrentPower += 0.2f;
-		HandlePowerDecay();
-		//transform.position = new Vector3(origin.x, origin.y + ((CurrentPower / MaxPower) * MaxY));
-	}
+    private void CreatePulse()
+    {
+        var pulse = Instantiate(CounterPulsePrefab);
+        pulse.transform.position = powerLevelIndicator.CounterStartPosition;
+
+        var counterPulse = pulse.GetComponent<CounterPulse>();
+        counterPulse.ParentHandler = this;
+    }
 }

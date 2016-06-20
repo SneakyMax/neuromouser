@@ -11,6 +11,8 @@ namespace Assets._Scripts
 
         [AssignedInUnity]
         public Transform StartPosition;
+        
+        public Vector3 CounterStartPosition { get; private set; }
 
         [AssignedInUnity]
         public float Separation;
@@ -26,6 +28,8 @@ namespace Assets._Scripts
         public void Start()
         {
             indicatorLights = new Stack<GameObject>();
+
+            CounterStartPosition = StartPosition.position + new Vector3(0, Separation * ICEHandler.MaxPower, 0);
         }
 
         [UnityMessage]
@@ -47,20 +51,35 @@ namespace Assets._Scripts
 
         private void AddPowerLight()
         {
-            if (indicatedPower + 1 == ICEHandler.Level1PowerMin || indicatedPower + 1 == ICEHandler.Level2PowerMin || indicatedPower + 1 == ICEHandler.Level3PowerMin)
-            {
-                var dummy = new GameObject();
-                dummy.name = "Gap";
-                dummy.transform.SetParent(StartPosition, false);
-                dummy.transform.localPosition = new Vector3(0, Separation * indicatorLights.Count, 0);
-                indicatorLights.Push(dummy);
-            }
-
             var newLight = Instantiate(IndicatorPrefab);
-            newLight.transform.SetParent(StartPosition, false);
-            newLight.transform.localPosition = new Vector3(0, Separation * indicatorLights.Count, 0);
+            newLight.transform.position = GetLightPosition(indicatedPower + 1);
 
             indicatorLights.Push(newLight);
+        }
+
+        public Vector3 GetLightPosition(int power)
+        {
+            power = Mathf.Clamp(power, 1, ICEHandler.MaxPower);
+  
+            var indicatorCount = 0;
+
+            if (power >= ICEHandler.Level3PowerMin)
+                indicatorCount = power + 3;
+
+            else if (power >= ICEHandler.Level2PowerMin)
+                indicatorCount = power + 2;
+
+            else if (power >= ICEHandler.Level1PowerMin)
+                indicatorCount = power + 1;
+
+            else indicatorCount = power;
+
+            return StartPosition.position + new Vector3(0, Separation * (indicatorCount - 1));
+        }
+
+        public Vector3 GetClosestLightPosition(float power)
+        {
+            return GetLightPosition(Mathf.RoundToInt(power));
         }
 
         private void RemovePowerLight()

@@ -107,11 +107,12 @@ MonoBehaviour:
   Level2PowerMin: 26
   Level3PowerMin: 40
   MaxY: 4.5
-  Level0PowerDecay: 0
-  Level1PowerDecay: 0
-  Level2PowerDecay: 0
-  Level3PowerDecay: 0
+  Level0PowerDecayRate: 3
+  Level1PowerDecayRate: 2
+  Level2PowerDecayRate: 1
+  Level3PowerDecayRate: 0.5
   CurrentPower: 0
+  CounterPulsePrefab: {fileID: 178114, guid: e8e1ba682c9300b4ba11ff7d652f3dd7, type: 2}
 --- !u!114 &11405940
 MonoBehaviour:
   m_ObjectHideFlags: 1

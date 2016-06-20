@@ -21,24 +21,24 @@ namespace Assets._Scripts
         public Transform BelowShot;
 
         private float currentPowerLevel;
-        private float separation;
-        private Vector3 startPosition;
 
         private SpriteRenderer topLedSprite;
         private SpriteRenderer bottomLedSprite;
+        private PowerLevelIndicator powerLevelIndicator;
 
         [UnityMessage]
         public void Start()
         {
             currentPowerLevel = 0;
 
-            separation = ParentTerminal.PowerReader.GetComponent<PowerLevelIndicator>().Separation;
-            startPosition = ParentTerminal.PowerReader.GetComponent<PowerLevelIndicator>().StartPosition.position;
+            powerLevelIndicator = ParentTerminal.PowerReader.GetComponent<PowerLevelIndicator>();
 
-            BelowShot.localPosition = new Vector3(0, -separation, 0);
+            BelowShot.localPosition = powerLevelIndicator.GetLightPosition(1);
 
             topLedSprite = GetComponent<SpriteRenderer>();
             bottomLedSprite = BelowShot.GetComponent<SpriteRenderer>();
+
+            bottomLedSprite.color = bottomLedSprite.color.WithAlpha(0);
         }
 
         [UnityMessage]
@@ -46,34 +46,22 @@ namespace Assets._Scripts
         {
             currentPowerLevel += Speed * Time.deltaTime;
 
-            var indicatorAmount = GetActualPowerIndicatorAmount(currentPowerLevel);
+            var topPowerLevel = Mathf.CeilToInt(currentPowerLevel);
+            var indicatorPosition = powerLevelIndicator.GetLightPosition(topPowerLevel);
 
-            transform.position = startPosition + new Vector3(0, separation * Mathf.CeilToInt(indicatorAmount));
+            transform.position = indicatorPosition;
+            BelowShot.position = powerLevelIndicator.GetLightPosition(topPowerLevel - 1);
 
             var fraction = currentPowerLevel - Mathf.Floor(currentPowerLevel);
 
-            topLedSprite.color = new Color(topLedSprite.color.r, topLedSprite.color.g, topLedSprite.color.b, fraction);
-            bottomLedSprite.color = new Color(bottomLedSprite.color.r, bottomLedSprite.color.g, bottomLedSprite.color.b, 1.0f - fraction);
+            topLedSprite.color = topLedSprite.color.WithAlpha(fraction);
+            bottomLedSprite.color = bottomLedSprite.color.WithAlpha(1.0f - fraction);
 
             if (currentPowerLevel > ParentTerminal.PowerReader.CurrentPower)
             {
                 ParentTerminal.PowerReader.AbsorbPower(PowerValue);
                 Destroy(gameObject);
             }
-        }
-
-        private float GetActualPowerIndicatorAmount(float realPowerLevel)
-        {
-            if (realPowerLevel >= ParentTerminal.PowerReader.Level3PowerMin)
-                return realPowerLevel + 3;
-
-            if (realPowerLevel >= ParentTerminal.PowerReader.Level2PowerMin)
-                return realPowerLevel + 2;
-
-            if (realPowerLevel >= ParentTerminal.PowerReader.Level1PowerMin)
-                return realPowerLevel + 1;
-
-            return realPowerLevel;
         }
     }
 }
