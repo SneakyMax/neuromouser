@@ -40,20 +40,20 @@ namespace Assets._Scripts.GameObjects
 			HackerInterface.Instance.OnDoorPowerChanged += OnDoorPowerChanged;
 			animator = GetComponent<Animator>();
 			doorCollider = GetComponent<Collider2D>();
-			animator.Play("Opening");
-			animator.SetFloat("AnimChangeMultiplier", 0f);
+            
+		    animator.SetBool("IsOpen", false);
 		}
 
 		protected void Open()
 		{
 			doorCollider.enabled = false;
-			animator.SetFloat("AnimChangeMultiplier", 1f);
+		    animator.SetBool("IsOpen", true);
 		}
 
 		protected void Close()
 		{
 			doorCollider.enabled = true;
-			animator.SetFloat("AnimChangeMultiplier", -1f);
+		    animator.SetBool("IsOpen", false);
 		}
 
         public override void Deserialize(string serialized)
