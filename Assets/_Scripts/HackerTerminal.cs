@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets._Scripts;
 
 /// <summary>
 /// Hacker terminal.
@@ -49,6 +50,9 @@ public class HackerTerminal : MonoBehaviour
 	/// The ICE instance.
 	/// </summary>
 	public ICEHandler PowerReader = null;
+
+    [AssignedInUnity]
+    public Transform HackerSpritePosition;
 
 	/// <summary>
 	/// The amount of power allocated to the terminal.

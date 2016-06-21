@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 113068194}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.614951, y: -1.9457462, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1361284275}
@@ -127,6 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cadb1c6fce82fe043a7f16d3b1546cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraHackerSprite: {fileID: 21300000, guid: 65bae450def5b2544ab69dd7d8edd303, type: 3}
+  DoorHackerSprite: {fileID: 21300000, guid: 93eeee623b26b574faecccf56d62aa2b, type: 3}
+  TrapHackerSprite: {fileID: 21300000, guid: 1e586d46958c9cf44a5687e242906ca0, type: 3}
+  CatHackerSprite: {fileID: 21300000, guid: 952a881fb8340834e9db8afcd6b9b66e, type: 3}
   RegularShot: {fileID: 180462, guid: 8c80d271894172242bd92417b1fa31b8, type: 2}
   BurstShot: {fileID: 132990, guid: 0c719c9a099e9e946aabbaf22af93f40, type: 2}
   MoveRepeatTime: 0.25
@@ -159,7 +163,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1216350953
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4d2d83c08fa1c414981936e170b53868, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -299,6 +303,34 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 147872805}
+--- !u!1 &150883902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 150883903}
+  m_Layer: 9
+  m_Name: Hacker Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &150883903
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 150883902}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.688, y: -3.77, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 349574274}
+  m_RootOrder: 1
 --- !u!1 &234420580
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,6 +702,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.5}
   m_SizeDelta: {x: -20, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &617486426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 617486427}
+  m_Layer: 9
+  m_Name: Hacker Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &617486427
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 617486426}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.75, y: -3.761, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 563354832}
+  m_RootOrder: 1
 --- !u!1 &668936504
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,7 +1046,12 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11444722, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
+      propertyPath: HackerSpritePosition
+      value: 
+      objectReference: {fileID: 617486427}
+    m_RemovedComponents:
+    - {fileID: 21294530, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &893062814
@@ -1016,6 +1081,34 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 1
+--- !u!1 &899886510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 899886511}
+  m_Layer: 9
+  m_Name: Hacker Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &899886511
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 899886510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85, y: -3.76, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1715443356}
   m_RootOrder: 1
 --- !u!1 &1008740528
 GameObject:
@@ -1655,9 +1748,42 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11444722, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
+      propertyPath: HackerSpritePosition
+      value: 
+      objectReference: {fileID: 899886511}
+    m_RemovedComponents:
+    - {fileID: 21294530, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1775772062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1775772063}
+  m_Layer: 9
+  m_Name: Hacker Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1775772063
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1775772062}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.592, y: -3.754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 2051806256}
+  m_RootOrder: 1
 --- !u!1001 &1789247891
 Prefab:
   m_ObjectHideFlags: 0
@@ -1757,7 +1883,12 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11444722, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
+      propertyPath: HackerSpritePosition
+      value: 
+      objectReference: {fileID: 150883903}
+    m_RemovedComponents:
+    - {fileID: 21294530, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1873959116
@@ -1932,6 +2063,11 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -1.712
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11444722, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
+      propertyPath: HackerSpritePosition
+      value: 
+      objectReference: {fileID: 1775772063}
+    m_RemovedComponents:
+    - {fileID: 21294530, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
   m_IsPrefabParent: 0

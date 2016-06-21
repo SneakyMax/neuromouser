@@ -7,6 +7,18 @@ using Assets._Scripts;
 /// </summary>
 public class HackerPlayer : MonoBehaviour
 {
+    [AssignedInUnity]
+    public Sprite CameraHackerSprite;
+
+    [AssignedInUnity]
+    public Sprite DoorHackerSprite;
+
+    [AssignedInUnity]
+    public Sprite TrapHackerSprite;
+
+    [AssignedInUnity]
+    public Sprite CatHackerSprite;
+
 	/// <summary>
 	/// The type of attached terminal.
 	/// </summary>
@@ -65,61 +77,101 @@ public class HackerPlayer : MonoBehaviour
 
     private HackerTerminal currentTerminalObject;
 
-	/// <summary>
+    private SpriteRenderer spriteRenderer;
+
+    /// <summary>
+    /// Checks prefabs.
+    /// </summary>
+    /// <exception cref="UnityException">Thrown if Shot prefabs are not specified.</exception>
+    [UnityMessage]
+    private void Awake()
+    {
+        if (RegularShot == null)
+        {
+            throw new UnityException("Error: RegularShot prefab not specified in HackerPlayer.");
+        }
+        else if (BurstShot == null)
+        {
+            throw new UnityException("Error: BurstShot prefab not specified in HackerPlayer.");
+        }
+    }
+
+    /// <summary>
+    /// Sets the starting player location.
+    /// </summary>
+    [UnityMessage]
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        SetTerminal(TerminalType.Cameras);
+    }
+
+    /// <summary>
 	/// Head to next terminal.
 	/// </summary>
 	private void GoToNextTerminal()
 	{
 		switch (currentTerminal)
 		{
-			case (TerminalType.Cameras):
-				currentTerminal = TerminalType.Doors;
-		        currentTerminalObject = HackerInterface.Instance.TerminalDoors;
-				transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
+			case TerminalType.Cameras:
+		        SetTerminal(TerminalType.Doors);
 				break;
-			case (TerminalType.Doors):
-				currentTerminal = TerminalType.Traps;
-                currentTerminalObject = HackerInterface.Instance.TerminalTraps;
-                transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
+			case TerminalType.Doors:
+                SetTerminal(TerminalType.Traps);
 				break;
-			case (TerminalType.Traps):
-				currentTerminal = TerminalType.Cats;
-                currentTerminalObject = HackerInterface.Instance.TerminalCats;
-                transform.position = HackerInterface.Instance.TerminalCats.transform.position;
-				break;
-			default:
+			case TerminalType.Traps:
+                SetTerminal(TerminalType.Cats);
 				break;
 		}
-	}
+    }
 
-	/// <summary>
+    /// <summary>
 	/// Head to previous terminal.
 	/// </summary>
 	private void GoToPreviousTerminal()
 	{
 		switch ( currentTerminal )
 		{
-			case (TerminalType.Doors):
-				currentTerminal = TerminalType.Cameras;
-                currentTerminalObject = HackerInterface.Instance.TerminalCamera;
-                transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
-				break;
-			case (TerminalType.Traps):
-				currentTerminal = TerminalType.Doors;
-                currentTerminalObject = HackerInterface.Instance.TerminalDoors;
-                transform.position = HackerInterface.Instance.TerminalDoors.transform.position;
-				break;
-			case (TerminalType.Cats):
-				currentTerminal = TerminalType.Traps;
-                currentTerminalObject = HackerInterface.Instance.TerminalTraps;
-                transform.position = HackerInterface.Instance.TerminalTraps.transform.position;
-				break;
-			default:
-				break;
+            case TerminalType.Doors:
+                SetTerminal(TerminalType.Cameras);
+                break;
+            case TerminalType.Traps:
+                SetTerminal(TerminalType.Doors);
+                break;
+            case TerminalType.Cats:
+                SetTerminal(TerminalType.Traps);
+                break;
 		}
-	}
+    }
 
-	/// <summary>
+    private void SetTerminal(TerminalType type)
+    {
+        currentTerminal = type;
+
+        switch (type)
+        {
+            case TerminalType.Cameras:
+                currentTerminalObject = HackerInterface.Instance.TerminalCamera;
+                spriteRenderer.sprite = CameraHackerSprite;
+                break;
+            case TerminalType.Doors:
+                currentTerminalObject = HackerInterface.Instance.TerminalDoors;
+                spriteRenderer.sprite = DoorHackerSprite;
+                break;
+            case TerminalType.Traps:
+                currentTerminalObject = HackerInterface.Instance.TerminalTraps;
+                spriteRenderer.sprite = TrapHackerSprite;
+                break;
+            case TerminalType.Cats:
+                currentTerminalObject = HackerInterface.Instance.TerminalCats;
+                spriteRenderer.sprite = CatHackerSprite;
+                break;
+        }
+
+        transform.position = currentTerminalObject.HackerSpritePosition.transform.position;
+    }
+
+    /// <summary>
 	/// This turns on the horizontal axis for the player for MoveRepeatTime number of seconds.
 	/// </summary>
 	/// <returns>IEnumerator</returns>
@@ -129,33 +181,7 @@ public class HackerPlayer : MonoBehaviour
 		cantMove = null;
 	}
 
-	/// <summary>
-	/// Checks prefabs.
-	/// </summary>
-	/// <exception cref="UnityException">Thrown if Shot prefabs are not specified.</exception>
-	private void Awake()
-	{
-		if (RegularShot == null)
-		{
-			throw new UnityException("Error: RegularShot prefab not specified in HackerPlayer.");
-		}
-		else if (BurstShot == null)
-		{
-			throw new UnityException("Error: BurstShot prefab not specified in HackerPlayer.");
-		}
-	}
-
-	/// <summary>
-	/// Sets the starting player location.
-	/// </summary>
-	private void Start()
-	{
-		transform.position = HackerInterface.Instance.TerminalCamera.transform.position;
-	    currentTerminalObject = HackerInterface.Instance.TerminalCamera;
-        currentTerminal = TerminalType.Cameras;
-	}
-
-	/// <summary>
+    /// <summary>
 	/// Update the player this frame.
 	/// </summary>
 	private void Update()
