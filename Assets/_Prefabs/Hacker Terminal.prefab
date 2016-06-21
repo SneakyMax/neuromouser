@@ -104,13 +104,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxPower: 47
   Level1PowerMin: 15
-  Level2PowerMin: 26
+  Level2PowerMin: 30
   Level3PowerMin: 40
   MaxY: 4.5
   Level0PowerDecayRate: 3
-  Level1PowerDecayRate: 2
-  Level2PowerDecayRate: 1
-  Level3PowerDecayRate: 0.5
+  Level1PowerDecayRate: 1.5
+  Level2PowerDecayRate: 0.8
+  Level3PowerDecayRate: 0.4
   CurrentPower: 0
   CounterPulsePrefab: {fileID: 178114, guid: e8e1ba682c9300b4ba11ff7d652f3dd7, type: 2}
 --- !u!114 &11405940
@@ -143,6 +143,7 @@ MonoBehaviour:
   PowerToggle2: {fileID: 0}
   PowerToggle3: {fileID: 0}
   PowerReader: {fileID: 11404282}
+  HackerSpritePosition: {fileID: 0}
 --- !u!212 &21238292
 SpriteRenderer:
   m_ObjectHideFlags: 1
