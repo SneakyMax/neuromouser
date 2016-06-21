@@ -19,7 +19,7 @@ namespace Assets._Scripts.GameObjects
         [AssignedInUnity]
         public Sprite GlassWallSprite;
 
-        public override int Layer { get { return 3; } }
+        public override int Layer { get { return 2; } }
 
         public WallType WallType { get; set; }
 

@@ -11,12 +11,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
-  EditorBanks: []
+  EditorBanks:
+  - {fileID: 11421156}
   EditorEvents: []
-  MasterBankRef: {fileID: 11465554}
-  stringsBankWriteTime: 0
+  MasterBankRef: {fileID: 11421156}
+  stringsBankWriteTime: 636015496317986774
   cacheVersion: 1
 --- !u!114 &11405042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  Path: fmod\Build\Desktop\Master Bank.bank
+  lastModified: 636015496317976769
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 9296
+  Exists: 1
+--- !u!114 &11421156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
