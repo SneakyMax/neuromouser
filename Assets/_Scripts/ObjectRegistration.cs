@@ -32,6 +32,8 @@ namespace Assets._Scripts
 
         public ObjectRegistrationInfo GetInfo(int id)
         {
+            if (id < 0 || id > Objects.Length - 1)
+                throw new InvalidOperationException("Unknown id " + id + ". Deserialization error, or missing a registered object.");
             return Objects[id];
         }
 

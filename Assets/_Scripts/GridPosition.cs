@@ -1,4 +1,4 @@
-namespace Assets._Scripts.LevelEditor
+namespace Assets._Scripts
 {
     public struct GridPosition
     {
@@ -40,6 +40,11 @@ namespace Assets._Scripts.LevelEditor
         public static bool operator !=(GridPosition a, GridPosition b)
         {
             return a.X != b.X || a.Y != b.Y;
+        }
+
+        public static GridPosition operator +(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.X + b.X, a.Y + b.Y);
         }
     }
 }

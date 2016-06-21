@@ -30,5 +30,21 @@ namespace Assets._Scripts
         {
             return new Color(color.r, color.g, color.b, alpha);
         }
+
+        public static float DistanceTo(this Vector3 a, Vector3 b)
+        {
+            return Vector3.Distance(a, b);
+        }
+
+        public static Vector3 UnitVectorTo(this Vector3 from, Vector3 to)
+        {
+            return (to - from).normalized;
+        }
+
+        public static float DirectionTo(this Vector3 from, Vector3 to)
+        {
+            var unit = from.UnitVectorTo(to);
+            return Mathf.Atan2(unit.y, unit.x);
+        }
     }
 }

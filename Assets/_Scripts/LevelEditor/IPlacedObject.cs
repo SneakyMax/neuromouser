@@ -23,6 +23,8 @@ namespace Assets._Scripts.LevelEditor
         void Destroy();
         
         void AfterPlace();
+
+        void BeforeRemove();
     }
 
     public static class PlacedObjectExtensions

@@ -22,6 +22,7 @@ namespace Assets._Scripts
         {
             PowerPosition = ParentHandler.MaxPower;
             powerLevelIndicator = ParentHandler.GetComponent<PowerLevelIndicator>();
+            transform.position = powerLevelIndicator.GetClosestLightPosition(PowerPosition);
         }
 
         [UnityMessage]

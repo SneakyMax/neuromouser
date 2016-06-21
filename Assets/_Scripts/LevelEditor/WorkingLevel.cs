@@ -130,6 +130,7 @@ namespace Assets._Scripts.LevelEditor
                 return;
 
             gridPositionObjects.Remove(match);
+            match.BeforeRemove();
             match.Destroy();
             allObjects.Remove(match);
         }
@@ -152,6 +153,7 @@ namespace Assets._Scripts.LevelEditor
 
             gridPositionObjects.Remove(topmost);
 
+            topmost.BeforeRemove();
             topmost.Destroy();
             allObjects.Remove(topmost);
         }
@@ -169,6 +171,8 @@ namespace Assets._Scripts.LevelEditor
 
             if (found != null)
             {
+                found.PlacedObject.BeforeRemove();
+                found.PlacedObject.Destroy();
                 nonGridObjects.Remove(found);
                 allObjects.Remove(found.PlacedObject);
                 return;
@@ -188,6 +192,7 @@ namespace Assets._Scripts.LevelEditor
                 if (foundPlaced != null)
                 {
                     objects.Remove(foundPlaced);
+                    foundPlaced.BeforeRemove();
                     foundPlaced.Destroy();
                     allObjects.Remove(foundPlaced);
                 }
@@ -198,6 +203,7 @@ namespace Assets._Scripts.LevelEditor
         {
             foreach (var obj in allObjects)
             {
+                obj.BeforeRemove();
                 obj.Destroy();
             }
 

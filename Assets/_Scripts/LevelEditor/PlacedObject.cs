@@ -43,5 +43,10 @@ namespace Assets._Scripts.LevelEditor
         {
             
         }
+
+        public virtual void BeforeRemove()
+        {
+            
+        }
     }
 }

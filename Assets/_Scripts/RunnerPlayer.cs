@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets._Scripts;
+using Assets._Scripts.GameObjects;
 
 /// <summary>
 /// Handles the running player
@@ -76,45 +78,70 @@ public class RunnerPlayer : MonoBehaviour
 	/// </summary>
 	private CurrentFacing facing = CurrentFacing.Up;
 
-	/// <summary>
-	/// Handles the player movement.
-	/// </summary>
-	private void HandlePlayerMovement()
-	{
-		float horizontalAxis = Input.GetAxisRaw("Horizontal");
-		float verticalAxis = Input.GetAxisRaw("Vertical");
+    private SpriteRenderer spriteRenderer;
+    private new Rigidbody2D rigidbody;
 
-		if (horizontalAxis > float.Epsilon)
-		{
-			horizontalAxis = (RunningSpeed * Time.deltaTime);
-			facing = CurrentFacing.Right;
-		}
-		else if (horizontalAxis < -float.Epsilon)
-		{
-			horizontalAxis = (-RunningSpeed * Time.deltaTime);
-			facing = CurrentFacing.Left;
-		}
-		// vertical facing > horizontal facing
-		if (verticalAxis > float.Epsilon)
-		{
-			verticalAxis = (RunningSpeed * Time.deltaTime);
-			facing = CurrentFacing.Up;
-		}
-		else if (verticalAxis < -float.Epsilon)
-		{
-			verticalAxis = (-RunningSpeed * Time.deltaTime);
-			facing = CurrentFacing.Down;
-		}
-		GetComponent<Rigidbody2D>().MovePosition(new Vector2((transform.position.x + horizontalAxis),
-                                                             (transform.position.y + verticalAxis)));
-	}
+    private Vector2 requestedMovement;
 
-	/// <summary>
+    [UnityMessage]
+    public void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    /// <summary>
 	/// Moves the player and changes the facing direction.
 	/// </summary>
-	private void FixedUpdate()
+	private void Update()
 	{
 		if (!PlayerMovementFrozen)
 			HandlePlayerMovement();
+
+	    const int layer = 2;
+
+        var bottomOfSpritePosition = spriteRenderer.bounds.min;
+	    spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
 	}
+
+    [UnityMessage]
+    public void FixedUpdate()
+    {
+        var movement = requestedMovement * Time.deltaTime;
+        rigidbody.MovePosition(transform.position + (Vector3)movement);
+    }
+
+    /// <summary>
+    /// Handles the player movement.
+    /// </summary>
+    private void HandlePlayerMovement()
+    {
+        var horizontalAxis = Input.GetAxisRaw("Horizontal");
+        var verticalAxis = Input.GetAxisRaw("Vertical");
+
+        if (horizontalAxis > float.Epsilon)
+        {
+            horizontalAxis = 1;
+            facing = CurrentFacing.Right;
+        }
+        else if (horizontalAxis < -float.Epsilon)
+        {
+            horizontalAxis = -1;
+            facing = CurrentFacing.Left;
+        }
+        // vertical facing > horizontal facing
+        if (verticalAxis > float.Epsilon)
+        {
+            verticalAxis = 1;
+            facing = CurrentFacing.Up;
+        }
+        else if (verticalAxis < -float.Epsilon)
+        {
+            verticalAxis = -1;
+            facing = CurrentFacing.Down;
+        }
+
+        //TODO this won't work for analog
+        requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed;
+    }
 }

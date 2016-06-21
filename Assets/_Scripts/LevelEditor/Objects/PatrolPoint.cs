@@ -45,6 +45,15 @@ namespace Assets._Scripts.LevelEditor.Objects
             SetUpLineRenderer();
         }
 
+        public override void BeforeRemove()
+        {
+            if (NextPoint != null)
+            {
+                NextPoint.PreviousPoint = null;
+                NextPoint.SetUpLineRenderer();
+            }
+        }
+
         private void SetUpLineRenderer()
         {
             var lineRenderer = GetComponent<LineRenderer>();
@@ -53,14 +62,22 @@ namespace Assets._Scripts.LevelEditor.Objects
                 throw new InvalidOperationException("Missing line renderer in patrol point.");
 
             if (PreviousPoint == null)
+            {
+                ClearLineRenderer();
                 return;
+            }
 
             lineRenderer.SetWidth(0.1f, 0.1f);
             lineRenderer.SetPositions(new[]
             {
-                transform.position,
-                PreviousPoint.transform.position
+                transform.position - new Vector3(0, 0, 0.1f), // Push the lines a little towards the camera.
+                PreviousPoint.transform.position - new Vector3(0, 0, 0.1f)
             });
+        }
+
+        private void ClearLineRenderer()
+        {
+            GetComponent<LineRenderer>().SetPositions(new[] { new Vector3(), new Vector3() });
         }
     }
 }
