@@ -6,6 +6,8 @@ namespace Assets._Scripts.LevelEditor
     [UnityComponent]
     public abstract class PlacedObject : MonoBehaviour, IPlacedObject
     {
+        public int Id { get; set; }
+
         public GameObject UnityObject { get { return gameObject; } }
 
         public virtual string Type { get { return GetType().Name; } }

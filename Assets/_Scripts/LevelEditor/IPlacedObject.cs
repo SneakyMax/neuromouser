@@ -5,6 +5,8 @@ namespace Assets._Scripts.LevelEditor
 {
     public interface IPlacedObject
     {
+        int Id { get; set; }
+
         GameObject UnityObject { get; }
 
         string Type { get; }

@@ -21,10 +21,15 @@ namespace Assets._Scripts.LevelEditor
         private IDictionary<GridPosition, IList<IPlacedObject>> grid;
         private IList<PrecisedPlacedObject> nonGridObjects;
 
+        private int objectIdCounter;
+        private int largestFoundId;
+
         [UnityMessage]
         public void Awake()
         {
             Instance = this;
+            objectIdCounter = 0;
+            largestFoundId = 0;
         }
 
         [UnityMessage]
@@ -42,6 +47,7 @@ namespace Assets._Scripts.LevelEditor
         public void Place(IPlacedObject obj, float x, float y)
         {
             nonGridObjects.Add(new PrecisedPlacedObject { X = x, Y = y, PlacedObject = obj });
+            obj.Id = objectIdCounter++;
         }
 
         public bool IsGridObjectAt(Vector2 worldPosition, int layer)
@@ -95,6 +101,7 @@ namespace Assets._Scripts.LevelEditor
                 return;
 
             grid[gridPosition].Add(obj);
+            obj.Id = objectIdCounter++;
         }
 
         public void RemoveGridObjectAt(Vector2 worldPosition, int layer)
@@ -190,11 +197,15 @@ namespace Assets._Scripts.LevelEditor
 
             grid.Clear();
             nonGridObjects.Clear();
+            objectIdCounter = 0;
+            largestFoundId = 0;
         }
 
         public string SerializeLevel()
         {
             var serialized = new StringBuilder();
+
+            serialized.AppendLine("version:2");
 
             SerializeGridItems(serialized);
 
@@ -205,12 +216,19 @@ namespace Assets._Scripts.LevelEditor
 
         public void DeserializeLevel(string levelData)
         {
+            var version = 1;
             using (var reader = new StringReader(levelData))
             {
                 string currentMode = null;
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    if(line.StartsWith("version:"))
+                    {
+                        version = Convert.ToInt32(line.Substring(0, "version:".Length));
+                        continue;
+                    }
+
                     switch (line)
                     {
                         case "grid:":
@@ -220,14 +238,14 @@ namespace Assets._Scripts.LevelEditor
                             currentMode = "nonGrid";
                             break;
                         default:
-                            HandleLine(line, currentMode);
+                            HandleLine(line, currentMode, version);
                             break;
                     }
                 }
             }
         }
 
-        private void HandleLine(string line, string currentMode)
+        private void HandleLine(string line, string currentMode, int version)
         {
             if (String.IsNullOrEmpty(currentMode))
                 return;
@@ -235,10 +253,10 @@ namespace Assets._Scripts.LevelEditor
             switch (currentMode)
             {
                 case "grid":
-                    DeserializeGridItem(line);
+                    DeserializeGridItem(line, version);
                     break;
                 case "nonGrid":
-                    DeserializeNonGridItem(line);
+                    DeserializeNonGridItem(line, version);
                     break;
             }
         }
@@ -251,6 +269,8 @@ namespace Assets._Scripts.LevelEditor
             {
                 foreach (var gridItem in pairs.Value)
                 {
+                    serialized.Append(gridItem.Id);
+                    serialized.Append(',');
                     serialized.Append(pairs.Key.X);
                     serialized.Append(',');
                     serialized.Append(pairs.Key.Y);
@@ -260,19 +280,26 @@ namespace Assets._Scripts.LevelEditor
                     serialized.Append(gridItem.Serialize());
                     serialized.AppendLine();
                 }
-                
             }
         }
 
-        private void DeserializeGridItem(string line)
+        private void DeserializeGridItem(string line, int version)
+        {
+            if(version == 1)
+                DeserializeGridItemV1(line);
+            else if (version == 2)
+                DeserializeGridItemV2(line);
+        }
+
+        private void DeserializeGridItemV1(string line)
         {
             var parts = line.Split(',');
             var x = Convert.ToInt32(parts[0]);
             var y = Convert.ToInt32(parts[1]);
-            var id = Convert.ToInt32(parts[2]);
+            var typeId = Convert.ToInt32(parts[2]);
             var serializedObject = String.Join(",", parts.Skip(3).ToArray());
 
-            var info = ObjectRegistration.Instance.GetInfo(id);
+            var info = ObjectRegistration.Instance.GetInfo(typeId);
 
             var worldPosition = PlacementGrid.Instance.GetWorldPosition(x, y);
 
@@ -284,12 +311,38 @@ namespace Assets._Scripts.LevelEditor
             PlaceGridObject(placedObject, worldPosition);
         }
 
+        private void DeserializeGridItemV2(string line)
+        {
+            var parts = line.Split(',');
+
+            var objectId = Convert.ToInt32(parts[0]);
+            var x = Convert.ToInt32(parts[1]);
+            var y = Convert.ToInt32(parts[2]);
+            var typeId = Convert.ToInt32(parts[3]);
+            var serializedObject = String.Join(",", parts.Skip(4).ToArray());
+
+            var info = ObjectRegistration.Instance.GetInfo(typeId);
+
+            var worldPosition = PlacementGrid.Instance.GetWorldPosition(x, y);
+
+            var instance = (GameObject)Instantiate(info.ObjEditorPrefab, worldPosition, Quaternion.identity);
+
+            var placedObject = instance.GetInterfaceComponent<IPlacedObject>();
+            placedObject.Deserialize(serializedObject);
+
+            PlaceGridObject(placedObject, worldPosition);
+            placedObject.Id = objectId;
+            CheckId(objectId);
+        }
+
         private void SerializeNonGridItems(StringBuilder serialized)
         {
             serialized.AppendLine("nonGrid:");
 
             foreach (var item in nonGridObjects)
             {
+                serialized.Append(item.PlacedObject.Id);
+                serialized.Append(',');
                 serialized.Append(item.X);
                 serialized.Append(',');
                 serialized.Append(item.Y);
@@ -301,15 +354,23 @@ namespace Assets._Scripts.LevelEditor
             }
         }
 
-        private void DeserializeNonGridItem(string line)
+        private void DeserializeNonGridItem(string line, int version)
+        {
+            if(version == 1)
+                DeserializeNonGridItemV1(line);
+            else if (version == 2)
+                DeserializeNonGridItemV2(line);
+        }
+
+        private void DeserializeNonGridItemV1(string line)
         {
             var parts = line.Split(',');
             var x = Convert.ToSingle(parts[0]);
             var y = Convert.ToSingle(parts[1]);
-            var id = Convert.ToInt32(parts[2]);
+            var typeId = Convert.ToInt32(parts[2]);
             var serializedObject = String.Join(",", parts.Skip(3).ToArray());
 
-            var info = ObjectRegistration.Instance.GetInfo(id);
+            var info = ObjectRegistration.Instance.GetInfo(typeId);
 
             var instance = (GameObject)Instantiate(info.ObjEditorPrefab, new Vector2(x, y), Quaternion.identity);
 
@@ -317,6 +378,33 @@ namespace Assets._Scripts.LevelEditor
             placedObject.Deserialize(serializedObject);
 
             Place(placedObject, x, y);
+        }
+
+        private void DeserializeNonGridItemV2(string line)
+        {
+            var parts = line.Split(',');
+            var objectId = Convert.ToInt32(parts[0]);
+            var x = Convert.ToSingle(parts[0]);
+            var y = Convert.ToSingle(parts[1]);
+            var typeId = Convert.ToInt32(parts[2]);
+            var serializedObject = String.Join(",", parts.Skip(3).ToArray());
+
+            var info = ObjectRegistration.Instance.GetInfo(typeId);
+
+            var instance = (GameObject)Instantiate(info.ObjEditorPrefab, new Vector2(x, y), Quaternion.identity);
+
+            var placedObject = instance.GetInterfaceComponent<IPlacedObject>();
+            placedObject.Deserialize(serializedObject);
+
+            Place(placedObject, x, y);
+            placedObject.Id = objectId;
+            CheckId(objectId);
+        }
+
+        private void CheckId(int id)
+        {
+            largestFoundId = Mathf.Max(largestFoundId, id);
+            objectIdCounter = largestFoundId + 1;
         }
     }
 }
