@@ -41,6 +41,8 @@ namespace Assets._Scripts.LevelEditor.Tools
             }
 
             PostActivateTool(placed);
+
+            placed.AfterPlace();
         }
 
         public override void SecondaryActivateTool(Vector2 position)

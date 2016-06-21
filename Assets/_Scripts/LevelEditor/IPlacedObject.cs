@@ -18,7 +18,11 @@ namespace Assets._Scripts.LevelEditor
 
         void Deserialize(string serialized);
 
+        void PostAllDeserialized();
+
         void Destroy();
+        
+        void AfterPlace();
     }
 
     public static class PlacedObjectExtensions

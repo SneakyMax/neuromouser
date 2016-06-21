@@ -24,5 +24,10 @@ namespace Assets._Scripts.GameObjects
                 spriteRenderer.sortingOrder = -Mathf.RoundToInt(sortPosition);
             }
         }
+
+        public virtual void PostAllDeserialized()
+        {
+            
+        }
     }
 }

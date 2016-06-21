@@ -21,6 +21,8 @@ namespace Assets._Scripts.LevelEditor
         private IDictionary<GridPosition, IList<IPlacedObject>> grid;
         private IList<PrecisedPlacedObject> nonGridObjects;
 
+        private IList<IPlacedObject> allObjects; 
+
         private int objectIdCounter;
         private int largestFoundId;
 
@@ -37,6 +39,7 @@ namespace Assets._Scripts.LevelEditor
         {
             nonGridObjects = new List<PrecisedPlacedObject>();
             grid = new Dictionary<GridPosition, IList<IPlacedObject>>();
+            allObjects = new List<IPlacedObject>();
         }
 
         private GridPosition GetGridPosition(Vector2 worldPosition)
@@ -48,6 +51,12 @@ namespace Assets._Scripts.LevelEditor
         {
             nonGridObjects.Add(new PrecisedPlacedObject { X = x, Y = y, PlacedObject = obj });
             obj.Id = objectIdCounter++;
+            allObjects.Add(obj);
+        }
+
+        public IPlacedObject Get(int objectId)
+        {
+            return allObjects.FirstOrDefault(x => x.Id == objectId);
         }
 
         public bool IsGridObjectAt(Vector2 worldPosition, int layer)
@@ -102,6 +111,7 @@ namespace Assets._Scripts.LevelEditor
 
             grid[gridPosition].Add(obj);
             obj.Id = objectIdCounter++;
+            allObjects.Add(obj);
         }
 
         public void RemoveGridObjectAt(Vector2 worldPosition, int layer)
@@ -121,6 +131,7 @@ namespace Assets._Scripts.LevelEditor
 
             gridPositionObjects.Remove(match);
             match.Destroy();
+            allObjects.Remove(match);
         }
 
         public void RemoveTopmostGridObjectAt(Vector2 worldPosition)
@@ -142,6 +153,7 @@ namespace Assets._Scripts.LevelEditor
             gridPositionObjects.Remove(topmost);
 
             topmost.Destroy();
+            allObjects.Remove(topmost);
         }
 
         public void Remove(IPlacedObject obj)
@@ -158,6 +170,7 @@ namespace Assets._Scripts.LevelEditor
             if (found != null)
             {
                 nonGridObjects.Remove(found);
+                allObjects.Remove(found.PlacedObject);
                 return;
             }
 
@@ -176,27 +189,21 @@ namespace Assets._Scripts.LevelEditor
                 {
                     objects.Remove(foundPlaced);
                     foundPlaced.Destroy();
+                    allObjects.Remove(foundPlaced);
                 }
             }
         }
 
         public void Reset()
         {
-            foreach (var placedObjects in grid.Values)
+            foreach (var obj in allObjects)
             {
-                foreach (var placedObject in placedObjects)
-                {
-                    placedObject.Destroy();
-                }
-            }
-
-            foreach (var placedObject in nonGridObjects)
-            {
-                placedObject.PlacedObject.Destroy();
+                obj.Destroy();
             }
 
             grid.Clear();
             nonGridObjects.Clear();
+            allObjects.Clear();
             objectIdCounter = 0;
             largestFoundId = 0;
         }
@@ -225,7 +232,7 @@ namespace Assets._Scripts.LevelEditor
                 {
                     if(line.StartsWith("version:"))
                     {
-                        version = Convert.ToInt32(line.Substring(0, "version:".Length));
+                        version = Convert.ToInt32(line.Substring("version:".Length));
                         continue;
                     }
 
@@ -242,6 +249,11 @@ namespace Assets._Scripts.LevelEditor
                             break;
                     }
                 }
+            }
+
+            foreach (var obj in allObjects)
+            {
+                obj.PostAllDeserialized();
             }
         }
 

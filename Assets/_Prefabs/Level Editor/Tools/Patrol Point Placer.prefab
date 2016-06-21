@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 421086}
-  - 114: {fileID: 11423398}
+  - 114: {fileID: 11475834}
   m_Layer: 0
   m_Name: Patrol Point Placer
   m_TagString: Untagged
@@ -59,7 +59,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 421086}
   m_RootOrder: 0
---- !u!114 &11423398
+--- !u!114 &11475834
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 145742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3586e1825a25b3d4a80807ac18d88aef, type: 3}
+  m_Script: {fileID: 11500000, guid: 83014ff7d01dc4c4780b52d957eb00ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PositionOffset: {x: 0, y: 0}

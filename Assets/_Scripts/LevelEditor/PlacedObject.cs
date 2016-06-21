@@ -29,9 +29,19 @@ namespace Assets._Scripts.LevelEditor
         {
         }
 
+        public virtual void PostAllDeserialized()
+        {
+            
+        }
+
         public virtual void Destroy()
         {
             Destroy(gameObject);
+        }
+
+        public virtual void AfterPlace()
+        {
+            
         }
     }
 }

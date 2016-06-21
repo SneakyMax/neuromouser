@@ -10,5 +10,7 @@
         void Deserialize(string serialized);
 
         void Initialize();
+
+        void PostAllDeserialized();
     }
 }

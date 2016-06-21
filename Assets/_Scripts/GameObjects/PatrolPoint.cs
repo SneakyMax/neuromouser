@@ -3,5 +3,7 @@
     public class PatrolPoint : InGameObject
     {
         public override int Layer { get { return 4; } }
+
+        
     }
 }
