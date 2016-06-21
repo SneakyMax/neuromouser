@@ -25,6 +25,8 @@ namespace Assets._Scripts.LevelEditor
         void AfterPlace();
 
         void BeforeRemove();
+
+        void NearbyObjectChanged();
     }
 
     public static class PlacedObjectExtensions

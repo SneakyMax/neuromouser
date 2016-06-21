@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Assets._Scripts.GameObjects;
 using UnityEngine;
 
 namespace Assets._Scripts.LevelEditor
@@ -17,7 +18,22 @@ namespace Assets._Scripts.LevelEditor
         [UnityMessage]
         public void Start()
         {
-            GetComponent<SpriteRenderer>().sortingLayerName = "LevelLayer" + Layers.Max(x => x);
+            RefreshSpriteOrdering();
+        }
+
+        protected void RefreshSpriteOrdering()
+        {
+            foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
+            {
+                spriteRenderer.sortingOrder = InGameObject.GetSortPosition(transform.position, Layers.Length == 0 ? 0 : Layers.Max());
+            }
+
+            AfterRefreshSpriteOrdering();
+        }
+
+        protected virtual void AfterRefreshSpriteOrdering()
+        {
+            // This func is dumb
         }
 
         public virtual string Serialize()
@@ -45,6 +61,11 @@ namespace Assets._Scripts.LevelEditor
         }
 
         public virtual void BeforeRemove()
+        {
+            
+        }
+
+        public virtual void NearbyObjectChanged()
         {
             
         }

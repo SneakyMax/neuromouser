@@ -28,7 +28,7 @@ namespace Assets._Scripts.GameObjects
 
         public void Initialize()
         {
-             spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             if (spriteRenderer != null)
             {
                 spriteRenderer.sortingOrder = GetSortPosition(transform.position, Layer);

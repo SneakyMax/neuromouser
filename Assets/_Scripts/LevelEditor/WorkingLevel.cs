@@ -100,6 +100,17 @@ namespace Assets._Scripts.LevelEditor
             return gridPositionObjects.FirstOrDefault(o => o.IsInLayer(layer));
         }
 
+        public IList<IPlacedObject> GetGridObjectsAt(int x, int y)
+        {
+            return GetGridObjectsAt(new GridPosition(x, y));
+        }
+
+        public IList<IPlacedObject> GetGridObjectsAt(GridPosition position)
+        {
+            IList<IPlacedObject> gridPositionObjects;
+            return grid.TryGetValue(position, out gridPositionObjects) ? gridPositionObjects : new List<IPlacedObject>();
+        }
+
         public void PlaceGridObject(IPlacedObject obj, Vector2 worldPosition)
         {
             var gridPosition = GetGridPosition(worldPosition);
@@ -112,6 +123,8 @@ namespace Assets._Scripts.LevelEditor
             grid[gridPosition].Add(obj);
             obj.Id = objectIdCounter++;
             allObjects.Add(obj);
+
+            NotifyObjectsNear(gridPosition);
         }
 
         public void RemoveGridObjectAt(Vector2 worldPosition, int layer)
@@ -133,6 +146,8 @@ namespace Assets._Scripts.LevelEditor
             match.BeforeRemove();
             match.Destroy();
             allObjects.Remove(match);
+
+            NotifyObjectsNear(gridPosition);
         }
 
         public void RemoveTopmostGridObjectAt(Vector2 worldPosition)
@@ -156,6 +171,28 @@ namespace Assets._Scripts.LevelEditor
             topmost.BeforeRemove();
             topmost.Destroy();
             allObjects.Remove(topmost);
+
+            NotifyObjectsNear(gridPosition);
+        }
+
+        private void NotifyObjectsNear(GridPosition gridPosition)
+        {
+            var n = gridPosition + new GridPosition(0, 1);
+            var e = gridPosition + new GridPosition(1, 0);
+            var s = gridPosition + new GridPosition(0, -1);
+            var w = gridPosition + new GridPosition(-1, 0);
+
+            foreach (var position in new[] { n, e, s, w })
+            {
+                IList<IPlacedObject> objects;
+                if(grid.TryGetValue(position, out objects))
+                {
+                    foreach (var obj in objects)
+                    {
+                        obj.NearbyObjectChanged();
+                    }
+                }
+            }
         }
 
         public void Remove(IPlacedObject obj)

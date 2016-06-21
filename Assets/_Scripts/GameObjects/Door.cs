@@ -33,7 +33,7 @@ namespace Assets._Scripts.GameObjects
                 transform.localRotation = Quaternion.AngleAxis(90, Vector3.forward);
             }
 
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+            var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             switch (Level)
             {
                 case 1:

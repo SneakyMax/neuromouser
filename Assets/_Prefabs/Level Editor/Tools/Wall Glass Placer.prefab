@@ -25,6 +25,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 428818}
   - 212: {fileID: 21268744}
+  - 114: {fileID: 11403912}
   m_Layer: 0
   m_Name: Wall Ghost
   m_TagString: Untagged
@@ -59,6 +60,18 @@ Transform:
   - {fileID: 428818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11403912
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d863a6bfdc15654bab55fc3f3e0b5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Factor: {x: 0, y: 0.5}
 --- !u!114 &11497254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,7 +113,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 37b6e0cb2aad1704e9805a95f1445ae6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e21f7eade21a6d48a73be5428f6d84c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.484}
   m_FlipX: 0
   m_FlipY: 0

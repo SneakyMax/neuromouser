@@ -31,7 +31,7 @@ namespace Assets._Scripts.GameObjects
                 FloorType = FloorType.Wood;
             }
 
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+            var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             switch (FloorType)
             {

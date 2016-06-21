@@ -127,9 +127,7 @@ namespace Assets._Scripts.LevelEditor
                 var mousePanDelta = startPanMousePosition - (Vector2)Input.mousePosition;
                 var scrollDelta = mousePanDelta * (PanSpeed / 100f);
                 var newCameraPosition = (Vector2)startPanCameraPosition + scrollDelta;
-
-                Debug.Log(String.Format("Start Camera Position: {3}, Pan Delta: {0}, Scroll Delta: {1}, new camera position: {2}", mousePanDelta, scrollDelta, newCameraPosition, startPanCameraPosition));
-
+                
                 Camera.main.transform.position = new Vector3(newCameraPosition.x, newCameraPosition.y, startPanCameraPosition.z);
             }
         }

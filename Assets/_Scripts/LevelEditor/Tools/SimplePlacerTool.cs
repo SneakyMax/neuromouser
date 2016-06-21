@@ -19,6 +19,13 @@ namespace Assets._Scripts.LevelEditor.Tools
         {
             if(ThingToPlacePrefab.GetInterfaceComponent<IPlacedObject>() == null)
                 throw new InvalidOperationException("Missing IPlacedObject component on " + ThingToPlacePrefab.name);
+
+            ToolStart();
+        }
+
+        protected virtual void ToolStart()
+        {
+            
         }
 
         public override void ActivateTool(Vector2 position)

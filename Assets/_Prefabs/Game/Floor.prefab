@@ -41,6 +41,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31797be6a6d1a4247853774a207acf01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WoodFloorSprite: {fileID: 21300000, guid: 6b5b74f8035face44bc53d01d9f7ae3b, type: 3}
+  MetalFloorSprite: {fileID: 21300000, guid: 8fccf705d5918084381ea1417a0aba1e, type: 3}
+  CarpetFloorSprite: {fileID: 21300000, guid: 951b7c1a0d7f4ea4e8f0809a3adc6f71, type: 3}
 --- !u!212 &21259944
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -41,7 +41,7 @@ namespace Assets._Scripts.LevelEditor.Objects
 
         private void Refresh()
         {
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+            var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             if (Level == 1)
                 spriteRenderer.sprite = Level1;

@@ -39,7 +39,7 @@ namespace Assets._Scripts.LevelEditor.Objects
 
         private void FloorTypeChanged()
         {
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+            var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             if (FloorType == FloorType.Carpet)
                 spriteRenderer.sprite = CarpetFloorSprite;

@@ -26,8 +26,6 @@ namespace Assets._Scripts.LevelEditor.Objects
 
         public override void PostAllDeserialized()
         {
-            SetUpLineRenderer();
-            
             if (nextPointId == null)
                 return;
 
@@ -38,6 +36,7 @@ namespace Assets._Scripts.LevelEditor.Objects
 
             NextPoint = nextPoint;
             nextPoint.PreviousPoint = this;
+            nextPoint.SetUpLineRenderer();
         }
 
         public override void AfterPlace()
