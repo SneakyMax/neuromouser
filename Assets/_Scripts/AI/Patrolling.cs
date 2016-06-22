@@ -75,6 +75,13 @@ namespace Assets._Scripts.AI
                 nextNextPatrolPoint = isPatrollingForward ? nextPatrolPoint.NextPoint : nextPatrolPoint.PreviousPoint;
             }
 
+            if (nextNextPatrolPoint == null)
+            {
+                // No patrol path! Bail out
+                CatAI.SetState<Idle>();
+                return;
+            }
+
             SetNextPatrolPoint(nextNextPatrolPoint);
 
             GetPathFromPreviousPatrolPointToNewPatrolPoint();
@@ -83,7 +90,15 @@ namespace Assets._Scripts.AI
         private void GetPathFromPreviousPatrolPointToNewPatrolPoint()
         {
             if (previousPatrolPoint == null)
+            {
                 ReachedPatrolPoint(); // Hack?
+
+                if (nextPatrolPoint == null)
+                {
+                    // No patrol path! Bail out
+                    return;
+                }
+            }
 
             if (previousPatrolPoint == null)
                 throw new InvalidOperationException("Previous patrol point wasn't loaded??");
@@ -93,6 +108,9 @@ namespace Assets._Scripts.AI
 
         private void SetNextPatrolPoint(PatrolPoint point)
         {
+            if (point == null)
+                throw new ArgumentNullException("point");
+
             previousPatrolPoint = nextPatrolPoint;
             nextPatrolPoint = point;
 
