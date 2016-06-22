@@ -38,7 +38,12 @@ namespace Assets._Scripts
 
         public static Vector3 UnitVectorTo(this Vector3 from, Vector3 to)
         {
-            return (to - from).normalized;
+            var diff = (to - from);
+
+            if (diff.IsZero())
+                return Vector3.zero;
+
+            return diff.normalized;
         }
 
         public static float DirectionToRadians(this Vector3 from, Vector3 to)
@@ -50,6 +55,16 @@ namespace Assets._Scripts
         public static float DirectionToDegrees(this Vector3 from, Vector3 to)
         {
             return from.DirectionToRadians(to) * Mathf.Rad2Deg;
+        }
+
+        public static bool IsZero(this Vector3 vector)
+        {
+            return vector.sqrMagnitude < 0.001f;
+        }
+
+        public static bool IsZero(this Vector2 vector)
+        {
+            return vector.sqrMagnitude < 0.001f;
         }
     }
 }

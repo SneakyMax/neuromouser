@@ -152,7 +152,7 @@ namespace Assets._Scripts.AI
 
         private void RotateCatBasedOnMovement()
         {
-            if (Cat.LastDesiredVelocity.sqrMagnitude < 0.001f)
+            if (Cat.LastDesiredVelocity.IsZero())
                 return;
 
             var movementDirection = Cat.transform.position.DirectionToDegrees(Cat.transform.position + Cat.LastDesiredVelocity); // kinda dumb don't care

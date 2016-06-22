@@ -96,7 +96,7 @@ public class RunnerPlayer : MonoBehaviour
     [UnityMessage]
     public void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -113,6 +113,12 @@ public class RunnerPlayer : MonoBehaviour
 
         var bottomOfSpritePosition = spriteRenderer.bounds.min;
 	    spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
+
+        if (requestedMovement.IsZero() == false)
+        {
+            var movementDirection = new Vector3().DirectionToDegrees(requestedMovement);
+            spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
+        }
 	}
 
     [UnityMessage]

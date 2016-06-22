@@ -14,11 +14,14 @@ namespace Assets._Scripts.GameObjects
         {
             var playerInstance = (GameObject)Instantiate(PlayerPrefab, transform.position, Quaternion.identity);
             playerInstance.transform.SetParent(LevelLoader.RunnerArea.transform);
-            playerInstance.layer = LevelLoader.RunnerLayer;
 
             RunnerCamera.Instance.transform.SetParent(playerInstance.transform, false);
-            
-            playerInstance.GetComponentInChildren<Renderer>().sortingLayerName = "RunnerMain";
+
+            foreach (var playerRenderer in playerInstance.GetComponentsInChildren<Renderer>())
+            {
+                playerRenderer.sortingLayerName = "RunnerMain";
+                playerRenderer.gameObject.layer = LevelLoader.RunnerLayer;
+            }
 
             LevelLoader.RegisterObject(playerInstance);
         }

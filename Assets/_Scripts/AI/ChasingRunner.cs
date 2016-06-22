@@ -40,7 +40,7 @@ namespace Assets._Scripts.AI
 
         public override void FixedUpdate()
         {
-            if (desiredVelocity.sqrMagnitude < 0.001f)
+            if (desiredVelocity.IsZero())
                 return;
 
             Cat.Move(desiredVelocity);
