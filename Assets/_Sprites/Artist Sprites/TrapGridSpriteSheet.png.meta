@@ -1,9 +1,22 @@
 fileFormatVersion: 2
 guid: 4e5802f3da31c354ca6b466240fa797c
-timeCreated: 1466511795
+timeCreated: 1466582976
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: TrapGridSpriteSheet_0
+    21300002: TrapGridSpriteSheet_1
+    21300004: TrapGridSpriteSheet_2
+    21300006: TrapGridSpriteSheet_3
+    21300008: TrapGridSpriteSheet_4
+    21300010: TrapGridSpriteSheet_5
+    21300012: TrapGridSpriteSheet_6
+    21300014: TrapGridSpriteSheet_7
+    21300016: TrapGridSpriteSheet_8
+    21300018: TrapGridSpriteSheet_9
+    21300020: TrapGridSpriteSheet_10
+    21300022: TrapGridSpriteSheet_11
+    21300024: TrapGridSpriteSheet_12
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,18 +51,213 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: TrapGridSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -79, y: 79}
+        - {x: -79, y: -79}
+        - {x: 79, y: -79}
+        - {x: 79, y: 79}
+    - name: TrapGridSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.96153, y: 79}
+        - {x: -78.96153, y: -79}
+        - {x: 80.03847, y: -79}
+        - {x: 80.03847, y: 79}
+    - name: TrapGridSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.923065, y: 79}
+        - {x: -78.923065, y: -79}
+        - {x: 79.076935, y: -79}
+        - {x: 79.076935, y: 79}
+    - name: TrapGridSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.88458, y: 79}
+        - {x: -78.88458, y: -79}
+        - {x: 80.11542, y: -79}
+        - {x: 80.11542, y: 79}
+    - name: TrapGridSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.84613, y: 79}
+        - {x: -78.84613, y: -79}
+        - {x: 79.15387, y: -79}
+        - {x: 79.15387, y: 79}
+    - name: TrapGridSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.80768, y: 79}
+        - {x: -78.80768, y: -79}
+        - {x: 80.19232, y: -79}
+        - {x: 80.19232, y: 79}
+    - name: TrapGridSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.769165, y: 79}
+        - {x: -78.769165, y: -79}
+        - {x: 79.230835, y: -79}
+        - {x: 79.230835, y: 79}
+    - name: TrapGridSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.73071, y: 79}
+        - {x: -78.73071, y: -79}
+        - {x: 80.26929, y: -79}
+        - {x: 80.26929, y: 79}
+    - name: TrapGridSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.69226, y: 79}
+        - {x: -78.69226, y: -79}
+        - {x: 79.30774, y: -79}
+        - {x: 79.30774, y: 79}
+    - name: TrapGridSpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 2304
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.65381, y: 79}
+        - {x: -78.65381, y: -79}
+        - {x: 80.34619, y: -79}
+        - {x: 80.34619, y: 79}
+    - name: TrapGridSpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 2560
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.61536, y: 79}
+        - {x: -78.61536, y: -79}
+        - {x: 79.38464, y: -79}
+        - {x: 79.38464, y: 79}
+    - name: TrapGridSpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 2816
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.576904, y: 79}
+        - {x: -78.576904, y: -79}
+        - {x: 80.423096, y: -79}
+        - {x: 80.423096, y: 79}
+    - name: TrapGridSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -78.53833, y: 79}
+        - {x: -78.53833, y: -79}
+        - {x: 79.46167, y: -79}
+        - {x: 79.46167, y: 79}
     outline: []
   spritePackingTag: 
   userData: 
