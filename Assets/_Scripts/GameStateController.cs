@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Assets._Scripts.LevelEditor;
 
 namespace Assets._Scripts
 {
@@ -29,6 +31,20 @@ namespace Assets._Scripts
 
 		[AssignedInUnity]
 		public float SecondsBeforeLevelEnd = 300f;
+
+		[NonSerialized]
+		public Sprite EnterSprite = null;
+
+		[NonSerialized]
+		public Sprite ExitSprite = null;
+
+		public String[] LevelList = null;
+
+		private int currentLevelIndex = 0;
+
+		private bool showingEnterStory = false;
+
+		private bool showingExitStory = false;
 
         [UnityMessage]
         public void Awake()
@@ -59,7 +75,41 @@ namespace Assets._Scripts
             levelLoadRequested = true;
             LoadedLevelName = levelName;
             LevelLoader.Instance.LoadLevel(levelName);
+			EnterSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
+				"entryimage_" + levelName + ".png"), 1920f, 1080f);
+			ExitSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
+				"exitimage_" + levelName + ".png"), 1920f, 1080f);
+
+			// TODO Remove this...for debugging only
+			if ( EnterSprite != null )
+			{
+				print( "Entersprite found." );
+			}
+			if ( ExitSprite != null )
+			{
+				print( "Exitsprite found." );
+			}
         }
+
+		public void PlayerGotToExit()
+		{
+			if ( LevelList != null )
+			{
+				if ( ++currentLevelIndex < LevelList.Length )
+				{
+					LoadedLevelName = LevelList[currentLevelIndex];
+					RestartLevel();
+				}
+				else
+				{
+					GoToTitleScreen();
+				}
+			}
+			else
+			{
+				GoToTitleScreen();
+			}
+		}
 
         public void PlayerDied()
         {
@@ -119,7 +169,28 @@ namespace Assets._Scripts
 
         private static void GoToTitleScreen()
         {
+			Instance.currentLevelIndex = 0;
+			Instance.LevelList = null;
             SceneManager.LoadScene(0);
         }
+
+		private Sprite LoadSpriteFromPath(string pathname, float width, float height)
+		{
+			try
+			{
+				byte[] rawEnterLevelImage = File.ReadAllBytes(pathname);
+				Texture2D enterLevelImage = new Texture2D(Mathf.FloorToInt(width), Mathf.FloorToInt(height),
+					TextureFormat.ARGB32, false);
+				enterLevelImage.LoadImage(rawEnterLevelImage);
+				enterLevelImage.name = pathname;
+
+				return Sprite.Create(enterLevelImage, new Rect(0f,0f,width,height), new Vector2(0.5f, 0.5f));
+			}
+			catch (IOException)
+			{
+				// Couldn't load sprite
+				return null;
+			}
+		}
     }
 }

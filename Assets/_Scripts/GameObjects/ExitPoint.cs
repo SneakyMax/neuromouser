@@ -16,7 +16,7 @@ namespace Assets._Scripts.GameObjects
 
 		public void OnTriggerEnter2D(Collider2D otherCollider)
 		{
-			GameStateController.Instance.PlayerDied();
+			GameStateController.Instance.PlayerGotToExit();
 		}
 	}
 }
