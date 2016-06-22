@@ -13,6 +13,22 @@ namespace Assets._Scripts.LevelEditor
         public Vector2 CurrentPosition { get; private set; }
 
         [UnityMessage]
+        public void Start()
+        {
+            foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
+            {
+                spriteRenderer.sortingOrder = 9999;
+            }
+
+            ToolStart();
+        }
+
+        protected virtual void ToolStart()
+        {
+            
+        }
+
+        [UnityMessage]
         public void Update()
         {
             var cursorPosition = EditorCursor.GetWorldPosition();

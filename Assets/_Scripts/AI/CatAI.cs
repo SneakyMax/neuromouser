@@ -8,14 +8,20 @@ namespace Assets._Scripts.AI
 {
     public class CatAI
     {
+        public const float ReachedPositionThreshold = 0.1f;
+
         public Cat Cat { get; private set; }
 
         public bool IsPatroller { get; private set; }
 
         private readonly IList<CatAIState> states;
 
-        private CatAIState currentState;
-        
+        public CatAIState CurrentState { get; private set; }
+
+        public CatAIState PreviousState { get; private set; }
+
+        public CatAIState StartingState { get; private set; }
+
         public CatAI(Cat cat)
         {
             Cat = cat;
@@ -33,22 +39,24 @@ namespace Assets._Scripts.AI
             var state = new T { CatAI = this };
 
             states.Add(state);
+            state.Init();
         }
 
         public void SetState<T>() where T : CatAIState
         {
             var newState = GetState<T>();
 
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.Exit();
-                currentState.IsActive = false;
+                CurrentState.Exit();
+                CurrentState.IsActive = false;
             }
 
-            currentState = newState;
+            PreviousState = CurrentState;
+            CurrentState = newState;
 
-            currentState.IsActive = true;
-            currentState.Enter();
+            CurrentState.IsActive = true;
+            CurrentState.Enter();
         }
 
         public T GetState<T>() where T : CatAIState
@@ -74,6 +82,8 @@ namespace Assets._Scripts.AI
                 IsPatroller = false;
                 SetState<Idle>();
             }
+
+            StartingState = CurrentState;
         }
 
         public RunnerPlayer CheckFieldOfViewForMouse()
@@ -134,9 +144,9 @@ namespace Assets._Scripts.AI
         {
             RotateCatBasedOnMovement();
 
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.Update();
+                CurrentState.Update();
             }
         }
 
@@ -152,9 +162,9 @@ namespace Assets._Scripts.AI
 
         public void FixedUpdate()
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.FixedUpdate();
+                CurrentState.FixedUpdate();
             }
         }
     }

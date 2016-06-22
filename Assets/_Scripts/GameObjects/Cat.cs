@@ -31,6 +31,8 @@ namespace Assets._Scripts.GameObjects
         private float lastFieldOfView;
         private float lastLengthOfView;
 
+        public int StartRotation { get; private set; }
+
         public Vector3 LastDesiredVelocity { get; private set; }
 
         [UnityMessage]
@@ -128,6 +130,22 @@ namespace Assets._Scripts.GameObjects
         {
             // Treat cats is if they aren't there for pathfinding.
             return true;
+        }
+
+        public override void Deserialize(string serialized)
+        {
+            int rotation;
+            try
+            {
+                rotation = Convert.ToInt32(serialized);
+            }
+            catch (FormatException)
+            {
+                rotation = 0;
+            }
+
+            StartRotation = rotation;
+            transform.rotation = Quaternion.AngleAxis(rotation, Vector3.forward);
         }
     }
 }

@@ -10,8 +10,6 @@ namespace Assets._Scripts.AI
     [SuppressMessage("ReSharper", "PossibleInvalidOperationException")]
     public class Patrolling : CatAIState
     {
-        public const float ReachedPatrolPointThreshold = 0.2f;
-
         private PatrolPoint startPatrolPoint;
 
         private PatrolPoint previousPatrolPoint;
@@ -22,8 +20,6 @@ namespace Assets._Scripts.AI
         private Queue<GridPosition> path;
 
         private bool isPatrollingForward;
-
-        private Vector2 desiredVelocity;
 
         public Patrolling()
         {
@@ -41,7 +37,7 @@ namespace Assets._Scripts.AI
             if (startPatrolPoint == null)
                 throw new InvalidOperationException("Missing a start patrol point.");
 
-            GetPathFromCurrentPositionToNextPatrolPoint();
+            path = GetPathTo(nextPatrolPoint.Position);
         }
 
         public override void Update()
@@ -49,30 +45,17 @@ namespace Assets._Scripts.AI
             var currentPosition = Cat.transform.position;
 
             // If reached the patrol point, set the next patrol point (then wait a frame).
-            if (currentPosition.DistanceTo(nextPatrolPointPosition) < ReachedPatrolPointThreshold)
+            if (currentPosition.DistanceTo(nextPatrolPointPosition) < CatAI.ReachedPositionThreshold)
             {
-                SetToStop();
+                StopMoving();
                 ReachedPatrolPoint();
                 return;
             }
 
             if (path == null)
                 return; // A bug, see errors
-
-            // If reached a path waypoint, set the next path waypoint (then wait a frame).
-            var nextPathPosition = PlacementGrid.Instance.GetWorldPosition(path.Peek());
-
-            if (currentPosition.DistanceTo(nextPathPosition) < ReachedPatrolPointThreshold)
-            {
-                SetToStop();
-                path.Dequeue();
-                return; //todo?
-            }
-
-            // Set the desired velocity towards the next path waypoint.
-            var direction = currentPosition.UnitVectorTo(nextPathPosition);
-
-            desiredVelocity = direction * Cat.PatrolSpeed;
+            
+            DesiredVelocity = MoveAlongPath(path, Cat.PatrolSpeed);
 
             var seePlayer = CatAI.CheckFieldOfViewForMouse();
             if (seePlayer != null)
@@ -80,16 +63,6 @@ namespace Assets._Scripts.AI
                 CatAI.GetState<ChasingRunner>().SetRunner(seePlayer);
                 CatAI.SetState<ChasingRunner>();
             }
-        }
-
-        public override void FixedUpdate()
-        {
-            Cat.Move(desiredVelocity);
-        }
-
-        private void SetToStop()
-        {
-            desiredVelocity = new Vector2();
         }
 
         private void ReachedPatrolPoint()
@@ -105,13 +78,6 @@ namespace Assets._Scripts.AI
             SetNextPatrolPoint(nextNextPatrolPoint);
 
             GetPathFromPreviousPatrolPointToNewPatrolPoint();
-        }
-
-        private void GetPathFromCurrentPositionToNextPatrolPoint()
-        {
-            var closestGridPosition = PlacementGrid.Instance.GetGridPosition(PlacementGrid.Instance.GetClosestSnappedPosition(Cat.transform.position));
-            
-            path = new Queue<GridPosition>(Pathfinding.Instance.GetPath(closestGridPosition, nextPatrolPoint.Position));
         }
 
         private void GetPathFromPreviousPatrolPointToNewPatrolPoint()

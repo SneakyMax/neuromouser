@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 460926}
-  - 114: {fileID: 11403938}
+  - 114: {fileID: 11460250}
   m_Layer: 0
   m_Name: Cat Placer
   m_TagString: Untagged
@@ -59,7 +59,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 460926}
   m_RootOrder: 0
---- !u!114 &11403938
+--- !u!114 &11460250
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 108502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3586e1825a25b3d4a80807ac18d88aef, type: 3}
+  m_Script: {fileID: 11500000, guid: 040aa36acc5cba6449d87494ea8b1c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PositionOffset: {x: 0, y: 0}

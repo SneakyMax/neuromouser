@@ -2,6 +2,6 @@
 {
     public interface IHasRotation
     {
-        bool IsHorizontal { get; set; } 
+        int RotationDegrees { get; set; }
     }
 }

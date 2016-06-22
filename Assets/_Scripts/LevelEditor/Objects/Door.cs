@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Assets._Scripts.LevelEditor.Objects
 {
     [UnityComponent]
-    public class Door : PlacedObject, IHasRotation
+    public class Door : PlacedObject, IHasVerticalOrHorizontalOrientation
     {
         [AssignedInUnity]
         public Sprite Level1;
@@ -36,6 +36,11 @@ namespace Assets._Scripts.LevelEditor.Objects
             Level = Convert.ToInt32(split[0]);
             IsHorizontal = Convert.ToBoolean(split[1]);
             
+            Refresh();
+        }
+
+        public override void AfterPlace()
+        {
             Refresh();
         }
 

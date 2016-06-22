@@ -14,18 +14,10 @@ namespace Assets._Scripts.LevelEditor.Tools
 
         public override bool ShouldSnapToGrid { get { return SnapToGrid; } }
 
-        [UnityMessage]
-        public void Start()
+        protected override void ToolStart()
         {
-            if(ThingToPlacePrefab.GetInterfaceComponent<IPlacedObject>() == null)
+            if (ThingToPlacePrefab.GetInterfaceComponent<IPlacedObject>() == null)
                 throw new InvalidOperationException("Missing IPlacedObject component on " + ThingToPlacePrefab.name);
-
-            ToolStart();
-        }
-
-        protected virtual void ToolStart()
-        {
-            
         }
 
         public override void ActivateTool(Vector2 position)
@@ -37,6 +29,8 @@ namespace Assets._Scripts.LevelEditor.Tools
 
             var instance = (GameObject)Instantiate(ThingToPlacePrefab, position, Quaternion.identity);
             var placed = instance.GetInterfaceComponent<IPlacedObject>();
+
+            PrePlace(placed);
 
             if (SnapToGrid)
             {
@@ -50,6 +44,11 @@ namespace Assets._Scripts.LevelEditor.Tools
             PostActivateTool(placed);
 
             placed.AfterPlace();
+        }
+
+        protected virtual void PrePlace(IPlacedObject instantiated)
+        {
+            
         }
 
         public override void SecondaryActivateTool(Vector2 position)

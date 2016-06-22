@@ -4,7 +4,7 @@ using Assets._Scripts.LevelEditor.Objects;
 namespace Assets._Scripts.LevelEditor.Tools
 {
     [UnityComponent]
-    public class DoorPlacer : SimpleRotationPlacer
+    public class DoorPlacer : VerticalOrHorizontalPlacer
     {
         [AssignedInUnity]
         public int Level;
