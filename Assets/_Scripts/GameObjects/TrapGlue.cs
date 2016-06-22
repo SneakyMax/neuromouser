@@ -19,8 +19,6 @@ namespace Assets._Scripts.GameObjects
 
 		private bool playerSlowed = false;
 
-		private Collider2D trapCollider = null;
-
 		public override bool IsTraversableAt(GridPosition position)
 		{
 			//return !armed;
@@ -30,7 +28,6 @@ namespace Assets._Scripts.GameObjects
 		public override void GameStart()
 		{
 			HackerInterface.Instance.OnTrapPowerChanged += OnTrapPowerChanged;
-			trapCollider = GetComponent<Collider2D>();
 			Level = 2;
 		}
 
