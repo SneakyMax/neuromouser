@@ -41,10 +41,15 @@ namespace Assets._Scripts
             return (to - from).normalized;
         }
 
-        public static float DirectionTo(this Vector3 from, Vector3 to)
+        public static float DirectionToRadians(this Vector3 from, Vector3 to)
         {
             var unit = from.UnitVectorTo(to);
             return Mathf.Atan2(unit.y, unit.x);
+        }
+
+        public static float DirectionToDegrees(this Vector3 from, Vector3 to)
+        {
+            return from.DirectionToRadians(to) * Mathf.Rad2Deg;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets._Scripts.GameObjects;
+using UnityEngine;
 
 namespace Assets._Scripts.AI
 {
@@ -9,10 +10,12 @@ namespace Assets._Scripts.AI
     {
         public Cat Cat { get; private set; }
 
+        public bool IsPatroller { get; private set; }
+
         private readonly IList<CatAIState> states;
 
         private CatAIState currentState;
-
+        
         public CatAI(Cat cat)
         {
             Cat = cat;
@@ -62,21 +65,89 @@ namespace Assets._Scripts.AI
 
             if (possiblePatrolPoint != null)
             {
+                IsPatroller = true;
                 GetState<Patrolling>().SetStartPatrolNode(possiblePatrolPoint);
                 SetState<Patrolling>();
             }
             else
             {
+                IsPatroller = false;
                 SetState<Idle>();
             }
         }
 
+        public RunnerPlayer CheckFieldOfViewForMouse()
+        {
+            const int fanPoints = 5;
+
+            RunnerPlayer player = null;
+
+            for (var i = 0; i < fanPoints; i++)
+            {
+                // Half field of view, divide by the number of fan points, spread out from the center with i
+                var angle = Cat.FieldOfView / 2.0f / fanPoints * i;
+                var unitVectorDirectionFacing = Cat.transform.rotation * Vector3.right;
+
+                var left = Quaternion.AngleAxis(-angle, Vector3.forward);
+                var right = Quaternion.AngleAxis(angle, Vector3.forward);
+
+                var leftVector = left * unitVectorDirectionFacing;
+                var rightVector = right * unitVectorDirectionFacing;
+
+                var leftResults = Physics2D.RaycastAll(Cat.transform.position, leftVector, Cat.LengthOfView);
+                var rightResults = Physics2D.RaycastAll(Cat.transform.position, rightVector, Cat.LengthOfView);
+
+                // Check left, skip cat
+                foreach (var result in leftResults)
+                {
+                    if (result.collider.gameObject == Cat.gameObject)
+                        continue;
+
+                    if (result.collider.gameObject.CompareTag("Player"))
+                    {
+                        player = result.collider.gameObject.GetComponent<RunnerPlayer>();
+                    }
+                    break;
+                }
+
+                // Check right, skip cat
+                foreach (var result in rightResults)
+                {
+                    if (result.collider.gameObject == Cat.gameObject)
+                        continue;
+
+                    if (result.collider.gameObject.CompareTag("Player"))
+                    {
+                        player = result.collider.gameObject.GetComponent<RunnerPlayer>();
+                    }
+                    break;
+                }
+
+                if (player != null)
+                    break;
+            }
+
+            return player;
+        }
+
         public void Update()
         {
+            RotateCatBasedOnMovement();
+
             if (currentState != null)
             {
                 currentState.Update();
             }
+        }
+
+        private void RotateCatBasedOnMovement()
+        {
+            if (Cat.LastDesiredVelocity.sqrMagnitude < 0.001f)
+                return;
+
+            var movementDirection = Cat.transform.position.DirectionToDegrees(Cat.transform.position + Cat.LastDesiredVelocity); // kinda dumb don't care
+            var rotationQuaternion = Quaternion.AngleAxis(movementDirection, Vector3.forward);
+            Cat.transform.rotation = rotationQuaternion;
         }
 
         public void FixedUpdate()

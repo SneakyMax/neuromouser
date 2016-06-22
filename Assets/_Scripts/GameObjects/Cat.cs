@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Assets._Scripts.AI;
 using UnityEngine;
 
@@ -18,8 +17,21 @@ namespace Assets._Scripts.GameObjects
         [AssignedInUnity]
         public float ChaseSpeed;
 
+        [AssignedInUnity]
+        public float FieldOfView = 90;
+
+        [AssignedInUnity]
+        public float LengthOfView = 10;
+
+        public MeshFilter MeshFilter { get; private set; }
+
         private new Rigidbody2D rigidbody;
         private CatAI catAI;
+
+        private float lastFieldOfView;
+        private float lastLengthOfView;
+
+        public Vector3 LastDesiredVelocity { get; private set; }
 
         [UnityMessage]
         public void Start()
@@ -27,6 +39,40 @@ namespace Assets._Scripts.GameObjects
             catAI = new CatAI(this);
 
             rigidbody = GetComponent<Rigidbody2D>();
+            MeshFilter = GetComponentInChildren<MeshFilter>();
+
+            GenerateFieldOfViewMesh();
+        }
+
+        private void GenerateFieldOfViewMesh()
+        {
+            var triHeight = Mathf.Tan(FieldOfView * Mathf.Deg2Rad / 2.0f) * LengthOfView;
+
+            var vertices = new[]
+            {
+                new Vector3(),
+                new Vector3(LengthOfView, triHeight, 0),
+                new Vector3(LengthOfView, -triHeight, 0)
+            };
+
+            var indices = new[] { 0, 1, 2 };
+
+            var uv = new[] { new Vector2(), new Vector2(1, 1), new Vector2(1, 1) };
+
+            var mesh = new Mesh
+            {
+                vertices = vertices,
+                triangles = indices,
+                uv = uv
+            };
+
+            MeshFilter.mesh = mesh;
+
+            GetComponentInChildren<MeshRenderer>().sortingOrder = 50000;
+            GetComponentInChildren<MeshRenderer>().sortingLayerName = "RunnerOnTop";
+
+            lastFieldOfView = FieldOfView;
+            lastLengthOfView = LengthOfView;
         }
 
         [UnityMessage]
@@ -34,6 +80,16 @@ namespace Assets._Scripts.GameObjects
         {
             SortObjectThatMoves();
             catAI.Update();
+
+            CheckFieldOfViewChangedForMesh();
+        }
+
+        private void CheckFieldOfViewChangedForMesh()
+        {
+            if (Math.Abs(lastFieldOfView - FieldOfView) > 0.001f || Math.Abs(lastLengthOfView - LengthOfView) > 0.001f)
+            {
+                GenerateFieldOfViewMesh();
+            }
         }
 
         [UnityMessage]
@@ -42,17 +98,14 @@ namespace Assets._Scripts.GameObjects
             catAI.FixedUpdate();
         }
 
-        /// <summary>Moves the cat in <see cref="direction"/> at <see cref="speed"/> speed. Speed is in units/second. See <see cref="PatrolSpeed"/>. Call this only in FixedUpdate.</summary>
-        public void Move(Vector2 direction, float speed)
-        {
-            if (direction.sqrMagnitude < 0.000001f)
-                return; //Can't normalize zero vector
-
-            Move(direction.normalized * speed);
-        }
-
+        /// <summary>Magnitude is in units/second. See <see cref="PatrolSpeed"/>. Call this only in FixedUpdate.</summary>
         public void Move(Vector2 velocity)
         {
+            LastDesiredVelocity = velocity;
+
+            if (velocity.sqrMagnitude < 0.001f)
+                return; //No movement
+
             var movement = velocity * Time.deltaTime;
             rigidbody.MovePosition(transform.position + (Vector3)movement);
         }

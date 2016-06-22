@@ -27,6 +27,12 @@ namespace Assets._Scripts
 
         public IList<IInGameObject> AllInGameObjects { get; private set; }
 
+        public event Action LevelUnloading;
+
+        private IList<Action> postLevelLoadActions;
+
+        public bool LevelIsLoaded { get; private set; }
+
         [UnityMessage]
         public void Awake()
         {
@@ -38,10 +44,13 @@ namespace Assets._Scripts
         {
             AllLevelObjects = new List<GameObject>();
             AllInGameObjects = new List<IInGameObject>();
+            postLevelLoadActions = new List<Action>();
         }
 
         public void LoadLevel(string levelName)
         {
+            Reset();
+
             string contents = LoadFileContents(levelName);
 
             if (contents == null)
@@ -117,6 +126,11 @@ namespace Assets._Scripts
         {
             yield return null;
 
+            foreach (var action in postLevelLoadActions)
+                action(); // e.g. pathfinding needs to be run before the level is "loaded"
+
+            LevelIsLoaded = true;
+
             if (LevelLoaded != null)
                 LevelLoaded();
         }
@@ -139,6 +153,14 @@ namespace Assets._Scripts
 
         private void Reset()
         {
+            if (LevelIsLoaded)
+            {
+                if (LevelUnloading != null)
+                    LevelUnloading();
+            }
+
+            LevelIsLoaded = false;
+
             foreach (var levelObject in AllLevelObjects)
             {
                 Destroy(levelObject);
@@ -188,7 +210,16 @@ namespace Assets._Scripts
             var instance = (GameObject)Instantiate(info.ObjLevelPrefab, worldPosition, Quaternion.identity);
 
             instance.transform.SetParent(RunnerArea.transform);
-            instance.layer = RunnerLayer;
+
+            foreach (var objTransform in instance.GetComponentsInChildren<Transform>())
+            {
+                objTransform.gameObject.layer = RunnerLayer;
+            }
+
+            foreach (var objRenderer in instance.GetComponentsInChildren<Renderer>())
+            {
+                objRenderer.sortingLayerName = "RunnerMain";
+            }
 
             var placedObject = instance.GetInterfaceComponent<IInGameObject>();
             placedObject.LevelLoader = this;
@@ -220,6 +251,11 @@ namespace Assets._Scripts
         public IList<IInGameObject> GetGridObjectsThatStartedAtPosition(GridPosition position)
         {
             return AllInGameObjects.Where(x => x.StartGridPosition == position).ToList();
+        }
+
+        public void AddPostLevelLoadAction(Action postLevelLoaded)
+        {
+            postLevelLoadActions.Add(postLevelLoaded);
         }
     }
 }

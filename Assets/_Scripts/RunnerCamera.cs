@@ -11,6 +11,17 @@ namespace Assets._Scripts
         public void Awake()
         {
             Instance = this;
-        } 
+        }
+
+        [UnityMessage]
+        public void Start()
+        {
+            LevelLoader.Instance.LevelUnloading += DetachCamera;
+        }
+
+        private void DetachCamera()
+        {
+            transform.SetParent(null, false);
+        }
     }
 }
