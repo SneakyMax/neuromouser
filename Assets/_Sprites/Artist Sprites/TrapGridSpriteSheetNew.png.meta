@@ -1,9 +1,14 @@
 fileFormatVersion: 2
 guid: b258072754b28443aaa51bd216587590
-timeCreated: 1466597526
+timeCreated: 1466610988
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: TrapGridSpriteSheetNew_0
+    21300002: TrapGridSpriteSheetNew_1
+    21300004: TrapGridSpriteSheetNew_2
+    21300006: TrapGridSpriteSheetNew_3
+    21300008: TrapGridSpriteSheetNew_4
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +35,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,18 +43,127 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: TrapGridSpriteSheetNew_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -95, y: 99}
+        - {x: -95, y: -97}
+        - {x: -93, y: -99}
+        - {x: 101, y: -99}
+        - {x: 103, y: -97}
+        - {x: 103, y: 99}
+    - name: TrapGridSpriteSheetNew_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -93, y: 99}
+        - {x: -95, y: 97}
+        - {x: -96, y: 91}
+        - {x: -96, y: 25}
+        - {x: -95, y: 24}
+        - {x: -95, y: 15}
+        - {x: -96, y: 14}
+        - {x: -96, y: -90}
+        - {x: -95, y: -91}
+        - {x: -95, y: -97}
+        - {x: -93, y: -99}
+        - {x: 101, y: -99}
+        - {x: 103, y: -97}
+        - {x: 103, y: 97}
+        - {x: 101, y: 99}
+    - name: TrapGridSpriteSheetNew_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 108, y: 99}
+        - {x: 102, y: 100}
+        - {x: -90, y: 100}
+        - {x: -92, y: 95}
+        - {x: -92, y: -98}
+        - {x: -87, y: -100}
+        - {x: 107, y: -100}
+        - {x: 108, y: -94}
+    - name: TrapGridSpriteSheetNew_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 104, y: 100}
+        - {x: -83, y: 100}
+        - {x: -85, y: 95}
+        - {x: -85, y: -88}
+        - {x: -84, y: -95}
+        - {x: -81, y: -98}
+        - {x: 109, y: -98}
+        - {x: 113, y: -95}
+        - {x: 113, y: 97}
+        - {x: 111, y: 99}
+    - name: TrapGridSpriteSheetNew_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -97, y: 99}
+        - {x: -99, y: 97}
+        - {x: -100, y: 91}
+        - {x: -100, y: 25}
+        - {x: -99, y: 24}
+        - {x: -99, y: 15}
+        - {x: -100, y: 14}
+        - {x: -100, y: -90}
+        - {x: -99, y: -91}
+        - {x: -99, y: -97}
+        - {x: -97, y: -99}
+        - {x: 97, y: -99}
+        - {x: 99, y: -97}
+        - {x: 99, y: 97}
+        - {x: 97, y: 99}
     outline: []
   spritePackingTag: 
   userData: 
