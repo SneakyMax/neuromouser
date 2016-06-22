@@ -26,6 +26,8 @@ namespace Assets._Scripts
 
         private IEnumerator WaitToLoadLevel()
         {
+            GameStateController.Instance.CoverScreen(); // This is the earliest I can all this here.
+            
             yield return null;
 
             GameStateController.Instance.LoadLevel(LevelName);
