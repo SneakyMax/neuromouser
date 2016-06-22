@@ -1,168 +1,196 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets._Scripts;
+﻿using System.Linq;
 using Assets._Scripts.GameObjects;
+using UnityEngine;
 
-/// <summary>
-/// Handles the running player
-/// </summary>
-public class RunnerPlayer : MonoBehaviour
+namespace Assets._Scripts
 {
-	/// <summary>
-	/// Current player facing direction.
-	/// </summary>
-	public enum CurrentFacing
-	{
-		Left,
-		Right,
-		Up,
-		Down
-	}
-
-	/// <summary>
-	/// Gets the current direction the mouse is facing.
-	/// </summary>
-	/// <value>Gets the current facing direction.</value>
-	public CurrentFacing CurrentFacingDirection
-	{
-		get
-		{
-			return facing;
-		}
-	}
-
-	/// <summary>
-	/// Gets or sets the current x tile the running player is on.
-	/// </summary>
-	/// <value>The current x.</value>
-	public int CurrentX
-	{
-		get
-		{
-			return Mathf.RoundToInt(transform.position.x);
-		}
-		set
-		{
-			transform.position = new Vector3((float)value, transform.position.y);
-		}
-	}
-
-	/// <summary>
-	/// Gets or sets the current x tile the running player is on.
-	/// </summary>
-	/// <value>The current y.</value>
-	public int CurrentY
-	{
-		get
-		{
-			return Mathf.RoundToInt(transform.position.y);
-		}
-		set
-		{
-			transform.position = new Vector3((float)value, transform.position.x);
-		}
-	}
-
-	/// <summary>
-	/// The full running speed of the running mouse in tiles per second.
-	/// </summary>
-	public float RunningSpeed = 2f;
-
-	/// <summary>
-	/// Is the player movement frozen?
-	/// </summary>
-	public bool PlayerMovementFrozen = false;
-
-	/// <summary>
-	/// This speed modifier is used for glue traps.
-	/// </summary>
-	public float GlueTrapSpeedModifier = .25f;
-
-	/// <summary>
-	/// The number of glue traps affecting player. Set by the traps.
-	/// </summary>
-	public int GlueTrapsAffectingPlayer = 0;
-
-	/// <summary>
-	/// The direction the player is currently facing.
-	/// </summary>
-	private CurrentFacing facing = CurrentFacing.Up;
-
-    private SpriteRenderer spriteRenderer;
-    private new Rigidbody2D rigidbody;
-
-    private Vector2 requestedMovement;
-
-    [UnityMessage]
-    public void Start()
+    public class RunnerPlayer : MonoBehaviour
     {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        rigidbody = GetComponent<Rigidbody2D>();
-    }
+        /// <summary>The full running speed of the running mouse in units per second.</summary>
+        [AssignedInUnity]
+        public float RunningSpeed = 2f;
 
-    /// <summary>
-	/// Moves the player and changes the facing direction.
-	/// </summary>
-    [UnityMessage]
-	private void Update()
-	{
-		if (!PlayerMovementFrozen)
-			HandlePlayerMovement();
+        [AssignedInUnity]
+        public bool PlayerMovementFrozen;
 
-	    const int layer = 2;
+        /// <summary>This speed modifier is used for glue traps.</summary>
+        [AssignedInUnity]
+        public float GlueTrapSpeedModifier = .25f;
 
-        var bottomOfSpritePosition = spriteRenderer.bounds.min;
-	    spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
+        /// <summary>The number of glue traps affecting player. Set by the traps.</summary>
+        public int GlueTrapsAffectingPlayer { get; set; }
 
-        if (requestedMovement.IsZero() == false)
+        [AssignedInUnity]
+        public float InputDeadzoneSize = 0.01f;
+
+        [AssignedInUnity]
+        public float MaxDistanceForWallChewing = 0.5f;
+
+        [AssignedInUnity]
+        public GameObject ChewPrompt;
+
+        [AssignedInUnity]
+        public ChewProgressBar ChewProgressBar;
+
+        private SpriteRenderer spriteRenderer;
+        private new Rigidbody2D rigidbody;
+
+        private Vector2 lastRequestedMovement;
+        private Vector2 requestedMovement;
+        private bool isChewingWall;
+        private float targettedWallChewTime;
+        private float chewAccumulator;
+
+        [UnityMessage]
+        public void Start()
         {
-            var movementDirection = new Vector3().DirectionToDegrees(requestedMovement);
-            spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
-        }
-	}
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            rigidbody = GetComponent<Rigidbody2D>();
 
-    [UnityMessage]
-    public void FixedUpdate()
-    {
-        var movement = requestedMovement * Time.deltaTime;
-        rigidbody.MovePosition(transform.position + (Vector3)movement);
-		rigidbody.AddForce( Vector2.zero ); // required for OnTriggerStay2D when player is not moving
-    }
+            foreach (var obj in GetComponentsInChildren<Transform>())
+            {
+                obj.gameObject.layer = LevelLoader.RunnerLayer;
+            }
+        }
+        
+        [UnityMessage]
+        private void Update()
+        {
+            if (!PlayerMovementFrozen)
+                HandlePlayerMovement();
 
-    /// <summary>
-    /// Handles the player movement.
-    /// </summary>
-    private void HandlePlayerMovement()
-    {
-        var horizontalAxis = Input.GetAxisRaw("Horizontal");
-        var verticalAxis = Input.GetAxisRaw("Vertical");
+            const int layer = 2;
 
-        if (horizontalAxis > float.Epsilon)
-        {
-            horizontalAxis = 1;
-            facing = CurrentFacing.Right;
-        }
-        else if (horizontalAxis < -float.Epsilon)
-        {
-            horizontalAxis = -1;
-            facing = CurrentFacing.Left;
-        }
-        // vertical facing > horizontal facing
-        if (verticalAxis > float.Epsilon)
-        {
-            verticalAxis = 1;
-            facing = CurrentFacing.Up;
-        }
-        else if (verticalAxis < -float.Epsilon)
-        {
-            verticalAxis = -1;
-            facing = CurrentFacing.Down;
+            var bottomOfSpritePosition = spriteRenderer.bounds.min;
+            spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
+
+            if (requestedMovement.IsZero() == false)
+            {
+                lastRequestedMovement = requestedMovement;
+                var movementDirection = new Vector3().DirectionToDegrees(requestedMovement);
+                spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
+            }
+
+            CheckForWallChewing();
         }
 
-        //TODO this won't work for analog
-		if (GlueTrapsAffectingPlayer > 0)
-			requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed * GlueTrapSpeedModifier;
-		else
-			requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed;
+        private void CheckForWallChewing()
+        {
+            if (lastRequestedMovement.IsZero())
+            {
+                ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(false);
+                ChewProgressBar.gameObject.SetActive(false);
+                ChewPrompt.gameObject.SetActive(false);
+                return;
+            }
+
+            var facingUnitVector = lastRequestedMovement.normalized;
+
+            var results = Physics2D.RaycastAll(transform.position, facingUnitVector, MaxDistanceForWallChewing);
+            if (results.Length == 0)
+                return;
+
+            GameObject nearbyWall = null;
+            foreach (var result in results)
+            {
+                if (result.collider.gameObject == gameObject)
+                    continue;
+                if (result.collider.gameObject.CompareTag("Wall"))
+                    nearbyWall = result.collider.gameObject;
+                break;
+            }
+
+            if (nearbyWall == null)
+            {
+                WallNotNearby();
+            }
+            else
+            {
+                WallNearby(nearbyWall.GetComponent<Wall>());
+            }
+        }
+
+        private void WallNearby(Wall wall)
+        {
+            if (wall.IsChewedThrough)
+                return;
+
+            ChewPrompt.SetActive(true);
+
+            if (Input.GetButton("Chewing"))
+            {
+                ChewProgressBar.gameObject.SetActive(true);
+                ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(true);
+
+                targettedWallChewTime = wall.GetWallInfo().TimeToChewThroughWall;
+                chewAccumulator += Time.deltaTime;
+                isChewingWall = true;
+                ChewProgressBar.SetPercent(chewAccumulator / targettedWallChewTime);
+                PlayerMovementFrozen = true;
+
+                if (chewAccumulator >= targettedWallChewTime)
+                {
+                    wall.SetEmpty();
+                    StopChewing();
+                }
+                else if (chewAccumulator >= (targettedWallChewTime / 2.0f))
+                {
+                    wall.SetChewed();
+                }
+            }
+            else
+            {
+                StopChewing();
+            }
+        }
+
+        private void WallNotNearby()
+        {
+            StopChewing();
+
+            ChewPrompt.SetActive(false);
+        }
+
+        private void StopChewing()
+        {
+            ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(false);
+            ChewProgressBar.gameObject.SetActive(false);
+            chewAccumulator = 0;
+            isChewingWall = false;
+            PlayerMovementFrozen = false;
+        }
+
+        [UnityMessage]
+        public void FixedUpdate()
+        {
+            if (requestedMovement.IsZero())
+                return;
+
+            var movement = requestedMovement * Time.deltaTime;
+            rigidbody.MovePosition(transform.position + (Vector3)movement);
+            rigidbody.AddForce( Vector2.zero ); // required for OnTriggerStay2D when player is not moving
+        }
+        
+        private void HandlePlayerMovement()
+        {
+            var horizontalAxis = Input.GetAxisRaw("Horizontal");
+            var verticalAxis = Input.GetAxisRaw("Vertical");
+
+            if (horizontalAxis > -InputDeadzoneSize && horizontalAxis < InputDeadzoneSize)
+                horizontalAxis = 0;
+
+            if (verticalAxis > -InputDeadzoneSize && verticalAxis < InputDeadzoneSize)
+                verticalAxis = 0;
+
+            requestedMovement = new Vector2(horizontalAxis, verticalAxis);
+
+            if (requestedMovement.sqrMagnitude > 1f)
+                requestedMovement = requestedMovement.normalized;
+
+            requestedMovement *= RunningSpeed;
+
+            if(GlueTrapsAffectingPlayer > 0)
+                requestedMovement *= GlueTrapSpeedModifier;
+        }
     }
 }

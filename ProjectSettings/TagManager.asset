@@ -52,24 +52,9 @@ TagManager:
   - name: HackerUI
     uniqueID: 2333924515
     locked: 0
-  - name: LevelLayer0
-    uniqueID: 2967938207
-    locked: 0
-  - name: LevelLayer1
-    uniqueID: 1055695003
-    locked: 0
-  - name: LevelLayer2
+  - name: RunnerMain
     uniqueID: 1817460013
     locked: 0
-  - name: LevelLayer3
-    uniqueID: 3434055799
-    locked: 0
-  - name: LevelLayer4
-    uniqueID: 325645007
-    locked: 0
-  - name: RunnerMain
-    uniqueID: 325645007
-    locked: 0
   - name: RunnerOnTop
-    uniqueID: 325645007
+    uniqueID: 3434055799
     locked: 0

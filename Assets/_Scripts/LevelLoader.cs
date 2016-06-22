@@ -257,5 +257,10 @@ namespace Assets._Scripts
         {
             postLevelLoadActions.Add(postLevelLoaded);
         }
+
+        public static bool CheckLevelExists(string levelName)
+        {
+            return File.Exists(SaveButton.GetLevelPath(levelName));
+        }
     }
 }

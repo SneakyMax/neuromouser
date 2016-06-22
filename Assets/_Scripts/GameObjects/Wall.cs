@@ -51,6 +51,8 @@ namespace Assets._Scripts.GameObjects
 
         public WallType WallType { get; set; }
 
+        public bool IsChewedThrough { get; private set; }
+
         private SpriteRenderer mainSpriteRenderer;
         private SpriteRenderer overlaySpriteRenderer;
         
@@ -74,7 +76,7 @@ namespace Assets._Scripts.GameObjects
             overlaySpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
         }
 
-        private void SetNotChewed()
+        public void SetNotChewed()
         {
             var wallInfo = GetWallInfo(WallType);
 
@@ -82,7 +84,7 @@ namespace Assets._Scripts.GameObjects
             overlaySpriteRenderer.sprite = wallInfo.TopOverlaySprite;
         }
 
-        private void SetChewed()
+        public void SetChewed()
         {
             var wallInfo = GetWallInfo(WallType);
 
@@ -90,13 +92,21 @@ namespace Assets._Scripts.GameObjects
             overlaySpriteRenderer.sprite = wallInfo.TopOverlayChewedSprite;
         }
 
-        private void SetEmpty()
+        public void SetEmpty()
         {
             mainSpriteRenderer.sprite = null;
             overlaySpriteRenderer.sprite = null;
+            IsChewedThrough = true;
+
+            GetComponent<Collider2D>().enabled = false;
         }
 
-        private WallInfo GetWallInfo(WallType wallType)
+        public WallInfo GetWallInfo()
+        {
+            return GetWallInfo(WallType);
+        }
+
+        public WallInfo GetWallInfo(WallType wallType)
         {
             foreach (var info in WallInfos)
             {
@@ -118,6 +128,11 @@ namespace Assets._Scripts.GameObjects
 
             SideWallOverlayChild.gameObject.SetActive(objectsAbove.OfType<Wall>().Any());
             SideWallOverlayChild.GetComponent<SpriteRenderer>().sortingOrder = SpriteChild.GetComponent<SpriteRenderer>().sortingOrder + 1; // Need to draw the overlay on top.
+        }
+
+        public override bool IsTraversableAt(GridPosition position)
+        {
+            return IsChewedThrough;
         }
     }
 }

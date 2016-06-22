@@ -23,5 +23,12 @@ namespace Assets._Scripts
         {
             transform.SetParent(null, false);
         }
+
+        public void Attach(GameObject playerInstance)
+        {
+            transform.SetParent(playerInstance.transform, false);
+
+            playerInstance.GetComponentInChildren<Canvas>().worldCamera = GetComponent<Camera>();
+        }
     }
 }

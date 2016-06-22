@@ -19,11 +19,10 @@ namespace Assets._Scripts.LevelEditor
 
             EnsureSaveDirectoryExists();
 
-            var fileName = "level_" + Input.text + ".txt";
-            var fullPath = Path.Combine(GetGameSaveDirectory(), fileName);
+            var path = GetLevelPath(Input.text);
             var contents = WorkingLevel.Instance.SerializeLevel();
 
-            File.WriteAllText(fullPath, contents);
+            File.WriteAllText(path, contents);
         }
 
         public static void EnsureSaveDirectoryExists()
@@ -35,6 +34,16 @@ namespace Assets._Scripts.LevelEditor
         {
             var myGames = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
             return Path.Combine(myGames, "Neuromouser");
-        } 
+        }
+
+        public static string GetLevelPath(string levelName)
+        {
+            return Path.Combine(GetGameSaveDirectory(), GetLevelFileName(levelName));
+        }
+
+        private static string GetLevelFileName(string levelName)
+        {
+            return "level_" + levelName + ".txt";
+        }
     }
 }

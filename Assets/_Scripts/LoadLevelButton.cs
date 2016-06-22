@@ -22,6 +22,12 @@ namespace Assets._Scripts
             if (String.IsNullOrEmpty(levelName))
                 return;
 
+            if (LevelLoader.CheckLevelExists(levelName) == false)
+            {
+                Debug.Log("No level named " + levelName);
+                return;
+            }
+
             var instance = Instantiate(LoadLevelProxyPrefab.gameObject);
 
             instance.GetComponent<LoadLevelProxy>().LevelName = levelName;

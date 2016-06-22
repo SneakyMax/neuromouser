@@ -15,7 +15,7 @@ namespace Assets._Scripts.GameObjects
             var playerInstance = (GameObject)Instantiate(PlayerPrefab, transform.position, Quaternion.identity);
             playerInstance.transform.SetParent(LevelLoader.RunnerArea.transform);
 
-            RunnerCamera.Instance.transform.SetParent(playerInstance.transform, false);
+            RunnerCamera.Instance.Attach(playerInstance);
 
             foreach (var playerRenderer in playerInstance.GetComponentsInChildren<Renderer>())
             {
