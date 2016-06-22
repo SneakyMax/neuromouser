@@ -12,8 +12,6 @@ namespace Assets._Scripts.GameObjects
 
 		public int Level { get; set; }
 
-		public bool IsHorizontal { get; set; }
-
 		public override bool IsDynamic { get { return true; } }
 
 		protected bool armed = true;

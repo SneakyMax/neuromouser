@@ -120,6 +120,7 @@ public class RunnerPlayer : MonoBehaviour
     {
         var movement = requestedMovement * Time.deltaTime;
         rigidbody.MovePosition(transform.position + (Vector3)movement);
+		rigidbody.AddForce( Vector2.zero ); // required for OnTriggerStay2D when player is not moving
     }
 
     /// <summary>
