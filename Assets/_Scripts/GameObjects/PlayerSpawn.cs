@@ -19,6 +19,8 @@ namespace Assets._Scripts.GameObjects
             RunnerCamera.Instance.transform.SetParent(playerInstance.transform, false);
             
             playerInstance.GetComponentInChildren<Renderer>().sortingLayerName = "RunnerMain";
+
+            LevelLoader.RegisterObject(playerInstance);
         }
     }
 }

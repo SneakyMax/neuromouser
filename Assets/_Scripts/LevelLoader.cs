@@ -27,7 +27,11 @@ namespace Assets._Scripts
 
         public IList<IInGameObject> AllInGameObjects { get; private set; }
 
+        public event Action LevelUnloading;
+
         private IList<Action> postLevelLoadActions;
+
+        public bool LevelIsLoaded { get; private set; }
 
         [UnityMessage]
         public void Awake()
@@ -45,6 +49,8 @@ namespace Assets._Scripts
 
         public void LoadLevel(string levelName)
         {
+            Reset();
+
             string contents = LoadFileContents(levelName);
 
             if (contents == null)
@@ -123,6 +129,8 @@ namespace Assets._Scripts
             foreach (var action in postLevelLoadActions)
                 action(); // e.g. pathfinding needs to be run before the level is "loaded"
 
+            LevelIsLoaded = true;
+
             if (LevelLoaded != null)
                 LevelLoaded();
         }
@@ -145,6 +153,14 @@ namespace Assets._Scripts
 
         private void Reset()
         {
+            if (LevelIsLoaded)
+            {
+                if (LevelUnloading != null)
+                    LevelUnloading();
+            }
+
+            LevelIsLoaded = false;
+
             foreach (var levelObject in AllLevelObjects)
             {
                 Destroy(levelObject);

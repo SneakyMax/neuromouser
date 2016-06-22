@@ -103,6 +103,7 @@ public class RunnerPlayer : MonoBehaviour
     /// <summary>
 	/// Moves the player and changes the facing direction.
 	/// </summary>
+    [UnityMessage]
 	private void Update()
 	{
 		if (!PlayerMovementFrozen)

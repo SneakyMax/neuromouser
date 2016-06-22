@@ -30,6 +30,7 @@ namespace Assets._Scripts
 
         private void PostLevelLoaded()
         {
+            allNodes.Clear();
             LoadPathfindingNodes();
         }
 
@@ -180,7 +181,7 @@ namespace Assets._Scripts
             {
                 var inGameObject = obj.GetInterfaceComponent<IInGameObject>();
                 if (inGameObject == null)
-                    throw new InvalidOperationException("Missing IInGameObject component.");
+                    continue; // Probably something that was created dynamically
 
                 if (inGameObject.StartGridPosition == null)
                     continue;
