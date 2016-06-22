@@ -135,8 +135,8 @@ MonoBehaviour:
   MoveRepeatTime: 0.25
   PowerCharge: 0
   MaxPowerCharge: 100
-  PowerForShot: 2
-  PowerChargeRate: 7
+  PowerForShot: 1
+  PowerChargeRate: 3
   FireRate: 0.1
 --- !u!212 &113068197
 SpriteRenderer:
