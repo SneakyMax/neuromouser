@@ -77,6 +77,9 @@ MonoBehaviour:
   - Name: TrapSnap
     ObjLevelPrefab: {fileID: 139874, guid: 9aeb4974186cb9e4489495a9ecc70dec, type: 2}
     ObjEditorPrefab: {fileID: 182856, guid: 0b621e506cae24f8cbfc210d8f5a9d90, type: 2}
+  - Name: ExitPoint
+    ObjLevelPrefab: {fileID: 195010, guid: e8452de24bec9b44696299ec71a60200, type: 2}
+    ObjEditorPrefab: {fileID: 180730, guid: b56220443ec93ac4eb253f0cfca70b08, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
