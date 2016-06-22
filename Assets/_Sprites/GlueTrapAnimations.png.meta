@@ -1,0 +1,225 @@
+fileFormatVersion: 2
+guid: ae6d66fc414e79748be66261692c6aaf
+timeCreated: 1466568396
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: GlueTrapAnimations_0
+    21300002: GlueTrapAnimations_1
+    21300004: GlueTrapAnimations_2
+    21300006: GlueTrapAnimations_3
+    21300008: GlueTrapAnimations_4
+    21300010: GlueTrapAnimations_5
+    21300012: GlueTrapAnimations_6
+    21300014: GlueTrapAnimations_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 256
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: GlueTrapAnimations_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -127, y: 128}
+        - {x: -128, y: 127}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_5
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -119}
+        - {x: -126, y: -122}
+        - {x: -126, y: -126}
+        - {x: -125, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+    - name: GlueTrapAnimations_6
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: -128}
+        - {x: 128, y: 128}
+        - {x: -128, y: 128}
+        - {x: -128, y: 125}
+        - {x: -126, y: 126}
+        - {x: -124, y: 121}
+        - {x: -128, y: 122}
+        - {x: -128, y: -36}
+        - {x: -125, y: -39}
+        - {x: -128, y: -42}
+        - {x: -128, y: -102}
+        - {x: -125, y: -105}
+        - {x: -127, y: -111}
+        - {x: -126, y: -119}
+        - {x: -123, y: -128}
+        - {x: 22, y: -128}
+        - {x: 26, y: -123}
+        - {x: 31, y: -128}
+    - name: GlueTrapAnimations_7
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: -126}
+        - {x: 128, y: 128}
+        - {x: -34, y: 128}
+        - {x: -21, y: 111}
+        - {x: -16, y: 110}
+        - {x: -10, y: 110}
+        - {x: -18, y: 110}
+        - {x: -39, y: 117}
+        - {x: -34, y: 113}
+        - {x: -46, y: 128}
+        - {x: -127, y: 128}
+        - {x: -128, y: 127}
+        - {x: -128, y: -110}
+        - {x: -123, y: -128}
+        - {x: 126, y: -128}
+      - - {x: -109, y: -128}
+        - {x: -98, y: -128}
+        - {x: -99, y: -125}
+        - {x: -104, y: -124}
+        - {x: -109, y: -126}
+      - - {x: -75, y: 124}
+        - {x: -70, y: 124}
+        - {x: -67, y: 125}
+        - {x: -67, y: 128}
+        - {x: -77, y: 128}
+        - {x: -77, y: 127}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

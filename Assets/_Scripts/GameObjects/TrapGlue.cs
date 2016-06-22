@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Assets._Scripts.GameObjects
 {
 	[RequireComponent (typeof(Collider2D))]
+	[RequireComponent (typeof(Animator))]
 	public class TrapGlue : InGameObject
 	{
 		public override int Layer { get { return 1; } }
@@ -29,6 +30,7 @@ namespace Assets._Scripts.GameObjects
 		{
 			HackerInterface.Instance.OnTrapPowerChanged += OnTrapPowerChanged;
 			Level = 2;
+			GetComponent<Animator>().SetTrigger("Armed");
 		}
 
 		/// <summary>
@@ -40,10 +42,12 @@ namespace Assets._Scripts.GameObjects
 			if ((Level > newTrapPower) && !armed)
 			{
 				armed = true;
+				GetComponent<Animator>().SetTrigger("Armed");
 			}
 			else if ((Level <= newTrapPower) && armed)
 			{
 				armed = false;
+				GetComponent<Animator>().SetTrigger("Disarmed");
 			}
 			// TODO level 3 stuff.
 		}
