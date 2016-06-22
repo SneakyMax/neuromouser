@@ -10,7 +10,7 @@ namespace Assets._Scripts.LevelEditor.Objects
     [UnityComponent]
     public class Wall : PlacedObject
     {
-        private static readonly int[] layers = { 0, 1, 2, 3 };
+        private static readonly int[] layers = { 1, 2, 3 };
         public override int[] Layers { get { return layers; } }
         [AssignedInUnity]
         public Sprite GlassWallSprite;
