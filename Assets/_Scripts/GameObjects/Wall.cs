@@ -6,32 +6,38 @@ using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
 {
+    [Serializable]
+    public struct WallInfo
+    {
+        [AssignedInUnity]
+        public WallType WallType;
+
+        [AssignedInUnity]
+        public Sprite MainSprite;
+
+        [AssignedInUnity]
+        public Sprite TopOverlaySprite;
+
+        [AssignedInUnity]
+        public Sprite ChewedSprite;
+
+        [AssignedInUnity]
+        public Sprite TopOverlayChewedSprite;
+
+        [AssignedInUnity, Range(1, 60)]
+        public float TimeToChewThroughWall;
+
+        public override string ToString()
+        {
+            return WallType.ToString();
+        }
+    }
+
     [UnityComponent]
     public class Wall : InGameObject
     {
         [AssignedInUnity]
-        public Sprite CardboardWallSprite;
-
-        [AssignedInUnity]
-        public Sprite CardboardWallSideSprite;
-
-        [AssignedInUnity]
-        public Sprite NiceWallSprite;
-
-        [AssignedInUnity]
-        public Sprite NiceWallSideSprite;
-
-        [AssignedInUnity]
-        public Sprite MetalWallSprite;
-
-        [AssignedInUnity]
-        public Sprite MetalWallSideSprite;
-
-        [AssignedInUnity]
-        public Sprite GlassWallSprite;
-
-        [AssignedInUnity]
-        public Sprite GlassWallSideSprite;
+        public WallInfo[] WallInfos;
 
         [AssignedInUnity]
         public Transform SpriteChild;
@@ -41,7 +47,12 @@ namespace Assets._Scripts.GameObjects
 
         public override int Layer { get { return 2; } }
 
+        public override bool IsDynamic { get { return true; } }
+
         public WallType WallType { get; set; }
+
+        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer overlaySpriteRenderer;
         
         public override void Deserialize(string serialized)
         {
@@ -54,31 +65,45 @@ namespace Assets._Scripts.GameObjects
                 WallType = WallType.Metal;
             }
             
-            var spriteRenderer = SpriteChild.GetComponent<SpriteRenderer>();
-            var overlaySpriteRenderer = SideWallOverlayChild.GetComponent<SpriteRenderer>();
+            spriteRenderer = SpriteChild.GetComponent<SpriteRenderer>();
+            overlaySpriteRenderer = SideWallOverlayChild.GetComponent<SpriteRenderer>();
 
-            switch (WallType)
-            {
-                case WallType.Cardboard:
-                    spriteRenderer.sprite = CardboardWallSprite;
-                    overlaySpriteRenderer.sprite = CardboardWallSideSprite;
-                    break;
-                case WallType.Nice:
-                    spriteRenderer.sprite = NiceWallSprite;
-                    overlaySpriteRenderer.sprite = NiceWallSideSprite;
-                    break;
-                case WallType.Metal:
-                    spriteRenderer.sprite = MetalWallSprite;
-                    overlaySpriteRenderer.sprite = MetalWallSideSprite;
-                    break;
-                case WallType.Glass:
-                    spriteRenderer.sprite = GlassWallSprite;
-                    overlaySpriteRenderer.sprite = GlassWallSideSprite;
-                    break; //TODO can see through glass
-            }
-
+            SetNotChewed();
+            
             spriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
             overlaySpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
+        }
+
+        private void SetNotChewed()
+        {
+            var wallInfo = GetWallInfo(WallType);
+
+            spriteRenderer.sprite = wallInfo.MainSprite;
+            overlaySpriteRenderer.sprite = wallInfo.TopOverlaySprite;
+        }
+
+        private void SetChewed()
+        {
+            var wallInfo = GetWallInfo(WallType);
+
+            spriteRenderer.sprite = wallInfo.ChewedSprite;
+            overlaySpriteRenderer.sprite = wallInfo.TopOverlayChewedSprite;
+        }
+
+        private void SetEmpty()
+        {
+            spriteRenderer.sprite = null;
+            overlaySpriteRenderer.sprite = null;
+        }
+
+        private WallInfo GetWallInfo(WallType wallType)
+        {
+            foreach (var info in WallInfos)
+            {
+                if (info.WallType == wallType)
+                    return info;
+            }
+            return default(WallInfo);
         }
 
         public override void PostAllDeserialized()
