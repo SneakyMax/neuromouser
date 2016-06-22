@@ -11,6 +11,8 @@ namespace Assets._Scripts
 
         private bool levelLoadRequested;
 
+        public string LoadedLevelName { get; private set; }
+
         [UnityMessage]
         public void Awake()
         {
@@ -37,7 +39,18 @@ namespace Assets._Scripts
         public void LoadLevel(string levelName)
         {
             levelLoadRequested = true;
+            LoadedLevelName = levelName;
             LevelLoader.Instance.LoadLevel(levelName);
+        }
+
+        public void PlayerDied()
+        {
+            RestartLevel();
+        }
+
+        public void RestartLevel()
+        {
+            LevelLoader.Instance.LoadLevel(LoadedLevelName);
         }
 
         private void LevelLoaded()

@@ -76,6 +76,15 @@ namespace Assets._Scripts.GameObjects
         }
 
         [UnityMessage]
+        public void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                GameStateController.Instance.PlayerDied();
+            }
+        }
+
+        [UnityMessage]
         public void Update()
         {
             SortObjectThatMoves();
