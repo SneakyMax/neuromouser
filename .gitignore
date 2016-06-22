@@ -24,3 +24,8 @@ ExportedObj/
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+/Assets/StreamingAssets
+
+.DS_Store
+/Assets/FMODStudioCache.asset
+/Assets/FMODStudioCache.asset.meta
