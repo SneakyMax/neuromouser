@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets._Scripts
 {
@@ -23,6 +24,17 @@ namespace Assets._Scripts
             PowerPosition = ParentHandler.MaxPower;
             powerLevelIndicator = ParentHandler.GetComponent<PowerLevelIndicator>();
             transform.position = powerLevelIndicator.GetClosestLightPosition(PowerPosition);
+
+            GameStateController.Instance.OnPlayerDied += OnPlayerDied;
+        }
+
+        private void OnPlayerDied()
+        {
+            GameStateController.Instance.OnPlayerDied -= OnPlayerDied;
+
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if(this != null)
+                Destroy(gameObject);
         }
 
         [UnityMessage]

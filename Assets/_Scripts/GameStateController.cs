@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,11 @@ namespace Assets._Scripts
         private bool levelLoadRequested;
 
         public string LoadedLevelName { get; private set; }
+
+        /// <summary>When a game/match has been started or restarted (e.g. after dying).</summary>
+        public event Action GameStarted;
+
+        public event Action OnPlayerDied;
 
         [AssignedInUnity]
         public Image InterfaceFadeInCover;
@@ -54,6 +60,9 @@ namespace Assets._Scripts
 
         public void PlayerDied()
         {
+            if (OnPlayerDied != null)
+                OnPlayerDied();
+
             RestartLevel();
         }
 
@@ -69,6 +78,9 @@ namespace Assets._Scripts
             {
                 obj.GameStart();
             }
+
+            if (GameStarted != null)
+                GameStarted();
 
             StartCoroutine(FadeSequence());
         }

@@ -24,15 +24,15 @@ namespace Assets._Scripts.GameObjects
 
 		public override bool IsDynamic { get { return true; } }
 
-		protected bool open = false;
+	    protected bool IsOpen { get; set; }
 
-		private Animator animator = null;
+	    private Animator animator;
 
-		private Collider2D doorCollider = null;
+		private Collider2D doorCollider;
 
 		public override bool IsTraversableAt(GridPosition position)
 		{
-			return open;
+			return IsOpen;
 		}
 
 		public override void GameStart()
@@ -44,7 +44,12 @@ namespace Assets._Scripts.GameObjects
 		    animator.SetBool("IsOpen", false);
 		}
 
-		protected void Open()
+	    protected override void Cleanup()
+	    {
+	        HackerInterface.Instance.OnDoorPowerChanged -= OnDoorPowerChanged;
+	    }
+
+	    protected void Open()
 		{
 			doorCollider.enabled = false;
 		    animator.SetBool("IsOpen", true);
@@ -88,14 +93,14 @@ namespace Assets._Scripts.GameObjects
 		/// <param name="newDoorPower">New door power.</param>
 		private void OnDoorPowerChanged(int newDoorPower)
 		{
-			if ((Level > newDoorPower) && open)
+			if ((Level > newDoorPower) && IsOpen)
 			{
-				open = false;
+				IsOpen = false;
 				Close();
 			}
-			else if ((Level <= newDoorPower) && !open)
+			else if ((Level <= newDoorPower) && !IsOpen)
 			{
-				open = true;
+				IsOpen = true;
 				Open();
 			}
 		}

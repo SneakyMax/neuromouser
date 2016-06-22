@@ -147,4 +147,9 @@ public class ICEHandler : MonoBehaviour
         var counterPulse = pulse.GetComponent<CounterPulse>();
         counterPulse.ParentHandler = this;
     }
+
+    public void Reset()
+    {
+        CurrentPower = 0;
+    }
 }

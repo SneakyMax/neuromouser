@@ -94,6 +94,13 @@ namespace Assets._Scripts
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             SetTerminal(TerminalType.Cameras);
+
+            GameStateController.Instance.GameStarted += OnGameStarted;
+        }
+
+        private void OnGameStarted()
+        {
+            PowerCharge = 0;
         }
 
         /// <summary>

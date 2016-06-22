@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Assets._Scripts.LevelEditor;
+﻿using Assets._Scripts.LevelEditor;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -65,6 +63,18 @@ namespace Assets._Scripts.GameObjects
         public virtual bool IsTraversableAt(GridPosition position)
         {
             return false;
+        }
+
+        [UnityMessage]
+        public void OnDestroy()
+        {
+            Cleanup();
+        }
+
+        /// <summary>Clean up an object before it gets destroyed.</summary>
+        protected virtual void Cleanup()
+        {
+            
         }
     }
 }

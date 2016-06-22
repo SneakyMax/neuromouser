@@ -39,6 +39,17 @@ namespace Assets._Scripts
             bottomLedSprite = BelowShot.GetComponent<SpriteRenderer>();
 
             bottomLedSprite.color = bottomLedSprite.color.WithAlpha(0);
+
+            GameStateController.Instance.OnPlayerDied += OnPlayerDied;
+        }
+
+        private void OnPlayerDied()
+        {
+            GameStateController.Instance.OnPlayerDied -= OnPlayerDied;
+
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (this != null)
+                Destroy(gameObject);
         }
 
         [UnityMessage]

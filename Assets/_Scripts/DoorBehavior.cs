@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets._Scripts;
 
 /// <summary>
 /// Door behavior base class for door opening and closing based on door terminal power.

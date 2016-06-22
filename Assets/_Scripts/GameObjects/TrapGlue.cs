@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
 {
@@ -14,9 +12,9 @@ namespace Assets._Scripts.GameObjects
 
 		public override bool IsDynamic { get { return true; } }
 
-		protected bool armed = true;
+	    protected bool IsArmed { get; set; }
 
-		private bool playerSlowed = false;
+	    private bool playerSlowed = false;
 
 		public override bool IsTraversableAt(GridPosition position)
 		{
@@ -26,25 +24,26 @@ namespace Assets._Scripts.GameObjects
 
 		public override void GameStart()
 		{
+		    IsArmed = true;
 			HackerInterface.Instance.OnTrapPowerChanged += OnTrapPowerChanged;
 			Level = 2;
 			GetComponent<Animator>().SetTrigger("Armed");
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Sets the power of the trap and armed.
 		/// </summary>
 		/// <param name="newTrapPower">New trap power.</param>
 		private void OnTrapPowerChanged(int newTrapPower)
 		{
-			if ((Level > newTrapPower) && !armed)
+			if ((Level > newTrapPower) && !IsArmed)
 			{
-				armed = true;
+				IsArmed = true;
 				GetComponent<Animator>().SetTrigger("Armed");
 			}
-			else if ((Level <= newTrapPower) && armed)
+			else if ((Level <= newTrapPower) && IsArmed)
 			{
-				armed = false;
+				IsArmed = false;
 				GetComponent<Animator>().SetTrigger("Disarmed");
 			}
 			// TODO level 3 stuff.
@@ -66,7 +65,7 @@ namespace Assets._Scripts.GameObjects
 
 		public void OnTriggerEnter2D(Collider2D otherCollider)
 		{
-			if (armed)
+			if (IsArmed)
 			{
 				if (otherCollider.tag == "Player")
 				{
@@ -80,11 +79,11 @@ namespace Assets._Scripts.GameObjects
 		{
 			if (otherCollider.tag == "Player")
 			{
-				if (armed && !playerSlowed)
+				if (IsArmed && !playerSlowed)
 				{
 					SlowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 				}
-				else if (!armed && playerSlowed)
+				else if (!IsArmed && playerSlowed)
 				{
 					UnslowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 				}
