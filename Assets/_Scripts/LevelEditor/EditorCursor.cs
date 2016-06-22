@@ -35,6 +35,12 @@ namespace Assets._Scripts.LevelEditor
         }
 
         [UnityMessage]
+        public void OnDestroy()
+        {
+            Cursor.visible = true;
+        }
+
+        [UnityMessage]
         public void Update()
         {
             SetCursorPosition();

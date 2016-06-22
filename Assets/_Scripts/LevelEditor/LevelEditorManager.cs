@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets._Scripts.LevelEditor
 {
@@ -10,13 +11,8 @@ namespace Assets._Scripts.LevelEditor
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Application.Quit();
-
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            }
-                
+                SceneManager.LoadScene(0);
+            }    
         }
     }
 }
