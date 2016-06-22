@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21220694}
   - 114: {fileID: 11492586}
   - 50: {fileID: 5010426}
-  - 61: {fileID: 6142754}
+  - 58: {fileID: 5851556}
   m_Layer: 0
   m_Name: RunnerPlayer
   m_TagString: Player
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171108}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.56, y: 0.55, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5728834, y: 1.5728834, z: 1.5728834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -49,8 +49,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &6142754
-BoxCollider2D:
+--- !u!58 &5851556
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -60,9 +60,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: -0.006294687, y: 0.037769407}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.30007508, y: 0.56446105}
+  m_Radius: 0.21
 --- !u!114 &11492586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,7 +76,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunningSpeed: 2.5
   PlayerMovementFrozen: 0
-  SpeedModifier: 1
+  GlueTrapSpeedModifier: 0.25
+  GlueTrapsAffectingPlayer: 0
 --- !u!212 &21220694
 SpriteRenderer:
   m_ObjectHideFlags: 1

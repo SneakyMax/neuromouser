@@ -41,7 +41,7 @@ namespace Assets._Scripts.AI
             if (startPatrolPoint == null)
                 throw new InvalidOperationException("Missing a start patrol point.");
 
-            GetNewPath();
+            GetPathFromCurrentPositionToNextPatrolPoint();
         }
 
         public override void Update()
@@ -104,14 +104,24 @@ namespace Assets._Scripts.AI
 
             SetNextPatrolPoint(nextNextPatrolPoint);
 
-            GetNewPath();
+            GetPathFromPreviousPatrolPointToNewPatrolPoint();
         }
 
-        private void GetNewPath()
+        private void GetPathFromCurrentPositionToNextPatrolPoint()
+        {
+            var closestGridPosition = PlacementGrid.Instance.GetGridPosition(PlacementGrid.Instance.GetClosestSnappedPosition(Cat.transform.position));
+            
+            path = new Queue<GridPosition>(Pathfinding.Instance.GetPath(closestGridPosition, nextPatrolPoint.Position));
+        }
+
+        private void GetPathFromPreviousPatrolPointToNewPatrolPoint()
         {
             if (previousPatrolPoint == null)
                 ReachedPatrolPoint(); // Hack?
 
+            if (previousPatrolPoint == null)
+                throw new InvalidOperationException("Previous patrol point wasn't loaded??");
+            
             path = new Queue<GridPosition>(Pathfinding.Instance.GetPath(previousPatrolPoint.Position, nextPatrolPoint.Position));
         }
 
