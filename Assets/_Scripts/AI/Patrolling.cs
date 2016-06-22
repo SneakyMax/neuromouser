@@ -40,6 +40,8 @@ namespace Assets._Scripts.AI
         {
             if (startPatrolPoint == null)
                 throw new InvalidOperationException("Missing a start patrol point.");
+
+            GetNewPath();
         }
 
         public override void Update()
@@ -71,6 +73,13 @@ namespace Assets._Scripts.AI
             var direction = currentPosition.UnitVectorTo(nextPathPosition);
 
             desiredVelocity = direction * Cat.PatrolSpeed;
+
+            var seePlayer = CatAI.CheckFieldOfViewForMouse();
+            if (seePlayer != null)
+            {
+                CatAI.GetState<ChasingRunner>().SetRunner(seePlayer);
+                CatAI.SetState<ChasingRunner>();
+            }
         }
 
         public override void FixedUpdate()
@@ -94,6 +103,14 @@ namespace Assets._Scripts.AI
             }
 
             SetNextPatrolPoint(nextNextPatrolPoint);
+
+            GetNewPath();
+        }
+
+        private void GetNewPath()
+        {
+            if (previousPatrolPoint == null)
+                ReachedPatrolPoint(); // Hack?
 
             path = new Queue<GridPosition>(Pathfinding.Instance.GetPath(previousPatrolPoint.Position, nextPatrolPoint.Position));
         }
