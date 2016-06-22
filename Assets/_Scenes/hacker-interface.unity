@@ -134,7 +134,7 @@ MonoBehaviour:
   RegularShot: {fileID: 180462, guid: 8c80d271894172242bd92417b1fa31b8, type: 2}
   MoveRepeatTime: 0.25
   PowerCharge: 0
-  MaxPowerCharge: 100
+  MaxPowerCharge: 50
   PowerForShot: 1
   PowerChargeRate: 3
   FireRate: 0.1
