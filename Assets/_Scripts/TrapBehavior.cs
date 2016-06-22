@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 /// <summary>
 /// Trap behavior base class for trap arming and disarming based on trap terminal power.

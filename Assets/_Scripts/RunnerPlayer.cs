@@ -74,6 +74,16 @@ public class RunnerPlayer : MonoBehaviour
 	public bool PlayerMovementFrozen = false;
 
 	/// <summary>
+	/// This speed modifier is used for glue traps.
+	/// </summary>
+	public float GlueTrapSpeedModifier = .25f;
+
+	/// <summary>
+	/// The number of glue traps affecting player. Set by the traps.
+	/// </summary>
+	public int GlueTrapsAffectingPlayer = 0;
+
+	/// <summary>
 	/// The direction the player is currently facing.
 	/// </summary>
 	private CurrentFacing facing = CurrentFacing.Up;
@@ -142,6 +152,9 @@ public class RunnerPlayer : MonoBehaviour
         }
 
         //TODO this won't work for analog
-        requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed;
+		if (GlueTrapsAffectingPlayer > 0)
+			requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed * GlueTrapSpeedModifier;
+		else
+			requestedMovement = new Vector2(horizontalAxis, verticalAxis).normalized * RunningSpeed;
     }
 }

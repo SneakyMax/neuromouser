@@ -14,7 +14,7 @@ GameObject:
   - 61: {fileID: 6142754}
   m_Layer: 0
   m_Name: RunnerPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunningSpeed: 2.5
   PlayerMovementFrozen: 0
-  facing: 2
+  SpeedModifier: 1
 --- !u!212 &21220694
 SpriteRenderer:
   m_ObjectHideFlags: 1
