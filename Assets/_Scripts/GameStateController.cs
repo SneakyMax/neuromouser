@@ -27,6 +27,9 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public Image ScreenFadeInCover;
 
+		[AssignedInUnity]
+		public float SecondsBeforeLevelEnd = 300f;
+
         [UnityMessage]
         public void Awake()
         {
@@ -81,6 +84,9 @@ namespace Assets._Scripts
 
             if (GameStarted != null)
                 GameStarted();
+
+			HackerInterface.Instance.LevelTimer.SecondsLeft = SecondsBeforeLevelEnd;
+			HackerInterface.Instance.LevelTimer.TimerRunning = true;
 
             StartCoroutine(FadeSequence());
         }

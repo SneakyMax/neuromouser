@@ -66,6 +66,9 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public HackerTerminal TerminalCats;
 
+		[AssignedInUnity]
+		public TimerDevice LevelTimer;
+
         /// <summary>
         /// Holds the initial orthographic size of the camera.
         /// </summary>
@@ -90,6 +93,9 @@ namespace Assets._Scripts
             if ((TerminalCamera == null) || (TerminalTraps == null) || (TerminalDoors == null) || (TerminalCats == null))
                 throw new UnityException("Error: Terminals not set up with HackerInterface!");
 
+			if ( LevelTimer == null )
+				throw new UnityException("Error: LevelTimer not set up with HackerInterface!");
+
             if (RunnerCamera == null)
                 throw new UnityException("Error: HackerInterface Runner must have an associated camera!");
 
@@ -108,6 +114,7 @@ namespace Assets._Scripts
             TerminalTraps.OnPowerChanged += OnTrapPowerChange;
             TerminalDoors.OnPowerChanged += OnDoorPowerChange;
             TerminalCats.OnPowerChanged += OnCatPowerChange;
+			LevelTimer.TimerZero += OnTimerZero;
 
             LevelLoader.Instance.AddPostLevelLoadAction(ClearEvents);
         }
@@ -119,6 +126,11 @@ namespace Assets._Scripts
             OnCatPowerChanged = null;
             OnTrapPowerChanged = null;
         }
+
+		public void OnTimerZero()
+		{
+			GameStateController.Instance.PlayerDied();
+		}
 
         /// <summary>
         /// Raises the camera power changed event, changing the orthographic size of the camera.

@@ -399,6 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InterfaceFadeInCover: {fileID: 1026840449}
   ScreenFadeInCover: {fileID: 1703465403}
+  SecondsBeforeLevelEnd: 300
 --- !u!4 &380641087
 Transform:
   m_ObjectHideFlags: 0
@@ -593,6 +594,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
+--- !u!1001 &814310313
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1361284275}
+    m_Modifications:
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -2.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -9.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &851954103
 Prefab:
   m_ObjectHideFlags: 0
@@ -1047,6 +1090,7 @@ MonoBehaviour:
   TerminalTraps: {fileID: 349574275}
   TerminalDoors: {fileID: 1715443357}
   TerminalCats: {fileID: 563354833}
+  LevelTimer: {fileID: 1956061541}
 --- !u!4 &1361284275
 Transform:
   m_ObjectHideFlags: 0
@@ -1065,6 +1109,7 @@ Transform:
   - {fileID: 349574274}
   - {fileID: 563354832}
   - {fileID: 234420581}
+  - {fileID: 1956061540}
   m_Father: {fileID: 0}
   m_RootOrder: 2
 --- !u!1001 &1443141236
@@ -1563,7 +1608,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -497.3, y: -18.300003}
+  m_AnchoredPosition: {x: -636.9, y: -29.1}
   m_SizeDelta: {x: 475.21, y: 17.600006}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1910550417
@@ -1611,6 +1656,16 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1910550415}
+--- !u!4 &1956061540 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 436108, guid: 7613b41402edf2148835a149f2719d70, type: 2}
+  m_PrefabInternal: {fileID: 814310313}
+--- !u!114 &1956061541 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11424234, guid: 7613b41402edf2148835a149f2719d70,
+    type: 2}
+  m_PrefabInternal: {fileID: 814310313}
+  m_Script: {fileID: 11500000, guid: 7141ed752d924404daa58469fbee6e6f, type: 3}
 --- !u!114 &2051806255 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11444722, guid: 8e1b1fe31b882c445bdc95bf26a8b433,
