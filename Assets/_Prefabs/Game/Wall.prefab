@@ -148,28 +148,28 @@ MonoBehaviour:
     ChewedSprite: {fileID: 21300000, guid: 2e4a90c5359bece4fb6f46456f39d652, type: 3}
     TopOverlayChewedSprite: {fileID: 21300000, guid: ba609d83e1bb65b46b4b5431a51932fe,
       type: 3}
-    TimeToChewThroughWall: 30
+    TimeToChewThroughWall: 60
   - Type: 1
     MainSprite: {fileID: 21300000, guid: 86718b6a03595ba4987ab2560a803837, type: 3}
     TopOverlaySprite: {fileID: 21300000, guid: d5c2e0bc93a1f984b8021177ebff3208, type: 3}
     ChewedSprite: {fileID: 21300000, guid: bc0765c2644971d42b0f83ad4433fa59, type: 3}
     TopOverlayChewedSprite: {fileID: 21300000, guid: 317733a690f32634a9b4667ef3571738,
       type: 3}
-    TimeToChewThroughWall: 5
+    TimeToChewThroughWall: 2
   - Type: 2
     MainSprite: {fileID: 21300000, guid: 7daea0b1b001b774f98fa8fef08d12c5, type: 3}
     TopOverlaySprite: {fileID: 21300000, guid: f4a22669765f67d4ab106969b86150eb, type: 3}
     ChewedSprite: {fileID: 21300000, guid: f60e6f7e5d462f04385dfa8123810d47, type: 3}
     TopOverlayChewedSprite: {fileID: 21300000, guid: 2fd7bf2a385f3b34db6bb5c5bd4e73d8,
       type: 3}
-    TimeToChewThroughWall: 60
+    TimeToChewThroughWall: 6
   - Type: 3
     MainSprite: {fileID: 21300000, guid: 9f79c71cac2a0484590e6334655633ca, type: 3}
     TopOverlaySprite: {fileID: 21300000, guid: c9a5e407e722ab54f89f6b264aec6491, type: 3}
     ChewedSprite: {fileID: 21300000, guid: c0fcb69adcb941248a4d8177f0a5f91e, type: 3}
     TopOverlayChewedSprite: {fileID: 21300000, guid: 185abd53eaeb0644a986f4677cb011f2,
       type: 3}
-    TimeToChewThroughWall: 20
+    TimeToChewThroughWall: 4
   SpriteChild: {fileID: 408960}
   SideWallOverlayChild: {fileID: 454470}
 --- !u!212 &21224628
