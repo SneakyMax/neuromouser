@@ -65,13 +65,25 @@ namespace Assets._Scripts
             if (startingNode == null || endingNode == null)
                 throw new InvalidOperationException("Either starting or ending positions aren't in the pathfinding system!");
 
-            if (IsNodeTraversable(startingNode) == false || IsNodeTraversable(endingNode) == false)
-                throw new InvalidOperationException("Starting or ending nodes aren't traversable!");
+            if (IsNodeTraversable(startingNode) == false)
+            {
+                Debug.LogWarningFormat("Starting node at {0} isn't traversable!", startingNode.GridPosition);
+                return null;
+            }
+
+            if (IsNodeTraversable(endingNode) == false)
+            {
+                Debug.LogWarningFormat("Ending node at {0} isn't traversable!", endingNode.GridPosition);
+                return null;
+            }
 
             open.Add(new PathfindingTempNode(startingNode, null, 0, 0));
 
             while (open.Count > 0)
             {
+                if (open.Count > 500)
+                    throw new InvalidOperationException("Pathfinding infinite loop! Bailing out!");
+
                 int qIndex;
                 var q = FindWithLowestF(open, out qIndex);
                 open.RemoveAt(qIndex);
@@ -90,13 +102,13 @@ namespace Assets._Scripts
 
                     foreach (var openNode in open)
                     {
-                        if (openNode.PathfindingNode.GridPosition == successorNode.PathfindingNode.GridPosition && openNode.F < successorNode.F)
+                        if (openNode.PathfindingNode.GridPosition == successorNode.PathfindingNode.GridPosition && openNode.F <= successorNode.F)
                             isValid = false;
                     }
 
                     foreach (var closedNode in closed)
                     {
-                        if (closedNode.PathfindingNode.GridPosition == successorNode.PathfindingNode.GridPosition && closedNode.F < successorNode.F)
+                        if (closedNode.PathfindingNode.GridPosition == successorNode.PathfindingNode.GridPosition && closedNode.F <= successorNode.F)
                             isValid = false;
                     }
 

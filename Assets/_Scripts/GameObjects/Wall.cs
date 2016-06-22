@@ -10,7 +10,7 @@ namespace Assets._Scripts.GameObjects
     public struct WallInfo
     {
         [AssignedInUnity]
-        public WallType WallType;
+        public WallType Type;
 
         [AssignedInUnity]
         public Sprite MainSprite;
@@ -29,7 +29,7 @@ namespace Assets._Scripts.GameObjects
 
         public override string ToString()
         {
-            return WallType.ToString();
+            return Type.ToString();
         }
     }
 
@@ -51,7 +51,7 @@ namespace Assets._Scripts.GameObjects
 
         public WallType WallType { get; set; }
 
-        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer mainSpriteRenderer;
         private SpriteRenderer overlaySpriteRenderer;
         
         public override void Deserialize(string serialized)
@@ -65,12 +65,12 @@ namespace Assets._Scripts.GameObjects
                 WallType = WallType.Metal;
             }
             
-            spriteRenderer = SpriteChild.GetComponent<SpriteRenderer>();
+            mainSpriteRenderer = SpriteChild.GetComponent<SpriteRenderer>();
             overlaySpriteRenderer = SideWallOverlayChild.GetComponent<SpriteRenderer>();
 
             SetNotChewed();
             
-            spriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
+            mainSpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
             overlaySpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
         }
 
@@ -78,7 +78,7 @@ namespace Assets._Scripts.GameObjects
         {
             var wallInfo = GetWallInfo(WallType);
 
-            spriteRenderer.sprite = wallInfo.MainSprite;
+            mainSpriteRenderer.sprite = wallInfo.MainSprite;
             overlaySpriteRenderer.sprite = wallInfo.TopOverlaySprite;
         }
 
@@ -86,13 +86,13 @@ namespace Assets._Scripts.GameObjects
         {
             var wallInfo = GetWallInfo(WallType);
 
-            spriteRenderer.sprite = wallInfo.ChewedSprite;
+            mainSpriteRenderer.sprite = wallInfo.ChewedSprite;
             overlaySpriteRenderer.sprite = wallInfo.TopOverlayChewedSprite;
         }
 
         private void SetEmpty()
         {
-            spriteRenderer.sprite = null;
+            mainSpriteRenderer.sprite = null;
             overlaySpriteRenderer.sprite = null;
         }
 
@@ -100,7 +100,7 @@ namespace Assets._Scripts.GameObjects
         {
             foreach (var info in WallInfos)
             {
-                if (info.WallType == wallType)
+                if (info.Type == wallType)
                     return info;
             }
             return default(WallInfo);

@@ -17,7 +17,7 @@ namespace Assets._Scripts.GameObjects
 
         public int Id { get; set; }
 
-        private SpriteRenderer spriteRenderer;
+        protected SpriteRenderer SpriteRenderer { get; set; }
 
         public virtual void Deserialize(string serialized)
         {
@@ -26,20 +26,20 @@ namespace Assets._Scripts.GameObjects
 
         public void Initialize()
         {
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            if (spriteRenderer != null)
+            SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            if (SpriteRenderer != null)
             {
-                spriteRenderer.sortingOrder = GetSortPosition(transform.position, Layer);
+                SpriteRenderer.sortingOrder = GetSortPosition(transform.position, Layer);
             }
         }
 
         /// <summary>Call this in Update if an object moves.</summary>
         protected void SortObjectThatMoves()
         {
-            if (spriteRenderer != null)
+            if (SpriteRenderer != null)
             {
-                var bottomOfSpritePosition = spriteRenderer.bounds.min;
-                spriteRenderer.sortingOrder = GetSortPosition(bottomOfSpritePosition, Layer);
+                var bottomOfSpritePosition = SpriteRenderer.bounds.min;
+                SpriteRenderer.sortingOrder = GetSortPosition(bottomOfSpritePosition, Layer);
             }
         }
 

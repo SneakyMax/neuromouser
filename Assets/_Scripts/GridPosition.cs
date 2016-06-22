@@ -1,3 +1,4 @@
+
 namespace Assets._Scripts
 {
     public struct GridPosition
@@ -29,7 +30,7 @@ namespace Assets._Scripts
 
         public override string ToString()
         {
-            return "" + X + ", " + Y;
+            return "(" + X + ", " + Y + ")";
         }
 
         public static bool operator ==(GridPosition a, GridPosition b)

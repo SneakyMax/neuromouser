@@ -50,11 +50,27 @@ namespace Assets._Scripts.AI
             var currentPosition = Cat.transform.position;
             var closestGridPosition = PlacementGrid.Instance.GetGridPosition(PlacementGrid.Instance.GetClosestSnappedPosition(currentPosition));
 
-            return new Queue<GridPosition>(Pathfinding.Instance.GetPath(closestGridPosition, position));
+            return GetPath(closestGridPosition, position);
+        }
+
+        protected static Queue<GridPosition> GetPath(GridPosition from, GridPosition to)
+        {
+            var path = Pathfinding.Instance.GetPath(from, to);
+
+            if (path == null)
+                return new Queue<GridPosition>();
+
+            return new Queue<GridPosition>(path);
         } 
 
         protected Vector3 MoveAlongPath(Queue<GridPosition> path, float speed)
         {
+            if (path.Count == 0)
+            {
+                Debug.LogWarning("Path provided to MoveAlongPath is empty.");
+                return Vector3.zero;
+            }
+
             var currentPosition = Cat.transform.position;
 
             var nextPathPosition = PlacementGrid.Instance.GetWorldPosition(path.Peek());

@@ -102,8 +102,15 @@ namespace Assets._Scripts.AI
 
             if (previousPatrolPoint == null)
                 throw new InvalidOperationException("Previous patrol point wasn't loaded??");
-            
-            path = new Queue<GridPosition>(Pathfinding.Instance.GetPath(previousPatrolPoint.Position, nextPatrolPoint.Position));
+
+            path = GetPath(previousPatrolPoint.Position, nextPatrolPoint.Position);
+
+            if (path.Count == 0)
+            {
+                // No path!
+                Debug.LogWarningFormat("Couldn't find path from {0} to {1}", previousPatrolPoint.Position, nextPatrolPoint.Position);
+                CatAI.SetState<Idle>();
+            }
         }
 
         private void SetNextPatrolPoint(PatrolPoint point)
