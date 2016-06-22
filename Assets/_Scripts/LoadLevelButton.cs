@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets._Scripts
@@ -11,8 +12,9 @@ namespace Assets._Scripts
         public InputField LevelNameInput;
 
         [AssignedInUnity]
-        public LevelLoader LevelLoader;
+        public LoadLevelProxy LoadLevelProxyPrefab;
 
+        [CalledFromUnity]
         public void Load()
         {
             var levelName = LevelNameInput.text;
@@ -20,7 +22,11 @@ namespace Assets._Scripts
             if (String.IsNullOrEmpty(levelName))
                 return;
 
-            LevelLoader.LoadLevel(levelName);
+            var instance = Instantiate(LoadLevelProxyPrefab.gameObject);
+
+            instance.GetComponent<LoadLevelProxy>().LevelName = levelName;
+
+            SceneManager.LoadScene(1); 
         }
     }
 }
