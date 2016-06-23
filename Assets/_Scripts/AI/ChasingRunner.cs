@@ -1,21 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-
-
 namespace Assets._Scripts.AI
 {
-	
-
-
     public class ChasingRunner : CatAIState
     {
-		[FMODUnity.EventRef]
-		public string startGrowl = "event:/Cat_Growl";
-		public string startHiss = "event:/Cat_Hiss";
-
 		private RunnerPlayer player;
         private Vector3 desiredVelocity;
+
+        public override void Enter()
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(UnityEngine.Random.value > 0.5f ? Cat.SoundGrowlEventName : Cat.SoundHissEventName, Cat.transform.position);
+        }
 
         public override void Update()
         {
@@ -29,15 +25,7 @@ namespace Assets._Scripts.AI
                 ReturnToDefaultState();
                 return;
             }
-
-			if (UnityEngine.Random.value > 0.5f) 
-			{
-				FMODUnity.RuntimeManager.PlayOneShot (startGrowl, Cat.transform.position);
-			} else 
-			{
-				FMODUnity.RuntimeManager.PlayOneShot (startHiss, Cat.transform.position);
-			}
-
+            
             var directionToPlayer = Cat.transform.position.UnitVectorTo(currentPlayer.transform.position);
             desiredVelocity = directionToPlayer * Cat.ChaseSpeed;
         }

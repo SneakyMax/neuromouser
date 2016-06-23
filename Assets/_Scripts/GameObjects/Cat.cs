@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Assets._Scripts.AI;
+using FMOD.Studio;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -8,11 +9,18 @@ namespace Assets._Scripts.GameObjects
     [RequireComponent(typeof(Rigidbody2D))]
     public class Cat : InGameObject
     {
+        [FMODUnity.EventRef]
+        public string SoundGrowlEventName = "event:/Cat_Growl";
+
+        [FMODUnity.EventRef]
+        public string SoundHissEventName = "event:/Cat_Hiss";
+
 		[FMODUnity.EventRef]
-		FMOD.Studio.PLAYBACK_STATE  playbackState;
-		public string moveSound = "event:/Cat_movement";
-		FMOD.Studio.EventInstance moveSoundInstance;
-		private bool walkSoundIsPlaying;
+		public string SoundMoveEventName = "event:/Cat_movement";
+
+		private EventInstance moveSoundInstance;
+
+        private bool walkSoundIsPlaying;
 
 		public override int Layer { get { return 2; } }
 
@@ -53,7 +61,7 @@ namespace Assets._Scripts.GameObjects
 
             GenerateFieldOfViewMesh();
 
-			moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (moveSound);
+			moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (SoundMoveEventName);
         }
 
         private void GenerateFieldOfViewMesh()
@@ -114,19 +122,37 @@ namespace Assets._Scripts.GameObjects
 
             CheckFieldOfViewChangedForMesh();
 
-			if (!walkSoundIsPlaying) 
-			{
-				moveSoundInstance.start ();
-				walkSoundIsPlaying = true;
-			}
-			if (walkSoundIsPlaying) 
-			{
-				moveSoundInstance.getPlaybackState (out playbackState);
-				if (playbackState != FMOD.Studio.PLAYBACK_STATE.PLAYING)
-				{
-					walkSoundIsPlaying = false;
-				}
-			}
+            //CheckWalkSound();
+        }
+
+        private void CheckWalkSound()
+        {
+            if (LastDesiredVelocity.IsZero())
+            {
+                StopWalkSound();
+            }
+            else
+            {
+                StartWalkSound();
+            }
+        }
+
+        public void StartWalkSound()
+        {
+            if (walkSoundIsPlaying)
+                return;
+
+            moveSoundInstance.start();
+            walkSoundIsPlaying = true;
+        }
+
+        public void StopWalkSound()
+        {
+            if (walkSoundIsPlaying == false)
+                return;
+
+            moveSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            walkSoundIsPlaying = false;
         }
 
         private void CheckFieldOfViewChangedForMesh()

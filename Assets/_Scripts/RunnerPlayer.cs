@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Assets._Scripts.GameObjects;
+﻿using Assets._Scripts.GameObjects;
 using UnityEngine;
 
 namespace Assets._Scripts
