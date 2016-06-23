@@ -47,11 +47,11 @@ namespace Assets._Scripts
             postLevelLoadActions = new List<Action>();
         }
 
-        public void LoadLevel(string levelName)
+		public void LoadLevel(string levelName, bool useGameSaveDirectory = true)
         {
             Reset();
 
-            string contents = LoadFileContents(levelName);
+			string contents = LoadFileContents(levelName, useGameSaveDirectory);
 
             if (contents == null)
                 return;
@@ -59,13 +59,24 @@ namespace Assets._Scripts
             DeserializeLevel(contents);
         }
 
-        private static string LoadFileContents(string levelName)
+		private static string LoadFileContents(string levelName, bool useGameSaveDirectory = true)
         {
-            SaveButton.EnsureSaveDirectoryExists();
+			string fullPath;
+			string fileName;
 
-            var saveDirectory = SaveButton.GetGameSaveDirectory();
-            var fileName = "level_" + levelName + ".txt";
-            var fullPath = Path.Combine(saveDirectory, fileName);
+			if (useGameSaveDirectory)
+			{
+				SaveButton.EnsureSaveDirectoryExists();
+
+				var saveDirectory = SaveButton.GetGameSaveDirectory();
+				fileName = "level_" + levelName + ".txt";
+				fullPath = Path.Combine( saveDirectory, fileName );
+			}
+			else
+			{
+				fullPath = levelName;
+				fileName = levelName;
+			}
 
             string contents;
             try

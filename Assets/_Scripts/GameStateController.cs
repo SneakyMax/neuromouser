@@ -12,16 +12,14 @@ namespace Assets._Scripts
     [UnityComponent]
     public class GameStateController : MonoBehaviour
     {
-        public static GameStateController Instance { get; private set; }
-
-        private bool levelLoadRequested;
-
-        public string LoadedLevelName { get; private set; }
-
         /// <summary>When a game/match has been started or restarted (e.g. after dying).</summary>
         public event Action GameStarted;
 
         public event Action OnPlayerDied;
+
+		public static GameStateController Instance { get; private set; }
+
+		public string LoadedLevelName { get; private set; }
 
         [AssignedInUnity]
         public Image InterfaceFadeInCover;
@@ -32,19 +30,23 @@ namespace Assets._Scripts
 		[AssignedInUnity]
 		public float SecondsBeforeLevelEnd = 300f;
 
-		[NonSerialized]
-		public Sprite EnterSprite = null;
-
-		[NonSerialized]
-		public Sprite ExitSprite = null;
-
 		public String[] LevelList = null;
 
-		private int currentLevelIndex = 0;
+		public int [] LevelTimeList = null;
 
 		private bool showingEnterStory = false;
 
 		private bool showingExitStory = false;
+
+		private int currentLevelIndex = 0;
+
+		private bool levelLoadRequested;
+
+		/*[NonSerialized]
+		public Sprite EnterSprite = null;
+
+		[NonSerialized]
+		public Sprite ExitSprite = null;*/
 
         [UnityMessage]
         public void Awake()
@@ -69,26 +71,36 @@ namespace Assets._Scripts
             }
         }
 
-        public void LoadLevel(string levelName)
+		public void LoadLevel(string levelName)
         {
-            CoverScreen();
-            levelLoadRequested = true;
-            LoadedLevelName = levelName;
-            LevelLoader.Instance.LoadLevel(levelName);
-			EnterSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
+			CoverScreen();
+			levelLoadRequested = true;
+			LoadedLevelName = levelName;
+
+			if (levelName == "**new game**" )
+			{
+				if ( ( currentLevelIndex > -1 ) && (LevelList != null) && (currentLevelIndex < LevelList.Length))
+				{
+					LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex],
+							                       false);
+
+					if ((LevelTimeList != null) && (currentLevelIndex < LevelTimeList[currentLevelIndex]))
+						SecondsBeforeLevelEnd = LevelTimeList[currentLevelIndex];
+					return;
+				}
+				else
+				{
+					GoToTitleScreen();
+					return;
+				}
+			}
+
+			LevelLoader.Instance.LoadLevel( levelName );
+
+			/*EnterSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
 				"entryimage_" + levelName + ".png"), 1920f, 1080f);
 			ExitSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
-				"exitimage_" + levelName + ".png"), 1920f, 1080f);
-
-			// TODO Remove this...for debugging only
-			if ( EnterSprite != null )
-			{
-				print( "Entersprite found." );
-			}
-			if ( ExitSprite != null )
-			{
-				print( "Exitsprite found." );
-			}
+				"exitimage_" + levelName + ".png"), 1920f, 1080f);*/
         }
 
 		public void PlayerGotToExit()
@@ -97,8 +109,7 @@ namespace Assets._Scripts
 			{
 				if ( ++currentLevelIndex < LevelList.Length )
 				{
-					LoadedLevelName = LevelList[currentLevelIndex];
-					RestartLevel();
+					LoadLevel(LoadedLevelName);
 				}
 				else
 				{
@@ -121,8 +132,7 @@ namespace Assets._Scripts
 
         public void RestartLevel()
         {
-            CoverScreen();
-            LevelLoader.Instance.LoadLevel(LoadedLevelName);
+			LoadLevel(LoadedLevelName);
         }
 
         private void LevelLoaded()
