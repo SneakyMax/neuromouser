@@ -7,14 +7,11 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(Collider2D))]
     public class Door : InGameObject
     {
-        [AssignedInUnity]
-        public Sprite Level1DoorSprite;
+		public Color Level1Color;
 
-        [AssignedInUnity]
-        public Sprite Level2DoorSprite;
+		public Color Level2Color;
 
-        [AssignedInUnity]
-        public Sprite Level3DoorSprite;
+		public Color Level3Color;
 
         public override int Layer { get { return 2; } }
 
@@ -41,6 +38,22 @@ namespace Assets._Scripts.GameObjects
 			animator = GetComponent<Animator>();
 			doorCollider = GetComponent<Collider2D>();
             
+			switch ( Level )
+			{
+				case 1:
+					GetComponent<SpriteRenderer>().color = Level1Color;
+					break;
+				case 2:
+					GetComponent<SpriteRenderer>().color = Level2Color;
+					break;
+				case 3:
+					GetComponent<SpriteRenderer>().color = Level3Color;
+					break;
+				default:
+					GetComponent<SpriteRenderer>().color = Level3Color;
+					break;
+			}
+
 		    animator.SetBool("IsOpen", false);
 		}
 
