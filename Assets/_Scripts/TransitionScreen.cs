@@ -1,68 +1,72 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-[RequireComponent (typeof(Image))]
-public class TransitionScreen : MonoBehaviour
+namespace Assets._Scripts
 {
-	public delegate void OnTransitionReturn();
+    [RequireComponent (typeof(Image)), UnityComponent]
+    public class TransitionScreen : MonoBehaviour
+    {
+        public delegate void OnTransitionReturn();
 
-	public event OnTransitionReturn TransitionReturn;
+        public event OnTransitionReturn TransitionReturn;
 
-	private bool buttonDelay = true;
+        private bool buttonDelay = true;
 
-	public void ShowTransition(Sprite showSprite)
-	{
-		if (showSprite != null)
-		{
-			enabled = true;
-			GetComponent<Image>().enabled = true;
-			GetComponent<Image>().sprite = showSprite;
-			StartCoroutine( DelayButtonPress() );
-		}
-		else
-		{
-			DisableTransition();
-		}
-	}
+        public void ShowTransition(Sprite showSprite)
+        {
+            if (showSprite != null)
+            {
+                enabled = true;
+                GetComponent<Image>().enabled = true;
+                GetComponent<Image>().sprite = showSprite;
+                StartCoroutine( DelayButtonPress() );
+            }
+            else
+            {
+                DisableTransition();
+            }
+        }
 
-	private void Start()
-	{
-		GetComponent<Image>().enabled = false;
-		enabled = false;
-	}
+        [UnityMessage]
+        private void Start()
+        {
+            GetComponent<Image>().enabled = false;
+            enabled = false;
+        }
 
-	private IEnumerator DelayButtonPress()
-	{
-		buttonDelay = true;
-		yield return new WaitForSeconds( 1.0f );
-		buttonDelay = false;
-	}
+        private IEnumerator DelayButtonPress()
+        {
+            buttonDelay = true;
+            yield return new WaitForSeconds( 1.0f );
+            buttonDelay = false;
+        }
 
-	private void DisableTransition()
-	{
-		enabled = false;
-		GetComponent<Image>().sprite = null;
-		GetComponent<Image>().enabled = false;
-		if (TransitionReturn != null)
-		{
-			TransitionReturn();
-		}
-	}
+        private void DisableTransition()
+        {
+            enabled = false;
+            GetComponent<Image>().sprite = null;
+            GetComponent<Image>().enabled = false;
+            if (TransitionReturn != null)
+            {
+                TransitionReturn();
+            }
+        }
 
-	private void Update()
-	{
-		if (GetAnyButtonPress() && !buttonDelay)
-		{
-			DisableTransition();
-		}
-	}
+        private void Update()
+        {
+            if (GetAnyButtonPress() && !buttonDelay)
+            {
+                DisableTransition();
+            }
+        }
 
-	private bool GetAnyButtonPress()
-	{
-		return (Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical") ||
-		        Input.GetButtonUp("HorizontalHackerAxis") || Input.GetButtonUp("VerticalHackerAxis") ||
-		        Input.GetButtonUp("Fire1") || Input.GetButtonUp("Jump") || Input.GetButtonUp("Submit") ||
-		        Input.GetButtonUp("Cancel") || Input.GetButtonUp("Escape") || Input.GetButtonUp("Chewing"));
-	}
+        private bool GetAnyButtonPress()
+        {
+            return (Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical") ||
+                    Input.GetButtonUp("HorizontalHackerAxis") || Input.GetButtonUp("VerticalHackerAxis") ||
+                    Input.GetButtonUp("Fire1") || Input.GetButtonUp("Jump") || Input.GetButtonUp("Submit") ||
+                    Input.GetButtonUp("Cancel") || Input.GetButtonUp("Escape") || Input.GetButtonUp("Chewing"));
+        }
+    }
 }

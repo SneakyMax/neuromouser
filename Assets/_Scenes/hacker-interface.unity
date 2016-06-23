@@ -397,6 +397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9370975f19604474896dabe5c636a548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MusicTrackOne: event:/Track_1
+  MusicTrackThree: event:/Track_3
   InterfaceFadeInCover: {fileID: 1026840449}
   ScreenFadeInCover: {fileID: 1703465403}
   SecondsBeforeLevelEnd: 300
@@ -411,7 +413,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 36511ce3bdbea314fabda344d525f15e, type: 3}
   - {fileID: 21300000, guid: 6ca98eb3acdd12b47b404431ded7e490, type: 3}
   - {fileID: 21300000, guid: 0a45db1259db8144798b395dd76da67e, type: 3}
-  TransScreen: {fileID: 1624660844}
+  TransitionScreen: {fileID: 1624660844}
 --- !u!4 &380641087
 Transform:
   m_ObjectHideFlags: 0

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using DG.Tweening;
+using FMOD;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Assets._Scripts.LevelEditor;
+using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace Assets._Scripts
 {
@@ -16,6 +19,16 @@ namespace Assets._Scripts
         public event Action GameStarted;
 
         public event Action OnPlayerDied;
+
+        [EventRef]
+        public string MusicTrackOne = "event:/Track_1";
+
+        [EventRef]
+        public string MusicTrackThree = "event:/Track_3";
+
+        public EventInstance MusicTrackOneInstance;
+
+        public EventInstance MusicTrackThreeInstance;
 
 		public static GameStateController Instance { get; private set; }
 
@@ -30,29 +43,25 @@ namespace Assets._Scripts
 		[AssignedInUnity]
 		public float SecondsBeforeLevelEnd = 300f;
 
-		public String[] LevelList = null;
+        [AssignedInUnity]
+        public string[] LevelList;
 
-		public int [] LevelTimeList = null;
+        [AssignedInUnity]
+        public int [] LevelTimeList;
 
-		public Sprite[] PreTransitionList = null;
+        [AssignedInUnity]
+        public Sprite[] PreTransitionList;
 
-		public TransitionScreen TransScreen = null;
+        [AssignedInUnity]
+		public TransitionScreen TransitionScreen;
 
-		private bool showingEnterStory = false;
-
-		private bool showingExitStory = false;
-
-		private int currentLevelIndex = 0;
+        private int currentLevelIndex;
 
 		private bool levelLoadRequested;
 
-		private bool transitionShownThisLevel = false;
+		private bool transitionShownThisLevel;
 
-		/*[NonSerialized]
-		public Sprite EnterSprite = null;
-
-		[NonSerialized]
-		public Sprite ExitSprite = null;*/
+        private int? currentPlayingMusic;
 
         [UnityMessage]
         public void Awake()
@@ -63,13 +72,16 @@ namespace Assets._Scripts
         [UnityMessage]
         public void Start()
         {
+            MusicTrackOneInstance = RuntimeManager.CreateInstance(MusicTrackOne);
+            MusicTrackThreeInstance = RuntimeManager.CreateInstance(MusicTrackThree);
+            
             LevelLoader.Instance.LevelLoaded += LevelLoaded;
 
             StartCoroutine(KickBackToTitleScreenIfNoLevelLoaded());
 
-			if ( TransScreen != null )
+			if (TransitionScreen != null)
 			{
-				TransScreen.TransitionReturn += OnTransitionReturn;
+				TransitionScreen.TransitionReturn += OnTransitionReturn;
 			}
         }
 
@@ -84,10 +96,9 @@ namespace Assets._Scripts
 
 		private IEnumerator LoadLevelDelay()
 		{
-			if ((TransScreen != null) && (PreTransitionList != null) &&
-				(currentLevelIndex < PreTransitionList.Length))
+			if (TransitionScreen != null && PreTransitionList != null && currentLevelIndex < PreTransitionList.Length)
 			{
-				TransScreen.ShowTransition(PreTransitionList[currentLevelIndex]);
+				TransitionScreen.ShowTransition(PreTransitionList[currentLevelIndex]);
 			}
 
 			LevelLoader.Instance.Reset();
@@ -98,10 +109,11 @@ namespace Assets._Scripts
 
 			levelLoadRequested = true;
 
-			LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex],
-				false);
+            StartMusicIfNotPlaying();
 
-			if ((LevelTimeList != null) && (currentLevelIndex < LevelTimeList.Length))
+            LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex], false);
+
+			if (LevelTimeList != null && currentLevelIndex < LevelTimeList.Length)
 				SecondsBeforeLevelEnd = LevelTimeList[currentLevelIndex];
 		}
 
@@ -113,26 +125,59 @@ namespace Assets._Scripts
 
 			if (levelName == "**new game**" )
 			{
-				if ( ( currentLevelIndex > -1 ) && (LevelList != null) && (currentLevelIndex < LevelList.Length))
-				{
-					StartCoroutine(LoadLevelDelay());
-					return;
-				}
-				else
-				{
-					GoToTitleScreen();
-					return;
-				}
+			    if (currentLevelIndex < 0 || LevelList == null || currentLevelIndex >= LevelList.Length)
+			    {
+			        GoToTitleScreen();
+			        return;
+			    }
+
+			    StartCoroutine(LoadLevelDelay());
+			    return;
 			}
+
 			transitionShownThisLevel = true;
-			LevelLoader.Instance.LoadLevel( levelName );
+			LevelLoader.Instance.LoadLevel(levelName);
+        }
+
+        public void StartMusicIfNotPlaying()
+        {
+            if (currentPlayingMusic != null)
+                return;
+
+            if (Random.value > 0.5f)
+            {
+                MusicTrackOneInstance.start();
+                currentPlayingMusic = 1;
+            }
+            else
+            {
+                MusicTrackThreeInstance.start();
+                currentPlayingMusic = 3;
+            }
+        }
+
+        public void StopMusic()
+        {
+            if (currentPlayingMusic == 1)
+            {
+                MusicTrackOneInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            }
+            else if (currentPlayingMusic == 3)
+            {
+                MusicTrackThreeInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            }
+
+            currentPlayingMusic = null;
         }
 
 		public void PlayerGotToExit()
 		{
-			if ((LoadedLevelName == "**new game**") &&  (LevelList != null ))
+		    StopMusic();
+
+			if (LoadedLevelName == "**new game**" && LevelList != null)
 			{
-				if ( ++currentLevelIndex < LevelList.Length )
+			    currentLevelIndex++;
+				if (currentLevelIndex < LevelList.Length)
 				{
 					transitionShownThisLevel = false;
 					LoadLevel(LoadedLevelName);
@@ -197,14 +242,24 @@ namespace Assets._Scripts
         [UnityMessage]
         public void Update()
         {
+            PLAYBACK_STATE state;
+            MusicTrackOneInstance.getPlaybackState(out state);
+
+            PLAYBACK_STATE state2;
+            MusicTrackThreeInstance.getPlaybackState(out state2);
+
+            Debug.Log(state);
+            Debug.Log(state2);
+
             if (Input.GetButtonDown("Escape"))
             {
                 GoToTitleScreen();
             }
         }
 
-        private static void GoToTitleScreen()
+        private void GoToTitleScreen()
         {
+            StopMusic();
 			Instance.currentLevelIndex = 0;
 			Instance.LevelList = null;
             SceneManager.LoadScene(0);
