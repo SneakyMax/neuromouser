@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.08.00">
+    <object class="AudioFile" id="{94b7fe70-1515-4a57-a6d4-9e727e51ccb9}">
+        <property name="assetPath">
+            <value>Track_1_Neuromouser_loop.wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>80.021768707482991</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{67b2e52b-da85-4efa-8fc9-d5354d3ce43d}</destination>
+        </relationship>
+    </object>
+</objects>

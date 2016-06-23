@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.08.00">
+    <object class="AudioFile" id="{a411a8d3-7943-4f87-8b2c-9197d71448b9}">
+        <property name="assetPath">
+            <value>cat_growl_1.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>1.4889795918367348</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{67b2e52b-da85-4efa-8fc9-d5354d3ce43d}</destination>
+        </relationship>
+    </object>
+</objects>

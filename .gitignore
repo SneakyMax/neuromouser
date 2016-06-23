@@ -29,3 +29,4 @@ sysinfo.txt
 .DS_Store
 /Assets/FMODStudioCache.asset
 /Assets/FMODStudioCache.asset.meta
+.cache
