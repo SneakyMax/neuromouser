@@ -1,6 +1,6 @@
 ﻿namespace Assets._Scripts.AI
 {
-    public class DisabledByCatnip : CatAIState
+    public class DisabledByRunner : CatAIState
     {
          
     }

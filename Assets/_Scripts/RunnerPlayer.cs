@@ -32,6 +32,12 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public ChewProgressBar ChewProgressBar;
 
+        [AssignedInUnity]
+        public GameObject HackPrompt;
+
+        [AssignedInUnity]
+        public GameObject HackProjectilePrompt;
+
         private SpriteRenderer spriteRenderer;
         private new Rigidbody2D rigidbody;
 

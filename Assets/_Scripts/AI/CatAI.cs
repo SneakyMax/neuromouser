@@ -30,7 +30,7 @@ namespace Assets._Scripts.AI
 
             AddState<ChasingRunner>();
             AddState<Idle>();
-            AddState<DisabledByCatnip>();
+            AddState<DisabledByRunner>();
             AddState<Patrolling>();
             AddState<InvestigatingAlarm>();
             AddState<AttractedToCatnip>();
