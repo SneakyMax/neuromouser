@@ -162,7 +162,7 @@ namespace Assets._Scripts
             }
         }
 
-        private void Reset()
+        public void Reset()
         {
             if (LevelIsLoaded)
             {

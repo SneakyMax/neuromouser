@@ -34,6 +34,10 @@ namespace Assets._Scripts
 
 		public int [] LevelTimeList = null;
 
+		public Sprite[] PreTransitionList = null;
+
+		public TransitionScreen TransScreen = null;
+
 		private bool showingEnterStory = false;
 
 		private bool showingExitStory = false;
@@ -41,6 +45,8 @@ namespace Assets._Scripts
 		private int currentLevelIndex = 0;
 
 		private bool levelLoadRequested;
+
+		private bool transitionShownThisLevel = false;
 
 		/*[NonSerialized]
 		public Sprite EnterSprite = null;
@@ -60,6 +66,11 @@ namespace Assets._Scripts
             LevelLoader.Instance.LevelLoaded += LevelLoaded;
 
             StartCoroutine(KickBackToTitleScreenIfNoLevelLoaded());
+
+			if ( TransScreen != null )
+			{
+				TransScreen.TransitionReturn += OnTransitionReturn;
+			}
         }
 
         private IEnumerator KickBackToTitleScreenIfNoLevelLoaded()
@@ -71,21 +82,40 @@ namespace Assets._Scripts
             }
         }
 
+		private IEnumerator LoadLevelDelay()
+		{
+			if ((TransScreen != null) && (PreTransitionList != null) &&
+				(currentLevelIndex < PreTransitionList.Length))
+			{
+				TransScreen.ShowTransition(PreTransitionList[currentLevelIndex]);
+			}
+
+			LevelLoader.Instance.Reset();
+			while (!transitionShownThisLevel)
+			{
+				yield return null;
+			}
+
+			levelLoadRequested = true;
+
+			LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex],
+				false);
+
+			if ((LevelTimeList != null) && (currentLevelIndex < LevelTimeList.Length))
+				SecondsBeforeLevelEnd = LevelTimeList[currentLevelIndex];
+		}
+
 		public void LoadLevel(string levelName)
         {
 			CoverScreen();
-			levelLoadRequested = true;
 			LoadedLevelName = levelName;
+			levelLoadRequested = true;
 
 			if (levelName == "**new game**" )
 			{
 				if ( ( currentLevelIndex > -1 ) && (LevelList != null) && (currentLevelIndex < LevelList.Length))
 				{
-					LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex],
-							                       false);
-
-					if ((LevelTimeList != null) && (currentLevelIndex < LevelTimeList[currentLevelIndex]))
-						SecondsBeforeLevelEnd = LevelTimeList[currentLevelIndex];
+					StartCoroutine(LoadLevelDelay());
 					return;
 				}
 				else
@@ -94,21 +124,17 @@ namespace Assets._Scripts
 					return;
 				}
 			}
-
+			transitionShownThisLevel = true;
 			LevelLoader.Instance.LoadLevel( levelName );
-
-			/*EnterSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
-				"entryimage_" + levelName + ".png"), 1920f, 1080f);
-			ExitSprite = LoadSpriteFromPath(Path.Combine(SaveButton.GetGameSaveDirectory(),
-				"exitimage_" + levelName + ".png"), 1920f, 1080f);*/
         }
 
 		public void PlayerGotToExit()
 		{
-			if ( LevelList != null )
+			if ((LoadedLevelName == "**new game**") &&  (LevelList != null ))
 			{
 				if ( ++currentLevelIndex < LevelList.Length )
 				{
+					transitionShownThisLevel = false;
 					LoadLevel(LoadedLevelName);
 				}
 				else
@@ -184,7 +210,12 @@ namespace Assets._Scripts
             SceneManager.LoadScene(0);
         }
 
-		private Sprite LoadSpriteFromPath(string pathname, float width, float height)
+		public void OnTransitionReturn()
+		{
+			transitionShownThisLevel = true;
+		}
+
+		/*private Sprite LoadSpriteFromPath(string pathname, float width, float height)
 		{
 			try
 			{
@@ -201,6 +232,6 @@ namespace Assets._Scripts
 				// Couldn't load sprite
 				return null;
 			}
-		}
+		}*/
     }
 }
