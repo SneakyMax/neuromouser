@@ -170,6 +170,11 @@ namespace Assets._Scripts.GameObjects
         public void FixedUpdate()
         {
             AI.FixedUpdate();
+
+            if (LastDesiredVelocity.IsZero())
+            {
+                rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
         }
 
         /// <summary>Magnitude is in units/second. See <see cref="PatrolSpeed"/>. Call this only in FixedUpdate.</summary>
@@ -181,6 +186,9 @@ namespace Assets._Scripts.GameObjects
                 return; //No movement
 
             var movement = velocity * Time.deltaTime;
+
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
             rigidbody.MovePosition(transform.position + (Vector3)movement);
         }
 

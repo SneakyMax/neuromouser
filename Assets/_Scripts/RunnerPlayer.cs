@@ -202,7 +202,11 @@ namespace Assets._Scripts
 
             var results = Physics2D.RaycastAll(transform.position, facingUnitVector, MaxDistanceForWallChewing);
             if (results.Length == 0)
+            {
+                ChewPrompt.gameObject.SetActive(false);
+                StopChewing();
                 return;
+            }
 
             GameObject nearbyWall = null;
             foreach (var result in results)

@@ -6,7 +6,6 @@ namespace Assets._Scripts.AI
     public class ChasingRunner : CatAIState
     {
 		private RunnerPlayer player;
-        private Vector3 desiredVelocity;
 
         public override void Enter()
         {
@@ -27,7 +26,7 @@ namespace Assets._Scripts.AI
             }
             
             var directionToPlayer = Cat.transform.position.UnitVectorTo(currentPlayer.transform.position);
-            desiredVelocity = directionToPlayer * Cat.ChaseSpeed;
+            DesiredVelocity = directionToPlayer * Cat.ChaseSpeed;
         }
 
         public override void Exit()
@@ -41,14 +40,6 @@ namespace Assets._Scripts.AI
                 AI.SetState<Patrolling>();
             else
                 AI.SetState<Idle>();
-        }
-
-        public override void FixedUpdate()
-        {
-            if (desiredVelocity.IsZero())
-                return;
-
-            Cat.Move(desiredVelocity);
         }
 
         public void SetRunner(RunnerPlayer player)
