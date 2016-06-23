@@ -10,6 +10,7 @@ namespace Assets._Scripts.AI
         private Queue<GridPosition> pathToLastRunnerPosition;
 
         private Vector3 lastRunnerPosition;
+        private GridPosition lastRunnerGridPosition;
 
 		private RunnerPlayer player;
 
@@ -28,6 +29,7 @@ namespace Assets._Scripts.AI
             if (currentPlayer != null)
             {
                 lastRunnerPosition = currentPlayer.transform.position;
+                lastRunnerGridPosition = PlacementGrid.Instance.GetClosestGridPosition(lastRunnerPosition);
 
                 var directionToPlayer = Cat.transform.position.UnitVectorTo(currentPlayer.transform.position);
                 DesiredVelocity = directionToPlayer * Cat.ChaseSpeed;
@@ -36,10 +38,6 @@ namespace Assets._Scripts.AI
             }
             else
             {
-                if (pathToLastRunnerPosition == null)
-                {
-                    Debug.Log("Lost Runner");
-                }
                 LostPlayer();
             }
         }
@@ -60,7 +58,7 @@ namespace Assets._Scripts.AI
 
         private void GetPathToLastRunnerPosition()
         {
-            pathToLastRunnerPosition = GetPathTo(PlacementGrid.Instance.GetClosestGridPosition(lastRunnerPosition));
+            pathToLastRunnerPosition = GetPathTo(lastRunnerGridPosition);
             if (pathToLastRunnerPosition == null || pathToLastRunnerPosition.Count == 0)
             {
                 ReturnToDefaultState();
@@ -71,7 +69,9 @@ namespace Assets._Scripts.AI
         {
             MoveAlongPath(pathToLastRunnerPosition, Cat.ChaseSpeed);
 
-            if (Cat.transform.position.DistanceTo(lastRunnerPosition) < CatAI.ReachedPositionThreshold)
+            var worldGridPosition = PlacementGrid.Instance.GetWorldPosition(lastRunnerGridPosition);
+
+            if (Cat.transform.position.DistanceTo(worldGridPosition) < CatAI.ReachedPositionThreshold)
                 ReturnToDefaultState();
         }
 
@@ -80,6 +80,7 @@ namespace Assets._Scripts.AI
             player = null;
             pathToLastRunnerPosition = null;
             lastRunnerPosition = Vector3.zero;
+            lastRunnerGridPosition = new GridPosition();
         }
 
         private void ReturnToDefaultState()

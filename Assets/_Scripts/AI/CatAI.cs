@@ -113,7 +113,7 @@ namespace Assets._Scripts.AI
             {
                 // Half field of view, divide by the number of fan points, spread out from the center with i
                 var angle = Cat.FieldOfView / 2.0f / fanPoints * i;
-                var unitVectorDirectionFacing = Cat.transform.rotation * Vector3.right;
+                var unitVectorDirectionFacing = Cat.MeshFilter.transform.rotation * Vector3.right;
                 
                 var left = Quaternion.AngleAxis(-angle, Vector3.forward);
                 var right = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -193,22 +193,10 @@ namespace Assets._Scripts.AI
 
         public void Update()
         {
-            RotateCatBasedOnMovement();
-
             if (CurrentState != null)
             {
                 CurrentState.Update();
             }
-        }
-
-        private void RotateCatBasedOnMovement()
-        {
-            if (Cat.LastDesiredVelocity.IsZero())
-                return;
-
-            var movementDirection = Cat.transform.position.DirectionToDegrees(Cat.transform.position + Cat.LastDesiredVelocity); // kinda dumb don't care
-            var rotationQuaternion = Quaternion.AngleAxis(movementDirection, Vector3.forward);
-            Cat.transform.rotation = rotationQuaternion;
         }
 
         public void FixedUpdate()

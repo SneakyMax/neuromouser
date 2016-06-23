@@ -66,7 +66,7 @@ namespace Assets._Scripts.AI
             }
             else
             {
-                Cat.transform.rotation = startRotation;
+                Cat.Turn(startRotation);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Assets._Scripts.AI
             {
                 StopMoving();
                 isReturningToIdlePosition = false;
-                Cat.transform.rotation = startRotation;
+                Cat.Turn(startRotation);
                 return;
             }
 

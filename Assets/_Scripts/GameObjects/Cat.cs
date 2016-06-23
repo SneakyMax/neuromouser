@@ -2,6 +2,8 @@
 using System.Linq;
 using Assets._Scripts.AI;
 using FMOD.Studio;
+using FMODUnity;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -9,11 +11,17 @@ namespace Assets._Scripts.GameObjects
     [RequireComponent(typeof(Rigidbody2D))]
     public class Cat : InGameObject
     {
-        [FMODUnity.EventRef]
+        [EventRef, UsedImplicitly]
 		public string SoundGrowlEventName = "event:/Cat_Growl";
+
+        [EventRef, UsedImplicitly]
         public string SoundHissEventName = "event:/Cat_Hiss";
-		public string SoundMoveEventName = "event:/Cat_movement";
-		public string SoundDeathEventName = "event:/Mouse_death";
+
+        [EventRef, UsedImplicitly]
+        public string SoundMoveEventName = "event:/Cat_movement";
+
+        [EventRef, UsedImplicitly]
+        public string SoundDeathEventName = "event:/Mouse_death";
 
 		private EventInstance moveSoundInstance;
 
@@ -34,6 +42,15 @@ namespace Assets._Scripts.GameObjects
 
         [AssignedInUnity]
         public float LengthOfView = 10;
+
+        [AssignedInUnity]
+        public Sprite UpSprite;
+
+        [AssignedInUnity]
+        public Sprite LeftRightSprite;
+
+        [AssignedInUnity]
+        public Sprite DownSprite;
 
         public MeshFilter MeshFilter { get; private set; }
 
@@ -61,7 +78,7 @@ namespace Assets._Scripts.GameObjects
             fieldOfViewMesh = GetComponentInChildren<MeshRenderer>();
             GenerateFieldOfViewMesh();
 
-            moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (SoundMoveEventName);
+            moveSoundInstance = RuntimeManager.CreateInstance(SoundMoveEventName);
         }
 
         private void GenerateFieldOfViewMesh()
@@ -112,7 +129,7 @@ namespace Assets._Scripts.GameObjects
             {
                 if (AI.CurrentState is DisabledByRunner)
                     return; // Can't die to a disabled cat.
-				FMODUnity.RuntimeManager.PlayOneShot (SoundDeathEventName, transform.position);
+				RuntimeManager.PlayOneShot (SoundDeathEventName, transform.position);
                 GameStateController.Instance.PlayerDied();
             }
         }
@@ -125,7 +142,58 @@ namespace Assets._Scripts.GameObjects
 
             CheckFieldOfViewChangedForMesh();
 
+            RotateCatBasedOnMovement();
             //CheckWalkSound();
+        }
+
+        private void RotateCatBasedOnMovement()
+        {
+            if (LastDesiredVelocity.IsZero())
+                return;
+
+            var movementDirection = transform.position.DirectionToDegrees(transform.position + LastDesiredVelocity); // kinda dumb don't care
+            
+            Turn(movementDirection);
+        }
+
+        public void Turn(Quaternion rotation)
+        {
+            Turn(Vector3.zero.DirectionToDegrees(rotation * Vector3.right));
+        }
+
+        public void Turn(float toDegrees)
+        {
+            Sprite sprite;
+            var flip = false;
+
+            if (toDegrees < 45)
+            {
+                sprite = LeftRightSprite;
+                flip = true;
+            }
+            else if (toDegrees < 135)
+            {
+                sprite = UpSprite;
+            }
+            else if (toDegrees < 225)
+            {
+                sprite = LeftRightSprite;
+            }
+            else if (toDegrees < 315)
+            {
+                sprite = DownSprite;
+            }
+            else
+            {
+                sprite = LeftRightSprite;
+                flip = true;
+            }
+
+            SpriteRenderer.sprite = sprite;
+            SpriteRenderer.flipX = flip;
+
+            var rotationQuaternion = Quaternion.AngleAxis(toDegrees, Vector3.forward);
+            fieldOfViewMesh.gameObject.transform.rotation = rotationQuaternion;
         }
 
         private void CheckWalkSound()

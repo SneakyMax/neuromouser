@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &126846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 441638}
+  - 212: {fileID: 21244602}
+  m_Layer: 0
+  m_Name: Sprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &155398
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,7 +42,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 429212}
-  - 212: {fileID: 21288620}
   - 114: {fileID: 11400890}
   - 50: {fileID: 5049272}
   - 58: {fileID: 5843760}
@@ -49,12 +64,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 192174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 12.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 469088}
+  - {fileID: 441638}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &441638
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.366, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 429212}
+  m_RootOrder: 1
 --- !u!4 &469088
 Transform:
   m_ObjectHideFlags: 1
@@ -64,6 +94,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 429212}
   m_RootOrder: 0
@@ -130,7 +161,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.56
+  m_Radius: 0.4
 --- !u!114 &11400890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -145,10 +176,14 @@ MonoBehaviour:
   SoundGrowlEventName: event:/Cat_Growl
   SoundHissEventName: event:/Cat_Hiss
   SoundMoveEventName: event:/Cat_movement
+  SoundDeathEventName: event:/Mouse_death
   PatrolSpeed: 1.7
   ChaseSpeed: 2.5
   FieldOfView: 86.61
   LengthOfView: 4.8
+  UpSprite: {fileID: 21300000, guid: 4a0dc6daa472d334795c015df8520f31, type: 3}
+  LeftRightSprite: {fileID: 21300000, guid: 3b789f347672be942859603c7dc5a219, type: 3}
+  DownSprite: {fileID: 21300000, guid: 4e5ac42daec6a314885825bce9cbd441, type: 3}
 --- !u!114 &11411420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,12 +308,12 @@ LineRenderer:
       serializedVersion: 2
       rgba: 4294967295
   m_UseWorldSpace: 1
---- !u!212 &21288620
+--- !u!212 &21244602
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 192174}
+  m_GameObject: {fileID: 126846}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -299,7 +334,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9f9ba0a8b82ef7d41b8a11fad462ff61, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e5ac42daec6a314885825bce9cbd441, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

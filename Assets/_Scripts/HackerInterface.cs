@@ -70,11 +70,6 @@ namespace Assets._Scripts
 		public TimerDevice LevelTimer;
 
         /// <summary>
-        /// Holds the initial orthographic size of the camera.
-        /// </summary>
-        private float initialCameraSize;
-
-        /// <summary>
         /// Called when the script is loaded
         /// </summary>
         /// <exception cref="UnityException">Thrown if any terminal or the camera is unassociated, or if
@@ -103,7 +98,6 @@ namespace Assets._Scripts
         [UnityMessage]
         private void Start()
         {
-            initialCameraSize = RunnerCamera.orthographicSize;
             TerminalCamera.OnPowerChanged += OnCameraPowerChange;
             TerminalTraps.OnPowerChanged += OnTrapPowerChange;
             TerminalDoors.OnPowerChanged += OnDoorPowerChange;
