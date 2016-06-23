@@ -51,6 +51,8 @@ namespace Assets._Scripts.GameObjects
 
         public Vector3 LastDesiredVelocity { get; private set; }
 
+        private MeshRenderer fieldOfViewMesh;
+
         [UnityMessage]
         public void Start()
         {
@@ -59,9 +61,10 @@ namespace Assets._Scripts.GameObjects
             rigidbody = GetComponent<Rigidbody2D>();
             MeshFilter = GetComponentInChildren<MeshFilter>();
 
+            fieldOfViewMesh = GetComponentInChildren<MeshRenderer>();
             GenerateFieldOfViewMesh();
 
-			moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (SoundMoveEventName);
+            moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (SoundMoveEventName);
         }
 
         private void GenerateFieldOfViewMesh()
@@ -98,8 +101,8 @@ namespace Assets._Scripts.GameObjects
 
             MeshFilter.mesh = mesh;
 
-            GetComponentInChildren<MeshRenderer>().sortingOrder = 50000;
-            GetComponentInChildren<MeshRenderer>().sortingLayerName = "RunnerOnTop";
+            fieldOfViewMesh.sortingOrder = 50000;
+            fieldOfViewMesh.sortingLayerName = "RunnerOnTop";
 
             lastFieldOfView = FieldOfView;
             lastLengthOfView = LengthOfView;
@@ -110,6 +113,9 @@ namespace Assets._Scripts.GameObjects
         {
             if (collision.gameObject.CompareTag("Player"))
             {
+                if (AI.CurrentState is DisabledByRunner)
+                    return; // Can't die to a disabled cat.
+
                 GameStateController.Instance.PlayerDied();
             }
         }
@@ -221,6 +227,27 @@ namespace Assets._Scripts.GameObjects
 
                 Physics2D.IgnoreCollision(thisCollider, otherCollider);
             }
+        }
+
+        public void HackDisable(float time)
+        {
+            AI.GetState<DisabledByRunner>().SetTime(time);
+            AI.SetState<DisabledByRunner>();
+        }
+
+        public void UnHack()
+        {
+            AI.GetState<DisabledByRunner>().EnableCat();
+        }
+
+        public void HideFieldOfViewMesh()
+        {
+            fieldOfViewMesh.gameObject.SetActive(false);
+        }
+
+        public void ShowFieldOfViewMesh()
+        {
+            fieldOfViewMesh.gameObject.SetActive(true);
         }
     }
 }

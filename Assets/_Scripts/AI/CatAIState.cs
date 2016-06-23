@@ -37,6 +37,11 @@ namespace Assets._Scripts.AI
             
         }
 
+        public virtual bool AllowStateChangeFrom()
+        {
+            return true;
+        }
+
         public virtual void FixedUpdate()
         {
             Cat.Move(DesiredVelocity);

@@ -37,6 +37,12 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public GameObject HackProjectilePrompt;
 
+        [AssignedInUnity]
+        public float CatHackDisableTime = 5;
+
+        public Cat CurrentHackedCat { get; private set; }
+        private bool currentHackedCatIsControlled;
+
         private SpriteRenderer spriteRenderer;
         private new Rigidbody2D rigidbody;
 
@@ -77,6 +83,74 @@ namespace Assets._Scripts
             }
 
             CheckForWallChewing();
+
+            CheckForCatDisable();
+        }
+
+        private void CheckForCatDisable()
+        {
+            if (HackerInterface.Instance.TerminalCats.PowerReader.PowerLevel != 1)
+            {
+                HackPrompt.SetActive(false);
+                return; // Touch cat disable is only power level 1
+            }
+
+            if (lastRequestedMovement.IsZero())
+            {
+                HackPrompt.SetActive(false);
+                return;
+            }
+
+            var facingUnitVector = lastRequestedMovement.normalized;
+
+            var results = Physics2D.RaycastAll(transform.position, facingUnitVector, MaxDistanceForWallChewing);
+            if (results.Length == 0)
+                return;
+
+            GameObject nearbyCat = null;
+            foreach (var result in results)
+            {
+                if (result.collider.gameObject == gameObject)
+                    continue;
+
+                if (result.collider.isTrigger)
+                    continue;
+
+                if (result.collider.gameObject.CompareTag("Cat"))
+                    nearbyCat = result.collider.gameObject;
+                break;
+            }
+
+            if (nearbyCat == null)
+            {
+                CatNotNearby();
+            }
+            else
+            {
+                var cat = nearbyCat.GetComponent<Cat>();
+                CatNearby(cat);
+            }
+        }
+
+        private void CatNearby(Cat cat)
+        {
+            HackPrompt.SetActive(true);
+
+            if(Input.GetButtonDown("Hack"))
+            {
+                if (CurrentHackedCat != null)
+                {
+                    CurrentHackedCat.UnHack();
+                }
+
+                CurrentHackedCat = cat;
+                cat.HackDisable(CatHackDisableTime); //TODO controlling
+            }
+        }
+
+        private void CatNotNearby()
+        {
+            HackPrompt.SetActive(false);
         }
 
         private void CheckForWallChewing()
@@ -100,6 +174,10 @@ namespace Assets._Scripts
             {
                 if (result.collider.gameObject == gameObject)
                     continue;
+
+                if (result.collider.isTrigger)
+                    continue;
+                
                 if (result.collider.gameObject.CompareTag("Wall"))
                     nearbyWall = result.collider.gameObject;
                 break;

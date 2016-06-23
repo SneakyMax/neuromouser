@@ -36,7 +36,7 @@ GameObject:
   - 114: {fileID: 11456244}
   m_Layer: 0
   m_Name: Cat
-  m_TagString: Untagged
+  m_TagString: Cat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,6 +50,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 469088}
   m_Father: {fileID: 0}
@@ -63,6 +64,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 429212}
   m_RootOrder: 0
@@ -115,7 +117,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!58 &5843760
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -141,6 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7e1d4351e51b145b894eb4c4463cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundGrowlEventName: event:/Cat_Growl
+  SoundHissEventName: event:/Cat_Hiss
+  SoundMoveEventName: event:/Cat_movement
   PatrolSpeed: 1.7
   ChaseSpeed: 2.5
   FieldOfView: 86.61

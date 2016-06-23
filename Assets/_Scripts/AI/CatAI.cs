@@ -62,6 +62,9 @@ namespace Assets._Scripts.AI
 
             if (CurrentState != null)
             {
+                if (CurrentState.AllowStateChangeFrom() == false)
+                    return;
+
                 CurrentState.Exit();
                 CurrentState.IsActive = false;
             }
