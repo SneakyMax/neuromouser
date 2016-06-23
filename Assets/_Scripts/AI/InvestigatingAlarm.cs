@@ -60,7 +60,7 @@ namespace Assets._Scripts.AI
                 return;
             }
 
-            DesiredVelocity = MoveAlongPath(currentPath, Cat.ChaseSpeed);
+            MoveAlongPath(currentPath, Cat.ChaseSpeed);
         }
 
         private void ReturnToPreviousState()

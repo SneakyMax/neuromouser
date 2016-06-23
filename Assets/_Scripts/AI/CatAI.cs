@@ -105,7 +105,7 @@ namespace Assets._Scripts.AI
 
         public RunnerPlayer CheckFieldOfViewForMouse()
         {
-            const int fanPoints = 5;
+            const int fanPoints = 30;
 
             RunnerPlayer player = null;
 
@@ -114,7 +114,7 @@ namespace Assets._Scripts.AI
                 // Half field of view, divide by the number of fan points, spread out from the center with i
                 var angle = Cat.FieldOfView / 2.0f / fanPoints * i;
                 var unitVectorDirectionFacing = Cat.transform.rotation * Vector3.right;
-
+                
                 var left = Quaternion.AngleAxis(-angle, Vector3.forward);
                 var right = Quaternion.AngleAxis(angle, Vector3.forward);
 

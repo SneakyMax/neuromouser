@@ -273,7 +273,6 @@ namespace Assets._Scripts
 
             if (chewAccumulator >= targettedWallChewTime)
             {
-                chewSound.stop(STOP_MODE.ALLOWFADEOUT);
                 wall.SetEmpty();
                 StopChewing();
             }
@@ -292,6 +291,7 @@ namespace Assets._Scripts
 
         private void StopChewing()
         {
+            chewSound.stop(STOP_MODE.ALLOWFADEOUT);
             ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(false);
             ChewProgressBar.gameObject.SetActive(false);
             chewAccumulator = 0;

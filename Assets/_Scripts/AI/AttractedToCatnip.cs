@@ -68,7 +68,7 @@ namespace Assets._Scripts.AI
                 return;
             }
 
-            DesiredVelocity = MoveAlongPath(currentPath, Cat.PatrolSpeed);
+            MoveAlongPath(currentPath, Cat.PatrolSpeed);
 
             var possibleMouse = AI.CheckFieldOfViewForMouse();
 

@@ -55,7 +55,7 @@ namespace Assets._Scripts.AI
             if (path == null)
                 return; // A bug, see errors
             
-            DesiredVelocity = MoveAlongPath(path, Cat.PatrolSpeed);
+            MoveAlongPath(path, Cat.PatrolSpeed);
 
             var seePlayer = AI.CheckFieldOfViewForMouse();
             if (seePlayer != null)

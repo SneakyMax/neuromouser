@@ -83,7 +83,7 @@ namespace Assets._Scripts.AI
                 return;
             }
 
-            DesiredVelocity = MoveAlongPath(pathToIdle, Cat.PatrolSpeed);
+            MoveAlongPath(pathToIdle, Cat.PatrolSpeed);
         }
     }
 }

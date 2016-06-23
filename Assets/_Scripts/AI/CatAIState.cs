@@ -67,27 +67,30 @@ namespace Assets._Scripts.AI
             return new Queue<GridPosition>(path);
         } 
 
-        protected Vector3 MoveAlongPath(Queue<GridPosition> path, float speed)
+        protected void MoveAlongPath(Queue<GridPosition> path, float speed)
         {
             if (path.Count == 0)
             {
                 Debug.LogWarning("Path provided to MoveAlongPath is empty.");
-                return Vector3.zero;
+                DesiredVelocity = Vector2.zero;
+                return;
             }
 
             var currentPosition = Cat.transform.position;
 
             var nextPathPosition = PlacementGrid.Instance.GetWorldPosition(path.Peek());
 
-            if (currentPosition.DistanceTo(nextPathPosition) < CatAI.ReachedPositionThreshold)
+            var distanceToNextPathNode = currentPosition.DistanceTo(nextPathPosition);
+
+            if (distanceToNextPathNode < CatAI.ReachedPositionThreshold)
             {
                 path.Dequeue();
-                return new Vector3();
+                DesiredVelocity = Vector2.zero;
             }
 
             var direction = currentPosition.UnitVectorTo(nextPathPosition);
 
-            return direction * speed;
+            DesiredVelocity = direction * Mathf.Min(speed, distanceToNextPathNode / Time.deltaTime);
         }
     }
 }
