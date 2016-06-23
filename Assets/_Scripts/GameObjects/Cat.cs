@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Assets._Scripts.AI;
 using UnityEngine;
 
@@ -25,8 +26,9 @@ namespace Assets._Scripts.GameObjects
 
         public MeshFilter MeshFilter { get; private set; }
 
+        public CatAI AI { get; private set; }
+
         private new Rigidbody2D rigidbody;
-        private CatAI catAI;
 
         private float lastFieldOfView;
         private float lastLengthOfView;
@@ -38,7 +40,7 @@ namespace Assets._Scripts.GameObjects
         [UnityMessage]
         public void Start()
         {
-            catAI = new CatAI(this);
+            AI = new CatAI(this);
 
             rigidbody = GetComponent<Rigidbody2D>();
             MeshFilter = GetComponentInChildren<MeshFilter>();
@@ -48,18 +50,28 @@ namespace Assets._Scripts.GameObjects
 
         private void GenerateFieldOfViewMesh()
         {
-            var triHeight = Mathf.Tan(FieldOfView * Mathf.Deg2Rad / 2.0f) * LengthOfView;
+            var halfFieldOfView = FieldOfView / 2.0f;
+            var tanTheta = Mathf.Tan(halfFieldOfView * Mathf.Deg2Rad);
+            var sinTheta = Mathf.Sin(halfFieldOfView * Mathf.Deg2Rad);
+            
+            var midpoint = new Vector3(LengthOfView, 0, 0);
+            var height = LengthOfView * sinTheta;
+            var lPrime = height / tanTheta;
+
+            var top = new Vector3(lPrime, height, 0);
+            var bottom = new Vector3(lPrime, -height, 0);
 
             var vertices = new[]
             {
                 new Vector3(),
-                new Vector3(LengthOfView, triHeight, 0),
-                new Vector3(LengthOfView, -triHeight, 0)
+                top,
+                midpoint, 
+                bottom
             };
 
-            var indices = new[] { 0, 1, 2 };
+            var indices = new[] { 0, 1, 2, 0, 2, 3 };
 
-            var uv = new[] { new Vector2(), new Vector2(1, 1), new Vector2(1, 1) };
+            var uv = new[] { new Vector2(), new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1) };
 
             var mesh = new Mesh
             {
@@ -90,7 +102,7 @@ namespace Assets._Scripts.GameObjects
         public void Update()
         {
             SortObjectThatMoves();
-            catAI.Update();
+            AI.Update();
 
             CheckFieldOfViewChangedForMesh();
         }
@@ -106,7 +118,7 @@ namespace Assets._Scripts.GameObjects
         [UnityMessage]
         public void FixedUpdate()
         {
-            catAI.FixedUpdate();
+            AI.FixedUpdate();
         }
 
         /// <summary>Magnitude is in units/second. See <see cref="PatrolSpeed"/>. Call this only in FixedUpdate.</summary>
@@ -123,7 +135,7 @@ namespace Assets._Scripts.GameObjects
 
         public override void GameStart()
         {
-            catAI.Start();
+            AI.Start();
         }
 
         public override bool IsTraversableAt(GridPosition position)
@@ -146,6 +158,21 @@ namespace Assets._Scripts.GameObjects
 
             StartRotation = rotation;
             transform.rotation = Quaternion.AngleAxis(rotation, Vector3.forward);
+        }
+
+        public override void PostAllDeserialized()
+        {
+            // O(n^2)
+            var allOtherCats = LevelLoader.AllInGameObjects.OfType<Cat>().Where(x => x != this).ToList();
+
+            var thisCollider = GetComponent<Collider2D>();
+
+            foreach (var otherCat in allOtherCats)
+            {
+                var otherCollider = otherCat.GetComponent<Collider2D>();
+
+                Physics2D.IgnoreCollision(thisCollider, otherCollider);
+            }
         }
     }
 }

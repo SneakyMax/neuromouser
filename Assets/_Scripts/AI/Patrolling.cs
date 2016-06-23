@@ -57,11 +57,11 @@ namespace Assets._Scripts.AI
             
             DesiredVelocity = MoveAlongPath(path, Cat.PatrolSpeed);
 
-            var seePlayer = CatAI.CheckFieldOfViewForMouse();
+            var seePlayer = AI.CheckFieldOfViewForMouse();
             if (seePlayer != null)
             {
-                CatAI.GetState<ChasingRunner>().SetRunner(seePlayer);
-                CatAI.SetState<ChasingRunner>();
+                AI.GetState<ChasingRunner>().SetRunner(seePlayer);
+                AI.SetState<ChasingRunner>();
             }
         }
 
@@ -78,7 +78,7 @@ namespace Assets._Scripts.AI
             if (nextNextPatrolPoint == null)
             {
                 // No patrol path! Bail out
-                CatAI.SetState<Idle>();
+                AI.SetState<Idle>();
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace Assets._Scripts.AI
             {
                 // No path!
                 Debug.LogWarningFormat("Couldn't find path from {0} to {1}", previousPatrolPoint.Position, nextPatrolPoint.Position);
-                CatAI.SetState<Idle>();
+                AI.SetState<Idle>();
             }
         }
 

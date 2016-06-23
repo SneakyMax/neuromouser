@@ -1,4 +1,7 @@
 
+using Assets._Scripts.LevelEditor;
+using UnityEngine;
+
 namespace Assets._Scripts
 {
     public struct GridPosition
@@ -46,6 +49,11 @@ namespace Assets._Scripts
         public static GridPosition operator +(GridPosition a, GridPosition b)
         {
             return new GridPosition(a.X + b.X, a.Y + b.Y);
+        }
+
+        public Vector3 ToWorldPosition()
+        {
+            return PlacementGrid.Instance.GetWorldPosition(this);
         }
     }
 }

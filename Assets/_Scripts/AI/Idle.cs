@@ -26,14 +26,13 @@ namespace Assets._Scripts.AI
 
         public override void Enter()
         {
-            if (CatAI.PreviousState is ChasingRunner)
-            {
-                ReturnToIdlePosition();
-            }
-            else
+            if (AI.PreviousState == null)
             {
                 isReturningToIdlePosition = false;
+                return;
             }
+
+            ReturnToIdlePosition();
         }
 
         private void ReturnToIdlePosition()
@@ -52,12 +51,12 @@ namespace Assets._Scripts.AI
         
         public override void Update()
         {
-            var possibleMouse = CatAI.CheckFieldOfViewForMouse();
+            var possibleMouse = AI.CheckFieldOfViewForMouse();
 
             if (possibleMouse != null)
             {
-                CatAI.GetState<ChasingRunner>().SetRunner(possibleMouse);
-                CatAI.SetState<ChasingRunner>();
+                AI.GetState<ChasingRunner>().SetRunner(possibleMouse);
+                AI.SetState<ChasingRunner>();
                 return;
             }
 

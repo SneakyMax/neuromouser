@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.LevelEditor;
+﻿using System;
+using Assets._Scripts.LevelEditor;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -18,6 +19,17 @@ namespace Assets._Scripts.GameObjects
         public int Id { get; set; }
 
         protected SpriteRenderer SpriteRenderer { get; set; }
+
+        /// <summary>Gets the starting grid position for a grid object. Don't call this for non-grid objects.</summary>
+        public GridPosition GridPosition
+        {
+            get
+            {
+                if (StartGridPosition == null)
+                    throw new InvalidOperationException(GetType().Name + " isn't a grid object.");
+                return StartGridPosition.Value;
+            }
+        }
 
         public virtual void Deserialize(string serialized)
         {

@@ -7,13 +7,15 @@ namespace Assets._Scripts.AI
 {
     public abstract class CatAIState
     {
-        public Cat Cat {get { return CatAI.Cat; } }
+        public Cat Cat {get { return AI.Cat; } }
 
-        public CatAI CatAI { get; set; }
+        public CatAI AI { get; set; }
 
         public bool IsActive { get; set; }
 
         protected Vector2 DesiredVelocity { get; set; }
+
+        public GridPosition ClosestGridPosition { get { return PlacementGrid.Instance.GetGridPosition(PlacementGrid.Instance.GetClosestSnappedPosition(Cat.transform.position)); } }
 
         public virtual void Init()
         {
@@ -47,10 +49,7 @@ namespace Assets._Scripts.AI
 
         protected Queue<GridPosition> GetPathTo(GridPosition position)
         {
-            var currentPosition = Cat.transform.position;
-            var closestGridPosition = PlacementGrid.Instance.GetGridPosition(PlacementGrid.Instance.GetClosestSnappedPosition(currentPosition));
-
-            return GetPath(closestGridPosition, position);
+            return GetPath(ClosestGridPosition, position);
         }
 
         protected static Queue<GridPosition> GetPath(GridPosition from, GridPosition to)

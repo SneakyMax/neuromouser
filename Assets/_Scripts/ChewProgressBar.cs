@@ -9,7 +9,7 @@ namespace Assets._Scripts
         private float fullWidth;
 
         [UnityMessage]
-        public void Start()
+        public void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
             fullWidth = rectTransform.sizeDelta.x;

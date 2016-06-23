@@ -32,11 +32,17 @@ namespace Assets._Scripts.AI
             AddState<Idle>();
             AddState<DisabledByCatnip>();
             AddState<Patrolling>();
+            AddState<InvestigatingAlarm>();
+        }
+
+        public void ReturnToDefaultState()
+        {
+            SetState(StartingState);
         }
 
         private void AddState<T>() where T : CatAIState, new()
         {
-            var state = new T { CatAI = this };
+            var state = new T { AI = this };
 
             states.Add(state);
             state.Init();
@@ -45,6 +51,13 @@ namespace Assets._Scripts.AI
         public void SetState<T>() where T : CatAIState
         {
             var newState = GetState<T>();
+            SetState(newState);
+        }
+
+        public void SetState(CatAIState newState)
+        {
+            if (CurrentState == newState)
+                return;
 
             if (CurrentState != null)
             {
@@ -92,7 +105,7 @@ namespace Assets._Scripts.AI
 
             RunnerPlayer player = null;
 
-            for (var i = 0; i < fanPoints; i++)
+            for (var i = 0; i <= fanPoints; i++)
             {
                 // Half field of view, divide by the number of fan points, spread out from the center with i
                 var angle = Cat.FieldOfView / 2.0f / fanPoints * i;
@@ -138,6 +151,34 @@ namespace Assets._Scripts.AI
             }
 
             return player;
+        }
+
+        private void LineOfSightLines()
+        {
+            var angle = Cat.FieldOfView / 2.0f;
+            var unitVectorDirectionFacing = Cat.transform.rotation * Vector3.right;
+
+            var left = Quaternion.AngleAxis(-angle, Vector3.forward);
+            var right = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            var leftVector = left * unitVectorDirectionFacing * Cat.LengthOfView;
+            var rightVector = right * unitVectorDirectionFacing * Cat.LengthOfView;
+
+            var start = Cat.transform.position + new Vector3(0, 0, -1);
+
+            var line = new []
+            {
+                start,
+                start + leftVector,
+                start + rightVector,
+                start
+            };
+
+            var lineRenderer = Cat.GetComponent<LineRenderer>();
+            lineRenderer.SetVertexCount(4);
+            lineRenderer.SetPositions(line);
+            lineRenderer.sortingLayerName = "RunnerOnTop";
+            lineRenderer.SetWidth(0.1f, 0.1f);
         }
 
         public void Update()

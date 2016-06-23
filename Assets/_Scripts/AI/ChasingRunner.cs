@@ -13,7 +13,7 @@ namespace Assets._Scripts.AI
             if (player == null)
                 throw new InvalidOperationException("Call SetRunner before transitioning to ChasingRunner.");
 
-            var currentPlayer = CatAI.CheckFieldOfViewForMouse();
+            var currentPlayer = AI.CheckFieldOfViewForMouse();
 
             if (currentPlayer == null)
             {
@@ -32,10 +32,10 @@ namespace Assets._Scripts.AI
 
         private void ReturnToDefaultState()
         {
-            if (CatAI.IsPatroller)
-                CatAI.SetState<Patrolling>();
+            if (AI.IsPatroller)
+                AI.SetState<Patrolling>();
             else
-                CatAI.SetState<Idle>();
+                AI.SetState<Idle>();
         }
 
         public override void FixedUpdate()

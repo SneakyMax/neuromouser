@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21296500}
   - 61: {fileID: 6120222}
   - 114: {fileID: 11428578}
+  - 58: {fileID: 5839622}
   m_Layer: 0
   m_Name: Alarm Trap
   m_TagString: Untagged
@@ -25,12 +26,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 150984}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 13.628504, y: -2.339667, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!58 &5839622
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150984}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 12.81
 --- !u!61 &6120222
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -56,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c526519ad3b6254bb254f290ffbeab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlarmRange: 13
 --- !u!212 &21296500
 SpriteRenderer:
   m_ObjectHideFlags: 1
