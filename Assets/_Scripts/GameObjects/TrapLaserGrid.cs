@@ -8,6 +8,10 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(SpriteRenderer))]
 	public class TrapLaserGrid : InGameObject
 	{
+		[FMODUnity.EventRef]
+		public string laserOnSound = "event:/laser_on";
+		public string laserOffSound = "event:/laser_off";
+
 		public override int Layer { get { return 1; } }
 
 		public int Level { get; set; }
@@ -35,11 +39,13 @@ namespace Assets._Scripts.GameObjects
 		{
 			if ((Level > newTrapPower) && !armed)
 			{
+				FMODUnity.RuntimeManager.PlayOneShot (laserOnSound, transform.position);
 				GetComponent<SpriteRenderer>().enabled = true;
 				armed = true;
 			}
 			else if ((Level <= newTrapPower) && armed)
 			{
+				FMODUnity.RuntimeManager.PlayOneShot (laserOffSound, transform.position);
 				GetComponent<SpriteRenderer>().enabled = false;
 				armed = false;
 			}

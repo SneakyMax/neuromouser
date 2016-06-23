@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11467274}
   - 61: {fileID: 6182178}
   - 95: {fileID: 9593306}
+  - 114: {fileID: 11408110}
   m_Layer: 0
   m_Name: Glue Trap
   m_TagString: Untagged
@@ -28,7 +29,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -63,6 +63,24 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11408110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/glue_walk
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Params: []
 --- !u!114 &11467274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -74,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95d0fe6dde620141bca8fe78de347a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  glueSound: event:/glue_walk
 --- !u!212 &21213096
 SpriteRenderer:
   m_ObjectHideFlags: 1

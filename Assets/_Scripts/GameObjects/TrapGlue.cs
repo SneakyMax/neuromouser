@@ -6,6 +6,9 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(Animator))]
 	public class TrapGlue : InGameObject
 	{
+		[FMODUnity.EventRef]
+		public string glueSound = "event:/glue_walk";
+
 		public override int Layer { get { return 1; } }
 
 		public int Level { get; set; }
@@ -69,6 +72,8 @@ namespace Assets._Scripts.GameObjects
 			{
 				if (otherCollider.tag == "Player")
 				{
+
+					FMODUnity.RuntimeManager.PlayOneShot (glueSound, transform.position);
 					SlowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 				}
 				// TODO if tag == cat and level == 3
@@ -95,6 +100,7 @@ namespace Assets._Scripts.GameObjects
 		{
 			if ((otherCollider.tag == "Player") && playerSlowed)
 			{
+				FMODUnity.RuntimeManager.PlayOneShot (glueSound, transform.position);
 				UnslowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 			}
 			// TODO if tag == cat and level == 3

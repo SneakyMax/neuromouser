@@ -21,6 +21,9 @@ namespace Assets._Scripts.GameObjects
             return true;
         }
 
+		[FMODUnity.EventRef]
+		public string alarmSound = "event:/alarm";	
+
         [UnityMessage]
         public void OnTriggerEnter2D(Collider2D other)
         {
@@ -32,7 +35,9 @@ namespace Assets._Scripts.GameObjects
 
         private void SoundAlarm()
         {
-            var cats = GetAllCatsInRange();
+			FMODUnity.RuntimeManager.PlayOneShot (alarmSound, transform.position);
+
+			var cats = GetAllCatsInRange();
 
             foreach (var cat in cats)
             {
