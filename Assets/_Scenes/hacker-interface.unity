@@ -475,7 +475,7 @@ MonoBehaviour:
   - level_lvl1_groundfinal.txt
   - level_lvl2_cubiclesfinal.txt
   - level_lvl3_cabalfinal.txt
-  - level_lvl_theendfinal.txt
+  - level_lvl4_dummy.txt
   - level_lvl5_glassbunkerfinal.txt
   - level_lvl_theendfinal.txt
   LevelTimeList: 2c0100002c0100002c0100002c0100002c0100002c010000
