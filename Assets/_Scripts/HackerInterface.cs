@@ -37,7 +37,7 @@ namespace Assets._Scripts
         /// <summary>
         /// The singleton instance of the interface.
         /// </summary>
-        public static HackerInterface Instance;
+        public static HackerInterface Instance { get; private set; }
 
         [AssignedInUnity]
         public Camera RunnerCamera;
@@ -82,12 +82,6 @@ namespace Assets._Scripts
         [UnityMessage]
         private void Awake()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
             Instance = this;
 
             if ((TerminalCamera == null) || (TerminalTraps == null) || (TerminalDoors == null) || (TerminalCats == null))
