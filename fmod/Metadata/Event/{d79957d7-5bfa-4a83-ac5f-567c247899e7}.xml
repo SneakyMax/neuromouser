@@ -76,6 +76,9 @@
         <relationship name="modules">
             <destination>{dd965371-4c6d-4b4e-91ee-c0992787b2dd}</destination>
         </relationship>
+        <relationship name="markers">
+            <destination>{2e397f3f-69e1-4ec9-ab0d-6f102ecfec0e}</destination>
+        </relationship>
     </object>
     <object class="GameParameter" id="{2f55a3e7-83a9-4306-88ad-763b85865b28}">
         <property name="name">
@@ -121,7 +124,7 @@
             <value>0</value>
         </property>
         <property name="length">
-            <value>1.5</value>
+            <value>0.88163265306122451</value>
         </property>
         <relationship name="sounds">
             <destination>{6afaba53-d77a-46e5-8489-d4ae35fc484f}</destination>
@@ -140,6 +143,20 @@
         </relationship>
         <relationship name="output">
             <destination>{0517941e-7498-4df5-bcaf-d928c955702b}</destination>
+        </relationship>
+    </object>
+    <object class="LoopRegion" id="{2e397f3f-69e1-4ec9-ab0d-6f102ecfec0e}">
+        <property name="position">
+            <value>0</value>
+        </property>
+        <property name="length">
+            <value>0.88165348639455787</value>
+        </property>
+        <relationship name="timeline">
+            <destination>{033650fd-a7c0-4e30-8c08-bcf294137e87}</destination>
+        </relationship>
+        <relationship name="markerTrack">
+            <destination>{7a785283-8ab8-4272-bdd0-8a1c7cf937fb}</destination>
         </relationship>
     </object>
     <object class="AutomationCurve" id="{52bc75c3-c983-4ee9-bf88-7b525b380c67}">
