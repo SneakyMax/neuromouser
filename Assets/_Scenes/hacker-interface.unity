@@ -475,9 +475,9 @@ MonoBehaviour:
   - level_lvl1_groundfinal.txt
   - level_lvl2_cubiclesfinal.txt
   - level_lvl3_cabalfinal.txt
-  - level_lvl5_glassbunkerfinal.txt
-  - level_lvl_theendfinal.txt
   LevelTimeList: 2c0100002c0100002c0100002c0100002c010000
+  - level_lvl_theendfinal.txt
+  - level_lvl5_glassbunkerfinal.txt
   PreTransitionList:
   - {fileID: 21300000, guid: 36a6d3286c376784080656f0eec7ab34, type: 3}
   - {fileID: 21300000, guid: 74170c076d4dde0439dba2496ced25c7, type: 3}

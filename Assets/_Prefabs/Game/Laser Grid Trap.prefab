@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserOnSound: event:/laser_on
   laserOffSound: event:/laser_off
+  LaserCutSound: event:/laser_cut
 --- !u!114 &11453846
 MonoBehaviour:
   m_ObjectHideFlags: 1

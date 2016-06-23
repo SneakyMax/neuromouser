@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using FMODUnity;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -8,9 +7,14 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(SpriteRenderer))]
 	public class TrapLaserGrid : InGameObject
 	{
-		[FMODUnity.EventRef]
+		[EventRef]
 		public string laserOnSound = "event:/laser_on";
+
+        [EventRef]
 		public string laserOffSound = "event:/laser_off";
+
+	    [EventRef]
+	    public string LaserCutSound;
 
 		public override int Layer { get { return 1; } }
 
@@ -51,16 +55,24 @@ namespace Assets._Scripts.GameObjects
 			}
 		}
 
+        [UnityMessage]
 		public void OnTriggerEnter2D(Collider2D otherCollider)
 		{
-			if (otherCollider.tag == "Player" && armed)
-				GameStateController.Instance.PlayerDied();
+            if (otherCollider.tag == "Player" && armed)
+            {
+                RuntimeManager.PlayOneShot(LaserCutSound, transform.position);
+                GameStateController.Instance.PlayerDied();
+            }
 		}
 
+        [UnityMessage]
 		public void OnTriggerStay2D( Collider2D otherCollider)
 		{
-			if (otherCollider.tag == "Player" && armed)
-				GameStateController.Instance.PlayerDied();
+            if (otherCollider.tag == "Player" && armed)
+            {
+                RuntimeManager.PlayOneShot(LaserCutSound, transform.position);
+                GameStateController.Instance.PlayerDied();
+            }
 		}
 	}
 }

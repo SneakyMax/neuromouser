@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using FMOD.Studio;
+using FMODUnity;
+using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
 {
@@ -6,8 +8,10 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(Animator))]
 	public class TrapGlue : InGameObject
 	{
-		[FMODUnity.EventRef]
+		[EventRef]
 		public string glueSound = "event:/glue_walk";
+
+	    private EventInstance glueSoundInstance;
 
 		public override int Layer { get { return 1; } }
 
@@ -18,6 +22,12 @@ namespace Assets._Scripts.GameObjects
 	    protected bool IsArmed { get; set; }
 
 	    private bool playerSlowed = false;
+
+	    [UnityMessage]
+	    public void Start()
+	    {
+	        glueSoundInstance = RuntimeManager.CreateInstance(glueSound);
+	    }
 
 		public override bool IsTraversableAt(GridPosition position)
 		{
@@ -72,8 +82,7 @@ namespace Assets._Scripts.GameObjects
 			{
 				if (otherCollider.tag == "Player")
 				{
-
-					FMODUnity.RuntimeManager.PlayOneShot (glueSound, transform.position);
+				    glueSoundInstance.start();
 					SlowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 				}
 				// TODO if tag == cat and level == 3
@@ -100,7 +109,7 @@ namespace Assets._Scripts.GameObjects
 		{
 			if ((otherCollider.tag == "Player") && playerSlowed)
 			{
-				FMODUnity.RuntimeManager.PlayOneShot (glueSound, transform.position);
+			    glueSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
 				UnslowPlayer(otherCollider.GetComponent<RunnerPlayer>());
 			}
 			// TODO if tag == cat and level == 3

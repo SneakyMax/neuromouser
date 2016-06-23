@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets._Scripts.AI;
@@ -12,7 +13,7 @@ namespace Assets._Scripts.GameObjects
         [AssignedInUnity]
         public float AlarmRange;
 
-        public override int Layer { get { return 2; } }
+        public override int Layer { get { return 1; } }
 
         public override bool IsDynamic { get { return true; } }
 
@@ -21,13 +22,80 @@ namespace Assets._Scripts.GameObjects
             return true;
         }
 
-		[FMODUnity.EventRef]
-		public string alarmSound = "event:/alarm";	
+        [FMODUnity.EventRef]
+        public string alarmSound = "event:/alarm";
+
+        [AssignedInUnity]
+        public Sprite OnSprite;
+
+        [AssignedInUnity]
+        public Sprite OffSprite;
+
+        [AssignedInUnity]
+        public Sprite AlertedSprite;
+
+        public bool IsArmed { get; private set; }
+
+        private bool isAlerted;
+
+        [UnityMessage]
+        public void Start()
+        {
+            SpriteRenderer.sprite = OffSprite;
+        }
+
+        public override void GameStart()
+        {
+            Arm();
+            HackerInterface.Instance.OnTrapPowerChanged += TrapPowerChanged;
+        }
+
+        private void TrapPowerChanged(int terminalPower)
+        {
+            if (terminalPower >= 1)
+            {
+                Disarm();
+            }
+            else
+            {
+                Arm();
+            }
+        }
+
+        private void Arm()
+        {
+            IsArmed = true;
+            SpriteRenderer.sprite = OnSprite;
+        }
+
+        private void Disarm()
+        {
+            IsArmed = false;
+            SpriteRenderer.sprite = OffSprite;
+        }
 
         [UnityMessage]
         public void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player") == false)
+            CheckCollision(other);
+        }
+
+        [UnityMessage]
+        public void OnTriggerStay2D(Collider2D other)
+        {
+            CheckCollision(other);
+        }
+
+        [UnityMessage]
+        public void OnTriggerExit2D(Collider2D other)
+        {
+            if(other.CompareTag("Player"))
+                isAlerted = false;
+        }
+
+        private void CheckCollision(Collider2D other)
+        {
+            if (other.CompareTag("Player") == false || IsArmed == false || isAlerted)
                 return;
 
             SoundAlarm();
@@ -35,7 +103,11 @@ namespace Assets._Scripts.GameObjects
 
         private void SoundAlarm()
         {
+            isAlerted = true;
+
 			FMODUnity.RuntimeManager.PlayOneShot (alarmSound, transform.position);
+
+            StartCoroutine(ShowOnForASecond());
 
 			var cats = GetAllCatsInRange();
 
@@ -62,6 +134,18 @@ namespace Assets._Scripts.GameObjects
             var alarmPosition = PlacementGrid.Instance.GetWorldPosition(StartGridPosition.Value);
 
             return catPosition.DistanceTo(alarmPosition) <= AlarmRange;
+        }
+
+        private IEnumerator ShowOnForASecond()
+        {
+            var previousSprite = SpriteRenderer.sprite;
+
+            SpriteRenderer.sprite = AlertedSprite;
+            yield return new WaitForSeconds(1);
+
+            // Might have disarmed in this second.
+            if (previousSprite == OnSprite)
+                SpriteRenderer.sprite = previousSprite;
         }
     }
 }

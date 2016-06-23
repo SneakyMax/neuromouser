@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using FMODUnity;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets._Scripts.GameObjects
@@ -7,6 +7,9 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(Collider2D))]
 	public class TrapSnap : InGameObject
 	{
+        [EventRef, UsedImplicitly]
+	    public string SnapSound;
+
 		public override int Layer { get { return 1; } }
 
 		public int Level { get; set; }
@@ -43,19 +46,27 @@ namespace Assets._Scripts.GameObjects
 			// TODO level 3 stuff.
 		}
 
-		// TODO Slow and Unslow cats
+        // TODO Slow and Unslow cats
 
-		public void OnTriggerEnter2D(Collider2D otherCollider)
+        [UnityMessage]
+        public void OnTriggerEnter2D(Collider2D otherCollider)
 		{
-			if (otherCollider.tag == "Player" && armed)
-				GameStateController.Instance.PlayerDied();
+		    if (otherCollider.tag == "Player" && armed)
+		    {
+		        RuntimeManager.PlayOneShot(SnapSound, transform.position);
+		        GameStateController.Instance.PlayerDied();
+		    }
 			// TODO if tag == cat and level == 3
 		}
 
+        [UnityMessage]
 		public void OnTriggerStay2D( Collider2D otherCollider)
 		{
-			if (otherCollider.tag == "Player" && armed)
-				GameStateController.Instance.PlayerDied();
+		    if (otherCollider.tag == "Player" && armed)
+		    {
+                RuntimeManager.PlayOneShot(SnapSound, transform.position);
+                GameStateController.Instance.PlayerDied();
+		    }
 			// TODO if tag == cat and level == 3
 		}
 	}

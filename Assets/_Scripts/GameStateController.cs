@@ -133,7 +133,9 @@ namespace Assets._Scripts
 			    return;
 			}
 
-			transitionShownThisLevel = true;
+            StartMusicIfNotPlaying();
+
+            transitionShownThisLevel = true;
 			LevelLoader.Instance.LoadLevel(levelName);
         }
 

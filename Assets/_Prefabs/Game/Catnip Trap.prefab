@@ -56,7 +56,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa915286f571b349953893e9bd86193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CatnipSound: event:/alarm
   CatnipDebuffPrefab: {fileID: 156876, guid: 802f0a916b52d8e48b1ad3491369cc15, type: 2}
+  OffSprite: {fileID: 21300000, guid: 701ff38267b8961479d759c869137a1b, type: 3}
+  OnSprite: {fileID: 21300000, guid: cbb9dd7fd34e73f45a2625854c8f37e8, type: 3}
+  AlertedSprite: {fileID: 21300000, guid: b281a1550f2acd84f807948a8670a8f0, type: 3}
 --- !u!212 &21202782
 SpriteRenderer:
   m_ObjectHideFlags: 1

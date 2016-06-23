@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c91e2ce34edb96469c1fdb9b555e1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SnapSound: event:/Snap_trap
 --- !u!212 &21270922
 SpriteRenderer:
   m_ObjectHideFlags: 1
