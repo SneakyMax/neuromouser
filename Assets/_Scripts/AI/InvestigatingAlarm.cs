@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets._Scripts.GameObjects;
-using UnityEngine;
 
 namespace Assets._Scripts.AI
 {
@@ -46,21 +45,22 @@ namespace Assets._Scripts.AI
                 return;
             }
 
-            if(Cat.transform.position.DistanceTo(currentAlarm.GridPosition.ToWorldPosition()) < ReachedAlarmThreshold)
-            {
-                ReturnToPreviousState();
-                return;
-            }
-
-            DesiredVelocity = MoveAlongPath(currentPath, Cat.ChaseSpeed);
-
             var possibleMouse = AI.CheckFieldOfViewForMouse();
 
             if (possibleMouse != null)
             {
                 AI.GetState<ChasingRunner>().SetRunner(possibleMouse);
                 AI.SetState<ChasingRunner>();
+                return;
             }
+
+            if (Cat.transform.position.DistanceTo(currentAlarm.GridPosition.ToWorldPosition()) < ReachedAlarmThreshold)
+            {
+                ReturnToPreviousState();
+                return;
+            }
+
+            DesiredVelocity = MoveAlongPath(currentPath, Cat.ChaseSpeed);
         }
 
         private void ReturnToPreviousState()

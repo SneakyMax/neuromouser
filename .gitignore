@@ -31,3 +31,5 @@ sysinfo.txt
 /Assets/FMODStudioCache.asset.meta
 .cache
 /fmod_editor.log
+/Assets/Resources/FMODStudioSettings.asset
+/Assets/Resources/FMODStudioSettings.asset.meta

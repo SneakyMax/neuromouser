@@ -33,6 +33,7 @@ namespace Assets._Scripts.AI
             AddState<DisabledByCatnip>();
             AddState<Patrolling>();
             AddState<InvestigatingAlarm>();
+            AddState<AttractedToCatnip>();
         }
 
         public void ReturnToDefaultState()
@@ -126,6 +127,9 @@ namespace Assets._Scripts.AI
                     if (result.collider.gameObject == Cat.gameObject)
                         continue;
 
+                    if (result.collider.isTrigger)
+                        continue;
+
                     if (result.collider.gameObject.CompareTag("Player"))
                     {
                         player = result.collider.gameObject.GetComponent<RunnerPlayer>();
@@ -137,6 +141,9 @@ namespace Assets._Scripts.AI
                 foreach (var result in rightResults)
                 {
                     if (result.collider.gameObject == Cat.gameObject)
+                        continue;
+
+                    if (result.collider.isTrigger)
                         continue;
 
                     if (result.collider.gameObject.CompareTag("Player"))
