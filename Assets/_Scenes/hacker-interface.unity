@@ -400,7 +400,11 @@ MonoBehaviour:
   InterfaceFadeInCover: {fileID: 1026840449}
   ScreenFadeInCover: {fileID: 1703465403}
   SecondsBeforeLevelEnd: 300
-  LevelList: []
+  LevelList:
+  - level_lvl1_groundfinal.txt
+  - level_lvl2_cubiclesfinal.txt
+  - level_lvl3_cabalfinal.txt
+  LevelTimeList: 2c010000f0000000b4000000
 --- !u!4 &380641087
 Transform:
   m_ObjectHideFlags: 0
