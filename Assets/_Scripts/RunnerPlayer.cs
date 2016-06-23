@@ -5,7 +5,12 @@ namespace Assets._Scripts
 {
     public class RunnerPlayer : MonoBehaviour
     {
-        /// <summary>The full running speed of the running mouse in units per second.</summary>
+		[FMODUnity.EventRef]
+		public string SoundChewEventName = "event:/Runner_chew";
+
+
+
+		/// <summary>The full running speed of the running mouse in units per second.</summary>
         [AssignedInUnity]
         public float RunningSpeed = 2f;
 
@@ -187,7 +192,7 @@ namespace Assets._Scripts
         {
             if (lastRequestedMovement.IsZero())
             {
-                ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(false);
+				ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(false);
                 ChewProgressBar.gameObject.SetActive(false);
                 ChewPrompt.gameObject.SetActive(false);
                 return;
@@ -234,7 +239,7 @@ namespace Assets._Scripts
             {
                 ChewProgressBar.gameObject.SetActive(true);
                 ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(true);
-
+				FMODUnity.RuntimeManager.PlayOneShot (SoundChewEventName, transform.position);
                 targettedWallChewTime = wall.GetWallInfo().TimeToChewThroughWall;
                 chewAccumulator += Time.deltaTime;
                 isChewingWall = true;

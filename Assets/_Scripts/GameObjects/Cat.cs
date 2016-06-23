@@ -10,13 +10,10 @@ namespace Assets._Scripts.GameObjects
     public class Cat : InGameObject
     {
         [FMODUnity.EventRef]
-        public string SoundGrowlEventName = "event:/Cat_Growl";
-
-        [FMODUnity.EventRef]
+		public string SoundGrowlEventName = "event:/Cat_Growl";
         public string SoundHissEventName = "event:/Cat_Hiss";
-
-		[FMODUnity.EventRef]
 		public string SoundMoveEventName = "event:/Cat_movement";
+		public string SoundDeathEventName = "event:/Mouse_death";
 
 		private EventInstance moveSoundInstance;
 
@@ -115,7 +112,7 @@ namespace Assets._Scripts.GameObjects
             {
                 if (AI.CurrentState is DisabledByRunner)
                     return; // Can't die to a disabled cat.
-
+				FMODUnity.RuntimeManager.PlayOneShot (SoundDeathEventName, transform.position);
                 GameStateController.Instance.PlayerDied();
             }
         }
