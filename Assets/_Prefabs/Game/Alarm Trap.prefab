@@ -71,7 +71,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c526519ad3b6254bb254f290ffbeab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <LevelLoader>k__BackingField: {fileID: 0}
+  <Id>k__BackingField: 0
+  <SpriteRenderer>k__BackingField: {fileID: 0}
   AlarmRange: 13
+  alarmSound: 6576656e743a2f616c61726d
 --- !u!212 &21296500
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -98,7 +102,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4072632d4ea2b41b48474db9ba82d00d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 880e98251e5f50e4d85a1255a74912b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

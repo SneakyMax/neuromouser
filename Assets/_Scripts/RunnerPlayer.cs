@@ -40,6 +40,15 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public float CatHackDisableTime = 5;
 
+		[AssignedInUnity]
+		public Sprite Front;
+
+		[AssignedInUnity]
+		public Sprite Back;
+
+		[AssignedInUnity]
+		public Sprite Side;
+
         public Cat CurrentHackedCat { get; private set; }
         private bool currentHackedCatIsControlled;
 
@@ -79,7 +88,28 @@ namespace Assets._Scripts
             {
                 lastRequestedMovement = requestedMovement;
                 var movementDirection = new Vector3().DirectionToDegrees(requestedMovement);
-                spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
+				if ( movementDirection < 0f )
+					movementDirection += 360f;
+				if ( ( movementDirection < 45f ) || ( movementDirection > 315f ) )
+				{
+					spriteRenderer.sprite = Side;
+					spriteRenderer.flipX = true;
+				}
+				else if ( ( movementDirection >= 45f ) && ( movementDirection <= 135f ) )
+				{
+					spriteRenderer.sprite = Back;
+				}
+				else if ( ( movementDirection > 135f ) && ( movementDirection < 215f ) )
+				{
+					spriteRenderer.sprite = Side;
+					spriteRenderer.flipX = false;
+				}
+				else
+				{
+					spriteRenderer.sprite = Front;
+				}
+                //spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
+
             }
 
             CheckForWallChewing();
