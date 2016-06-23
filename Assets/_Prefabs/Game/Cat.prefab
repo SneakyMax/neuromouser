@@ -179,8 +179,8 @@ MonoBehaviour:
   SoundDeathEventName: event:/Mouse_death
   PatrolSpeed: 1.7
   ChaseSpeed: 2.5
-  FieldOfView: 86.61
-  LengthOfView: 4.8
+  FieldOfView: 110
+  LengthOfView: 5.5
   UpSprite: {fileID: 21300000, guid: 4a0dc6daa472d334795c015df8520f31, type: 3}
   LeftRightSprite: {fileID: 21300000, guid: 3b789f347672be942859603c7dc5a219, type: 3}
   DownSprite: {fileID: 21300000, guid: 4e5ac42daec6a314885825bce9cbd441, type: 3}
