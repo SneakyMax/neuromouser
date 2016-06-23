@@ -52,6 +52,9 @@ namespace Assets._Scripts
         [UnityMessage]
         public void Update()
         {
+            if (Math.Abs(desiredOrthographicSize) < 0.001f)
+                return;
+
             var currentSize = camera.orthographicSize;
 
             if (Math.Abs(currentSize - desiredOrthographicSize) > 0.001f)
