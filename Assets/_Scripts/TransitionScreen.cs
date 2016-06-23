@@ -69,7 +69,7 @@ namespace Assets._Scripts
         {
             return (Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical") ||
                     Input.GetButtonUp("HorizontalHackerAxis") || Input.GetButtonUp("VerticalHackerAxis") ||
-                    Input.GetButtonUp("Fire1") || Input.GetButtonUp("Jump") || Input.GetButtonUp("Submit") ||
+                    Input.GetButtonUp("Fire1") || Input.GetButtonUp("Hack") || Input.GetButtonUp("Submit") ||
                     Input.GetButtonUp("Cancel") || Input.GetButtonUp("Escape") || Input.GetButtonUp("Chewing"));
         }
     }
