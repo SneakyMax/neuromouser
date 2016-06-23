@@ -5,7 +5,7 @@
             <value>laser_cut</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{7078c1d5-ee41-478e-b14d-33b810b84f7a}</destination>
@@ -121,7 +121,6 @@
     <object class="MixerBusEffectChain" id="{7806880e-898f-471b-91e9-942d45b900d5}">
         <relationship name="effects">
             <destination>{515521c6-4faa-4947-87d1-db18476dd197}</destination>
-            <destination>{a370f51f-8666-4282-878e-0b07dc209b9c}</destination>
             <destination>{18bdd16e-0d7f-4ed7-8b4d-dcabf460bcc5}</destination>
         </relationship>
     </object>
@@ -158,10 +157,9 @@
     </object>
     <object class="MixerBusPanner" id="{163906ae-77b6-484f-a448-624c17e58927}"/>
     <object class="MixerBusFader" id="{515521c6-4faa-4947-87d1-db18476dd197}"/>
-    <object class="SpatialiserEffect" id="{a370f51f-8666-4282-878e-0b07dc209b9c}"/>
     <object class="MixerSend" id="{18bdd16e-0d7f-4ed7-8b4d-dcabf460bcc5}">
         <property name="inputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixerReturn">
             <destination>{533e227c-d430-4533-99f1-31a61b30578b}</destination>

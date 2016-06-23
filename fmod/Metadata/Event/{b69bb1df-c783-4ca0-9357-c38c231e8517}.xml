@@ -5,7 +5,7 @@
             <value>Snap_trap</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{083b3c39-f72c-4364-9d7d-8a2cbf54da22}</destination>
@@ -130,7 +130,6 @@
     <object class="MixerBusEffectChain" id="{f4f5a12c-b704-4aad-810b-4268a0cad1c7}">
         <relationship name="effects">
             <destination>{eb7d6f60-77b8-431f-a279-7518d5a6910b}</destination>
-            <destination>{560c649c-a6cf-4533-91b4-339c60deb3a6}</destination>
             <destination>{fd1edb7f-023e-42b9-8cf7-f0ba0f368202}</destination>
         </relationship>
     </object>
@@ -143,14 +142,9 @@
     </object>
     <object class="MixerBusPanner" id="{7ae9920f-d2a8-4527-8438-d6e235aaa2d7}"/>
     <object class="MixerBusFader" id="{eb7d6f60-77b8-431f-a279-7518d5a6910b}"/>
-    <object class="SpatialiserEffect" id="{560c649c-a6cf-4533-91b4-339c60deb3a6}">
-        <property name="extentMode">
-            <value>2</value>
-        </property>
-    </object>
     <object class="MixerSend" id="{fd1edb7f-023e-42b9-8cf7-f0ba0f368202}">
         <property name="inputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixerReturn">
             <destination>{533e227c-d430-4533-99f1-31a61b30578b}</destination>

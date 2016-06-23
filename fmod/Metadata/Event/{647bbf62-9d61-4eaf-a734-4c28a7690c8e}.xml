@@ -5,7 +5,7 @@
             <value>Mouse_death</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{cfac3b69-9cbd-4cc9-8c81-92899b94ff44}</destination>
@@ -119,7 +119,6 @@
     <object class="MixerBusEffectChain" id="{66914d7e-e800-4c49-8b68-84edf7cb18d2}">
         <relationship name="effects">
             <destination>{cdf44432-0f12-4c2d-a8ee-382815557f0b}</destination>
-            <destination>{e8b80f00-e19e-4de5-a0ac-bd241ba9792c}</destination>
             <destination>{7ada1690-68d1-4645-ad39-c1a7598371bd}</destination>
         </relationship>
     </object>
@@ -141,10 +140,9 @@
     </object>
     <object class="MixerBusPanner" id="{7496c940-7d33-45bf-bf58-282b1b0d3776}"/>
     <object class="MixerBusFader" id="{cdf44432-0f12-4c2d-a8ee-382815557f0b}"/>
-    <object class="SpatialiserEffect" id="{e8b80f00-e19e-4de5-a0ac-bd241ba9792c}"/>
     <object class="MixerSend" id="{7ada1690-68d1-4645-ad39-c1a7598371bd}">
         <property name="inputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixerReturn">
             <destination>{533e227c-d430-4533-99f1-31a61b30578b}</destination>

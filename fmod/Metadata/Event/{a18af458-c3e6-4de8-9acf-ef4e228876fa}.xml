@@ -5,7 +5,7 @@
             <value>Runner_chew</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{9878b60c-91e0-44db-8744-c2b3f5d0b452}</destination>
@@ -128,7 +128,6 @@
     <object class="MixerBusEffectChain" id="{42e158e9-c94f-4c5b-92f5-cf721afeffb0}">
         <relationship name="effects">
             <destination>{9e5be675-faba-47db-a45d-65b4408efff2}</destination>
-            <destination>{23ef496e-a203-4897-a806-0e7538d71d90}</destination>
             <destination>{3f07154d-561b-4ce0-9eb7-dd938d824ee4}</destination>
         </relationship>
     </object>
@@ -153,10 +152,9 @@
     </object>
     <object class="MixerBusPanner" id="{5e914ece-ea1d-4f07-b266-f16f38d1330f}"/>
     <object class="MixerBusFader" id="{9e5be675-faba-47db-a45d-65b4408efff2}"/>
-    <object class="SpatialiserEffect" id="{23ef496e-a203-4897-a806-0e7538d71d90}"/>
     <object class="MixerSend" id="{3f07154d-561b-4ce0-9eb7-dd938d824ee4}">
         <property name="inputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixerReturn">
             <destination>{533e227c-d430-4533-99f1-31a61b30578b}</destination>

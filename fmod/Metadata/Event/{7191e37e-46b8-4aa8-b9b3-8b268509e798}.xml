@@ -5,7 +5,7 @@
             <value>meow</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{320610d2-8db2-407d-b951-58e3caf501fc}</destination>
@@ -120,7 +120,6 @@
     <object class="MixerBusEffectChain" id="{d12fb453-46ae-4776-8501-aa44379b0508}">
         <relationship name="effects">
             <destination>{28db546f-507f-4f3f-9fdf-433476d543cf}</destination>
-            <destination>{d1af3ff1-6383-465d-acc7-c232452279b7}</destination>
             <destination>{5dea7632-9f0b-4e64-9511-0a699111fd26}</destination>
         </relationship>
     </object>
@@ -151,10 +150,9 @@
     </object>
     <object class="MixerBusPanner" id="{d2620057-3fc0-40cb-aa2b-e43ece0047e3}"/>
     <object class="MixerBusFader" id="{28db546f-507f-4f3f-9fdf-433476d543cf}"/>
-    <object class="SpatialiserEffect" id="{d1af3ff1-6383-465d-acc7-c232452279b7}"/>
     <object class="MixerSend" id="{5dea7632-9f0b-4e64-9511-0a699111fd26}">
         <property name="inputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixerReturn">
             <destination>{533e227c-d430-4533-99f1-31a61b30578b}</destination>
