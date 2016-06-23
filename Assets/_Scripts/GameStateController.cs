@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using DG.Tweening;
 using FMOD.Studio;
 using FMODUnity;
@@ -109,7 +110,9 @@ namespace Assets._Scripts
 
             StartMusicIfNotPlaying();
 
-            LevelLoader.Instance.LoadLevel(Application.dataPath + "/levels/" + LevelList[currentLevelIndex], false);
+		    var fullFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/" + LevelList[currentLevelIndex]);
+
+            LevelLoader.Instance.LoadLevel(fullFilePath, false);
 
 			if (LevelTimeList != null && currentLevelIndex < LevelTimeList.Length)
 				SecondsBeforeLevelEnd = LevelTimeList[currentLevelIndex];

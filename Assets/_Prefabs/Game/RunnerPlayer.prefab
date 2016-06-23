@@ -414,8 +414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6062345b6191048849adf2a64f30d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTransform: {fileID: 0}
-  fullWidth: 0
 --- !u!114 &11457988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -460,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44233c92a11ab2c4eb69be11d6e58ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundChewEventName: 6576656e743a2f52756e6e65725f63686577
+  SoundChewEventName: event:/Runner_chew
   RunningSpeed: 2.5
   PlayerMovementFrozen: 0
   GlueTrapSpeedModifier: 0.25
@@ -475,16 +473,6 @@ MonoBehaviour:
   Back: {fileID: 21300000, guid: d92170d49c8c8ca42abc4b0a93ba818b, type: 3}
   Side: {fileID: 21300000, guid: d8d63f8c515607d4dbfd1f65821a3a48, type: 3}
   HackingProbePrefab: {fileID: 100114, guid: 958c077ae222a274dac04b87b73ed198, type: 2}
-  currentProbe: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  rigidbody: {fileID: 0}
-  lastRequestedMovement: {x: 0, y: 0}
-  requestedMovement: {x: 0, y: 0}
-  isChewingWall: 0
-  targettedWallChewTime: 0
-  chewAccumulator: 0
-  <GlueTrapsAffectingPlayer>k__BackingField: 0
-  <CurrentHackedCat>k__BackingField: {fileID: 0}
 --- !u!212 &21239754
 SpriteRenderer:
   m_ObjectHideFlags: 1
