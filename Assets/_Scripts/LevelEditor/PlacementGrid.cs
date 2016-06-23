@@ -25,6 +25,11 @@ namespace Assets._Scripts.LevelEditor
             Instance = this;
         }
 
+        public GridPosition GetClosestGridPosition(Vector2 worldPosition)
+        {
+            return GetGridPosition(GetClosestSnappedPosition(worldPosition));
+        }
+
         /// <summary>Gets the world coordinates that are the closest snap to the grid for the world position input.</summary>
         public Vector2 GetClosestSnappedPosition(Vector2 position)
         {
