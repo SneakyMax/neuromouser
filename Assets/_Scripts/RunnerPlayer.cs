@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.GameObjects;
+﻿using Assets._Scripts.AI;
+using Assets._Scripts.GameObjects;
 using FMOD.Studio;
 using FMODUnity;
 using JetBrains.Annotations;
@@ -57,7 +58,12 @@ namespace Assets._Scripts
 		[AssignedInUnity]
 		public Sprite Side;
 
+        [AssignedInUnity]
+        public GameObject HackingProbePrefab;
+
         public Cat CurrentHackedCat { get; private set; }
+
+        private GameObject currentProbe;
 
         private SpriteRenderer spriteRenderer;
         private new Rigidbody2D rigidbody;
@@ -130,12 +136,48 @@ namespace Assets._Scripts
 
         private void CheckForCatDisable()
         {
-            if (HackerInterface.Instance.TerminalCats.PowerReader.PowerLevel != 1)
+            if (HackerInterface.Instance.TerminalCats.PowerReader.PowerLevel == 1)
+            {
+                CheckCatTouchDisable();
+            }
+            else
             {
                 HackPrompt.SetActive(false);
-                return; // Touch cat disable is only power level 1
             }
 
+
+            if (HackerInterface.Instance.TerminalCats.PowerReader.PowerLevel >= 2)
+            {
+                CheckHackingProbe();
+            }
+            else
+            {
+                HackProjectilePrompt.SetActive(false);
+            }
+        }
+
+        private void CheckHackingProbe()
+        {
+            HackProjectilePrompt.SetActive(true);
+
+            if (Input.GetButtonDown("Hack") == false || currentProbe != null)
+                return;
+
+            currentProbe = Instantiate(HackingProbePrefab);
+            
+            currentProbe.transform.SetParent(transform.parent, false);
+            currentProbe.transform.position = transform.position;
+
+            currentProbe.layer = LevelLoader.RunnerLayer;
+
+            var probe = currentProbe.GetComponent<HackingProbe>();
+            probe.SetInfo(this, lastRequestedMovement.normalized);
+
+            probe.OnCollidedWithCat += HackCat;
+        }
+
+        private void CheckCatTouchDisable()
+        {
             if (lastRequestedMovement.IsZero())
             {
                 HackPrompt.SetActive(false);
@@ -179,14 +221,24 @@ namespace Assets._Scripts
 
             if(Input.GetButtonDown("Hack"))
             {
-                if (CurrentHackedCat != null)
-                {
-                    CurrentHackedCat.UnHack();
-                }
-
-                CurrentHackedCat = cat;
-                cat.HackDisable(CatHackDisableTime); //TODO controlling
+                HackCat(cat);
             }
+        }
+
+        private void HackCat(Cat cat)
+        {
+            if (cat.AI.CurrentState is ChasingRunner && HackerInterface.Instance.TerminalCats.PowerReader.PowerLevel < 3)
+            {
+                return; // Can only hack cats that are chasing you at level 3
+            }
+
+            if (CurrentHackedCat != null)
+            {
+                CurrentHackedCat.UnHack();
+            }
+
+            CurrentHackedCat = cat;
+            cat.HackDisable(CatHackDisableTime); //TODO controlling
         }
 
         private void CatNotNearby()
