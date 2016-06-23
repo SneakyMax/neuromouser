@@ -471,20 +471,10 @@ MonoBehaviour:
   InterfaceFadeInCover: {fileID: 1026840449}
   ScreenFadeInCover: {fileID: 1703465403}
   SecondsBeforeLevelEnd: 300
-  LevelList:
-  - level_lvl1_groundfinal.txt
-  - level_lvl2_cubiclesfinal.txt
-  - level_lvl3_cabalfinal.txt
-  LevelTimeList: 2c0100002c0100002c0100002c0100002c010000
-  - level_lvl_theendfinal.txt
-  - level_lvl5_glassbunkerfinal.txt
-  PreTransitionList:
-  - {fileID: 21300000, guid: 36a6d3286c376784080656f0eec7ab34, type: 3}
-  - {fileID: 21300000, guid: 74170c076d4dde0439dba2496ced25c7, type: 3}
-  - {fileID: 21300000, guid: 36511ce3bdbea314fabda344d525f15e, type: 3}
-  - {fileID: 21300000, guid: 6ca98eb3acdd12b47b404431ded7e490, type: 3}
-  - {fileID: 21300000, guid: 0a45db1259db8144798b395dd76da67e, type: 3}
-  TransitionScreen: {fileID: 1624660844}
+  LevelList: []
+  LevelTimeList: 
+  PreTransitionList: []
+  TransitionScreen: {fileID: 0}
 --- !u!4 &380641087
 Transform:
   m_ObjectHideFlags: 0
