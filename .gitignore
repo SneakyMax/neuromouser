@@ -35,3 +35,5 @@ sysinfo.txt
 /Assets/Resources/FMODStudioSettings.asset.meta
 /*.DS_Store
 /fmod.log
+/Assets/Resources/FMODStudioSettings.asset
+/Assets/Resources/FMODStudioSettings.asset.meta
