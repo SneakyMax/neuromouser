@@ -136,22 +136,6 @@ namespace Assets._Scripts
             {
                 OnCameraPowerChanged(currentPower);
             }
-
-            switch (currentPower)
-            {
-                case 3:
-                    RunnerCamera.orthographicSize = initialCameraSize * Level3CameraZoom;
-                    break;
-                case 2:
-                    RunnerCamera.orthographicSize = initialCameraSize * Level2CameraZoom;
-                    break;
-                case 1:
-                    RunnerCamera.orthographicSize = initialCameraSize * Level1CameraZoom;
-                    break;
-                default:
-                    RunnerCamera.orthographicSize = initialCameraSize * Level0CameraZoom;
-                    break;
-            }
         }
 
         /// <summary>
