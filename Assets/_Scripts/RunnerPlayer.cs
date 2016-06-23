@@ -1,14 +1,17 @@
 ﻿using Assets._Scripts.GameObjects;
+using FMOD.Studio;
+using FMODUnity;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets._Scripts
 {
     public class RunnerPlayer : MonoBehaviour
     {
-		[FMODUnity.EventRef]
+		[EventRef, UsedImplicitly]
 		public string SoundChewEventName = "event:/Runner_chew";
 
-
+        private EventInstance chewSound;
 
 		/// <summary>The full running speed of the running mouse in units per second.</summary>
         [AssignedInUnity]
@@ -55,14 +58,15 @@ namespace Assets._Scripts
 		public Sprite Side;
 
         public Cat CurrentHackedCat { get; private set; }
-        private bool currentHackedCatIsControlled;
 
         private SpriteRenderer spriteRenderer;
         private new Rigidbody2D rigidbody;
 
         private Vector2 lastRequestedMovement;
         private Vector2 requestedMovement;
+#pragma warning disable 414
         private bool isChewingWall;
+#pragma warning restore 414
         private float targettedWallChewTime;
         private float chewAccumulator;
 
@@ -71,6 +75,8 @@ namespace Assets._Scripts
         {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             rigidbody = GetComponent<Rigidbody2D>();
+
+            chewSound = RuntimeManager.CreateInstance(SoundChewEventName);
 
             foreach (var obj in GetComponentsInChildren<Transform>())
             {
@@ -241,28 +247,39 @@ namespace Assets._Scripts
 
             if (Input.GetButton("Chewing"))
             {
-                ChewProgressBar.gameObject.SetActive(true);
-                ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(true);
-				FMODUnity.RuntimeManager.PlayOneShot (SoundChewEventName, transform.position);
-                targettedWallChewTime = wall.GetWallInfo().TimeToChewThroughWall;
-                chewAccumulator += Time.deltaTime;
-                isChewingWall = true;
-                ChewProgressBar.SetPercent(chewAccumulator / targettedWallChewTime);
-                PlayerMovementFrozen = true;
-
-                if (chewAccumulator >= targettedWallChewTime)
-                {
-                    wall.SetEmpty();
-                    StopChewing();
-                }
-                else if (chewAccumulator >= (targettedWallChewTime / 2.0f))
-                {
-                    wall.SetChewed();
-                }
+                Chew(wall);
             }
             else
             {
                 StopChewing();
+            }
+        }
+
+        private void Chew(Wall wall)
+        {
+            ChewProgressBar.gameObject.SetActive(true);
+            ChewProgressBar.gameObject.transform.parent.gameObject.SetActive(true);
+
+            PLAYBACK_STATE chewSoundState;
+            chewSound.getPlaybackState(out chewSoundState);
+            if (chewSoundState != PLAYBACK_STATE.PLAYING)
+                chewSound.start();
+
+            targettedWallChewTime = wall.GetWallInfo().TimeToChewThroughWall;
+            chewAccumulator += Time.deltaTime;
+            isChewingWall = true;
+            ChewProgressBar.SetPercent(chewAccumulator / targettedWallChewTime);
+            PlayerMovementFrozen = true;
+
+            if (chewAccumulator >= targettedWallChewTime)
+            {
+                chewSound.stop(STOP_MODE.ALLOWFADEOUT);
+                wall.SetEmpty();
+                StopChewing();
+            }
+            else if (chewAccumulator >= (targettedWallChewTime / 2.0f))
+            {
+                wall.SetChewed();
             }
         }
 

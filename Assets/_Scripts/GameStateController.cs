@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using DG.Tweening;
-using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 namespace Assets._Scripts
@@ -242,15 +240,6 @@ namespace Assets._Scripts
         [UnityMessage]
         public void Update()
         {
-            PLAYBACK_STATE state;
-            MusicTrackOneInstance.getPlaybackState(out state);
-
-            PLAYBACK_STATE state2;
-            MusicTrackThreeInstance.getPlaybackState(out state2);
-
-            Debug.Log(state);
-            Debug.Log(state2);
-
             if (Input.GetButtonDown("Escape"))
             {
                 GoToTitleScreen();
@@ -269,24 +258,5 @@ namespace Assets._Scripts
 		{
 			transitionShownThisLevel = true;
 		}
-
-		/*private Sprite LoadSpriteFromPath(string pathname, float width, float height)
-		{
-			try
-			{
-				byte[] rawEnterLevelImage = File.ReadAllBytes(pathname);
-				Texture2D enterLevelImage = new Texture2D(Mathf.FloorToInt(width), Mathf.FloorToInt(height),
-					TextureFormat.ARGB32, false);
-				enterLevelImage.LoadImage(rawEnterLevelImage);
-				enterLevelImage.name = pathname;
-
-				return Sprite.Create(enterLevelImage, new Rect(0f,0f,width,height), new Vector2(0.5f, 0.5f));
-			}
-			catch (IOException)
-			{
-				// Couldn't load sprite
-				return null;
-			}
-		}*/
     }
 }

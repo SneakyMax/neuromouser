@@ -379,7 +379,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 380641087}
   - 114: {fileID: 380641086}
-  - 114: {fileID: 380641088}
   m_Layer: 0
   m_Name: Game State Controller
   m_TagString: Untagged
@@ -428,24 +427,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
---- !u!114 &380641088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 380641085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  CollisionTag: 
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Params: []
 --- !u!4 &563354832 stripped
 Transform:
   m_PrefabParentObject: {fileID: 498562, guid: 8e1b1fe31b882c445bdc95bf26a8b433, type: 2}
@@ -1248,7 +1229,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 9fa2ee8188ae01e45a73c827df28da21, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

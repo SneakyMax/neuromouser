@@ -15,11 +15,15 @@ namespace Assets._Scripts
 
         public void ShowTransition(Sprite showSprite)
         {
+            var image = GetComponent<Image>();
+
             if (showSprite != null)
             {
                 enabled = true;
-                GetComponent<Image>().enabled = true;
-                GetComponent<Image>().sprite = showSprite;
+                image.enabled = true;
+                image.sprite = showSprite;
+                image.color = image.color.WithAlpha(1);
+
                 StartCoroutine( DelayButtonPress() );
             }
             else
