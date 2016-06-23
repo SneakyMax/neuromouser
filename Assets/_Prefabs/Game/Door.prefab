@@ -74,9 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ca2b42ee7c02145b8c345a1b2f734c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level1DoorSprite: {fileID: 21300000, guid: 14cd1786d5a287b46b1105e8097f0f98, type: 3}
-  Level2DoorSprite: {fileID: 21300000, guid: 6848a491a9e5d65498bdf2676e68d7e5, type: 3}
-  Level3DoorSprite: {fileID: 21300000, guid: 45a4f567486da64498ad06187cb9dbe0, type: 3}
+  Level1Color: {r: 1, g: 1, b: 1, a: 1}
+  Level2Color: {r: 1, g: 1, b: 1, a: 1}
+  Level3Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &21290710
 SpriteRenderer:
   m_ObjectHideFlags: 1
