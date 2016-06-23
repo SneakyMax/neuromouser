@@ -31,6 +31,9 @@ GameObject:
   - 50: {fileID: 5049272}
   - 58: {fileID: 5843760}
   - 120: {fileID: 12082134}
+  - 114: {fileID: 11411420}
+  - 114: {fileID: 11435282}
+  - 114: {fileID: 11456244}
   m_Layer: 0
   m_Name: Cat
   m_TagString: Untagged
@@ -47,7 +50,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 469088}
   m_Father: {fileID: 0}
@@ -61,7 +63,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 429212}
   m_RootOrder: 0
@@ -144,6 +145,24 @@ MonoBehaviour:
   ChaseSpeed: 2.5
   FieldOfView: 86.61
   LengthOfView: 4.8
+--- !u!114 &11411420
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Cat_Growl
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Params: []
 --- !u!114 &11413208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,6 +176,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LayerName: RunnerOnTop
   Order: 90000
+--- !u!114 &11435282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Cat_Hiss
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Params: []
+--- !u!114 &11456244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Cat_movement
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Params: []
 --- !u!120 &12082134
 LineRenderer:
   m_ObjectHideFlags: 1

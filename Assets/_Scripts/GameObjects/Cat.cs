@@ -8,7 +8,13 @@ namespace Assets._Scripts.GameObjects
     [RequireComponent(typeof(Rigidbody2D))]
     public class Cat : InGameObject
     {
-        public override int Layer { get { return 2; } }
+		[FMODUnity.EventRef]
+		FMOD.Studio.PLAYBACK_STATE  playbackState;
+		public string moveSound = "event:/Cat_movement";
+		FMOD.Studio.EventInstance moveSoundInstance;
+		private bool walkSoundIsPlaying;
+
+		public override int Layer { get { return 2; } }
 
         public override bool IsDynamic { get { return true; } }
 
@@ -46,6 +52,8 @@ namespace Assets._Scripts.GameObjects
             MeshFilter = GetComponentInChildren<MeshFilter>();
 
             GenerateFieldOfViewMesh();
+
+			moveSoundInstance = FMODUnity.RuntimeManager.CreateInstance (moveSound);
         }
 
         private void GenerateFieldOfViewMesh()
@@ -105,6 +113,20 @@ namespace Assets._Scripts.GameObjects
             AI.Update();
 
             CheckFieldOfViewChangedForMesh();
+
+			if (!walkSoundIsPlaying) 
+			{
+				moveSoundInstance.start ();
+				walkSoundIsPlaying = true;
+			}
+			if (walkSoundIsPlaying) 
+			{
+				moveSoundInstance.getPlaybackState (out playbackState);
+				if (playbackState != FMOD.Studio.PLAYBACK_STATE.PLAYING)
+				{
+					walkSoundIsPlaying = false;
+				}
+			}
         }
 
         private void CheckFieldOfViewChangedForMesh()
