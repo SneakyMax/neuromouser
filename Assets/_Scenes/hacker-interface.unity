@@ -1208,9 +1208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ZoomLevelFactors:
-  - 1
+  - 0.75
+  - 1.25
   - 2
-  - 3
   - 4
   ZoomChangeRate: 3.33
 --- !u!114 &1115547542
