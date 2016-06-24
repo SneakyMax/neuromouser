@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PowerValue: 1
-  Speed: 10
+  Speed: 17
   ParentTerminal: {fileID: 0}
   BelowShot: {fileID: 421912}
 --- !u!212 &21213314

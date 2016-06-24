@@ -100,7 +100,7 @@ namespace Assets._Scripts
 
         private void OnGameStarted()
         {
-            PowerCharge = 0;
+			PowerCharge = MaxPowerCharge;
         }
 
         /// <summary>

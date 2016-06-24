@@ -292,8 +292,12 @@ namespace Assets._Scripts
 
         private void WallNearby(Wall wall)
         {
-            if (wall.IsChewedThrough)
-                return;
+			if ( wall.IsChewedThrough || wall.WallType == Assets._Scripts.LevelEditor.Objects.WallType.Glass )
+			{
+				StopChewing();
+				PlayerMovementFrozen = false;
+				return;
+			}
 
             ChewPrompt.SetActive(true);
 
@@ -356,6 +360,9 @@ namespace Assets._Scripts
         {
             if (requestedMovement.IsZero())
                 return;
+
+			if ( PlayerMovementFrozen )
+				return;
 
             var movement = requestedMovement * Time.deltaTime;
             rigidbody.MovePosition(transform.position + (Vector3)movement);
