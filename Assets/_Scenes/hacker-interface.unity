@@ -495,8 +495,9 @@ MonoBehaviour:
   - level_lvl5_dummy.txt
   - level_lvl6_glassbunkerfinal.txt
   - level_lvl_theendfinal.txt
-  LevelTimeList: 2c0100002c0100002c0100002c0100002c0100002c010000
+  LevelTimeList: 2c0100002c0100002c0100002c0100002c0100002c0100002c010000
   PreTransitionList:
+  - {fileID: 21300000, guid: 54682959d4b71d24b8ff7f48d6c79fd1, type: 3}
   - {fileID: 21300000, guid: 36a6d3286c376784080656f0eec7ab34, type: 3}
   - {fileID: 21300000, guid: 74170c076d4dde0439dba2496ced25c7, type: 3}
   - {fileID: 21300000, guid: 36511ce3bdbea314fabda344d525f15e, type: 3}
