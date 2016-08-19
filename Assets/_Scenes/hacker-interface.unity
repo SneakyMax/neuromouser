@@ -403,7 +403,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.3679776
+  orthographic size: 4.7503333
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -488,11 +488,12 @@ MonoBehaviour:
   ScreenFadeInCover: {fileID: 1703465403}
   SecondsBeforeLevelEnd: 300
   LevelList:
-  - level_lvl1_groundfinal.txt
-  - level_lvl2_cubiclesfinal.txt
-  - level_lvl3_cabalfinal.txt
-  - level_lvl4_dummy.txt
-  - level_lvl5_glassbunkerfinal.txt
+  - level_lvl1_tutorial.txt
+  - level_lvl2_groundfinal.txt
+  - level_lvl3_cubiclesfinal.txt
+  - level_lvl4_cabalfinal.txt
+  - level_lvl5_dummy.txt
+  - level_lvl6_glassbunkerfinal.txt
   - level_lvl_theendfinal.txt
   LevelTimeList: 2c0100002c0100002c0100002c0100002c0100002c010000
   PreTransitionList:
