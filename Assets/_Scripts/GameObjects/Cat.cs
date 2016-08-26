@@ -43,14 +43,20 @@ namespace Assets._Scripts.GameObjects
         [AssignedInUnity]
         public float LengthOfView = 10;
 
-        [AssignedInUnity]
-        public Sprite UpSprite;
+        [AssignedInUnity, Header("Sprites")]
+        public SpriteRenderer MainSpriteRenderer;
 
         [AssignedInUnity]
-        public Sprite LeftRightSprite;
+        public SpriteRenderer Left;
 
         [AssignedInUnity]
-        public Sprite DownSprite;
+        public SpriteRenderer Right;
+
+        [AssignedInUnity]
+        public SpriteRenderer Up;
+
+        [AssignedInUnity]
+        public SpriteRenderer Down;
 
         public MeshFilter MeshFilter { get; private set; }
 
@@ -163,40 +169,37 @@ namespace Assets._Scripts.GameObjects
 
         public void Turn(float toDegrees)
         {
-            Sprite sprite;
+            SpriteRenderer target;
             var flip = false;
 
-            while (toDegrees < 0)
-                toDegrees += 360;
-
-            while (toDegrees > 360)
-                toDegrees -= 360;
+            toDegrees = toDegrees.NormalizeDegrees();
 
             if (toDegrees < 45)
             {
-                sprite = LeftRightSprite;
+                target = Right;
                 flip = true;
             }
             else if (toDegrees < 135)
             {
-                sprite = UpSprite;
+                target = Up;
             }
             else if (toDegrees < 225)
             {
-                sprite = LeftRightSprite;
+                target = Left;
             }
             else if (toDegrees < 315)
             {
-                sprite = DownSprite;
+                target = Down;
             }
             else
             {
-                sprite = LeftRightSprite;
+                target = Right;
                 flip = true;
             }
 
-            SpriteRenderer.sprite = sprite;
+            SpriteRenderer.sprite = target.sprite;
             SpriteRenderer.flipX = flip;
+            SpriteRenderer.transform.localPosition = target.transform.localPosition;
 
             var rotationQuaternion = Quaternion.AngleAxis(toDegrees, Vector3.forward);
             fieldOfViewMesh.gameObject.transform.rotation = rotationQuaternion;
@@ -306,6 +309,8 @@ namespace Assets._Scripts.GameObjects
 
                 Physics2D.IgnoreCollision(thisCollider, otherCollider);
             }
+
+            SpriteRenderer = MainSpriteRenderer;
         }
 
         public void HackDisable(float time)
