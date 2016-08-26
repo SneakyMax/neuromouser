@@ -166,6 +166,12 @@ namespace Assets._Scripts.GameObjects
             Sprite sprite;
             var flip = false;
 
+            while (toDegrees < 0)
+                toDegrees += 360;
+
+            while (toDegrees > 360)
+                toDegrees -= 360;
+
             if (toDegrees < 45)
             {
                 sprite = LeftRightSprite;

@@ -39,7 +39,8 @@ namespace Assets._Scripts
 
         public void RefreshDuration()
         {
-            StopCoroutine(stopCoroutine);
+            if(stopCoroutine != null)
+                StopCoroutine(stopCoroutine);
 
             stopCoroutine = StartCoroutine(StopAfterDuration());
         }
