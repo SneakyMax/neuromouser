@@ -12,62 +12,78 @@ namespace Assets._Scripts.GameObjects
 
 		public override int Layer { get { return 1; } }
 
-		public int Level { get; set; }
+	    public override bool IsDynamic { get { return true; } }
 
-		public override bool IsDynamic { get { return true; } }
+	    [AssignedInUnity]
+	    public Sprite EnabledSprite;
 
-		protected bool armed = true;
+	    [AssignedInUnity]
+	    public Sprite DisabledSprite;
 
-		public override bool IsTraversableAt(GridPosition position)
+	    private bool armed;
+	    private int level;
+
+	    public override bool IsTraversableAt(GridPosition position)
 		{
-			return !armed;
+		    return true;
 		}
 
-		public override void GameStart()
+	    public override void GameStart()
 		{
 			HackerInterface.Instance.OnTrapPowerChanged += OnTrapPowerChanged;
-			Level = 1;
+			level = 1;
+		    Arm();
 		}
-
-		/// <summary>
-		/// Sets the power of the trap and armed.
-		/// </summary>
-		/// <param name="newTrapPower">New trap power.</param>
 		private void OnTrapPowerChanged(int newTrapPower)
 		{
-			if ((Level > newTrapPower) && !armed)
+			if ((level > newTrapPower) && !armed)
 			{
-				armed = true;
+			    Arm();
 			}
-			else if ((Level <= newTrapPower) && armed)
+			else if ((level <= newTrapPower) && armed)
 			{
-				armed = false;
+			    Disarm();
 			}
-			// TODO level 3 stuff.
 		}
 
-        // TODO Slow and Unslow cats
+	    private void Arm()
+	    {
+	        armed = true;
 
-        [UnityMessage]
-        public void OnTriggerEnter2D(Collider2D otherCollider)
-		{
-		    if (otherCollider.tag == "Player" && armed)
-		    {
-		        RuntimeManager.PlayOneShot(SnapSound, transform.position);
-		        GameStateController.Instance.PlayerDied();
-		    }
-			// TODO if tag == cat and level == 3
-		}
+	        SpriteRenderer.sprite = EnabledSprite;
+	    }
 
-        [UnityMessage]
+	    private void Disarm()
+	    {
+	        armed = false;
+
+	        SpriteRenderer.sprite = DisabledSprite;
+	    }
+
+	    [UnityMessage]
+	    public void OnTriggerEnter2D(Collider2D otherCollider)
+	    {
+	        if (otherCollider.tag == "Player" && armed)
+	        {
+	            SnapPlayer();
+	        }
+	        // TODO if tag == cat and level == 3
+	    }
+
+	    [UnityMessage]
 		public void OnTriggerStay2D( Collider2D otherCollider)
 		{
 		    if (otherCollider.tag == "Player" && armed)
 		    {
-                RuntimeManager.PlayOneShot(SnapSound, transform.position);
-                GameStateController.Instance.PlayerDied();
+		        SnapPlayer();
 		    }
 			// TODO if tag == cat and level == 3
 		}
+
+	    private void SnapPlayer()
+	    {
+	        RuntimeManager.PlayOneShot(SnapSound, transform.position);
+	        GameStateController.Instance.PlayerDied();
+	    }
 	}
 }
