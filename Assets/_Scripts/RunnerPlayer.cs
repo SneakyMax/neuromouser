@@ -49,14 +49,20 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public float CatHackDisableTime = 5;
 
-		[AssignedInUnity]
-		public Sprite Front;
+        [AssignedInUnity, Header("Sprites")]
+        public SpriteRenderer MainSpriteRenderer;
 
-		[AssignedInUnity]
-		public Sprite Back;
+        [AssignedInUnity]
+        public SpriteRenderer Left;
 
-		[AssignedInUnity]
-		public Sprite Side;
+        [AssignedInUnity]
+        public SpriteRenderer Right;
+
+        [AssignedInUnity]
+        public SpriteRenderer Up;
+
+        [AssignedInUnity]
+        public SpriteRenderer Down;
 
         [AssignedInUnity]
         public GameObject HackingProbePrefab;
@@ -64,8 +70,7 @@ namespace Assets._Scripts
         public Cat CurrentHackedCat { get; private set; }
 
         private GameObject currentProbe;
-
-        private SpriteRenderer spriteRenderer;
+        
         private new Rigidbody2D rigidbody;
 
         private Vector2 lastRequestedMovement;
@@ -79,7 +84,6 @@ namespace Assets._Scripts
         [UnityMessage]
         public void Start()
         {
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             rigidbody = GetComponent<Rigidbody2D>();
 
             chewSound = RuntimeManager.CreateInstance(SoundChewEventName);
@@ -96,42 +100,52 @@ namespace Assets._Scripts
             if (!PlayerMovementFrozen)
                 HandlePlayerMovement();
 
-            const int layer = 2;
-
-            var bottomOfSpritePosition = spriteRenderer.bounds.min;
-            spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
-
-            if (requestedMovement.IsZero() == false)
-            {
-                lastRequestedMovement = requestedMovement;
-                var movementDirection = new Vector3().DirectionToDegrees(requestedMovement);
-				if ( movementDirection < 0f )
-					movementDirection += 360f;
-				if ( ( movementDirection < 45f ) || ( movementDirection > 315f ) )
-				{
-					spriteRenderer.sprite = Side;
-					spriteRenderer.flipX = true;
-				}
-				else if ( ( movementDirection >= 45f ) && ( movementDirection <= 135f ) )
-				{
-					spriteRenderer.sprite = Back;
-				}
-				else if ( ( movementDirection > 135f ) && ( movementDirection < 215f ) )
-				{
-					spriteRenderer.sprite = Side;
-					spriteRenderer.flipX = false;
-				}
-				else
-				{
-					spriteRenderer.sprite = Front;
-				}
-                //spriteRenderer.transform.rotation = Quaternion.AngleAxis(movementDirection, Vector3.forward);
-
-            }
+            CheckSprite();
 
             CheckForWallChewing();
 
             CheckForCatDisable();
+        }
+
+        private void CheckSprite()
+        {
+            const int layer = 2;
+
+            var spriteRenderer = MainSpriteRenderer;
+            
+            if (requestedMovement.IsZero() == false)
+            {
+                var flip = false;
+                SpriteRenderer target;
+
+                lastRequestedMovement = requestedMovement;
+                var movementDirection = requestedMovement.VectorDirectionDegrees().NormalizeDegrees();
+                
+                if ((movementDirection < 45f) || (movementDirection > 315f))  // Right
+                {
+                    target = Right;
+                    flip = true;
+                }
+                else if ((movementDirection >= 45f) && (movementDirection <= 135f)) // Up
+                {
+                    target = Up;
+                }
+                else if ((movementDirection > 135f) && (movementDirection < 215f)) // Left
+                {
+                    target = Left;
+                }
+                else // Down
+                {
+                    target = Down;
+                }
+
+                spriteRenderer.sprite = target.sprite;
+                spriteRenderer.flipX = flip;
+                spriteRenderer.transform.localPosition = target.transform.localPosition;
+            }
+
+            var bottomOfSpritePosition = spriteRenderer.bounds.min;
+            spriteRenderer.sortingOrder = InGameObject.GetSortPosition(bottomOfSpritePosition, layer);
         }
 
         private void CheckForCatDisable()

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets._Scripts
@@ -57,6 +58,16 @@ namespace Assets._Scripts
             return from.DirectionToRadians(to) * Mathf.Rad2Deg;
         }
 
+        public static float VectorDirectionDegrees(this Vector3 vec)
+        {
+            return new Vector3().DirectionToDegrees(vec);
+        }
+
+        public static float VectorDirectionDegrees(this Vector2 vec)
+        {
+            return new Vector3().DirectionToDegrees(vec);
+        }
+
         public static bool IsZero(this Vector3 vector)
         {
             return vector.sqrMagnitude < 0.001f;
@@ -65,6 +76,16 @@ namespace Assets._Scripts
         public static bool IsZero(this Vector2 vector)
         {
             return vector.sqrMagnitude < 0.001f;
+        }
+
+        /// <summary>Gives a degree value between 0 and 360.</summary>
+        public static float NormalizeDegrees(this float value)
+        {
+            while (value > 360f)
+                value -= 360f;
+            while (value < 0f)
+                value += 360f;
+            return value;
         }
     }
 }
