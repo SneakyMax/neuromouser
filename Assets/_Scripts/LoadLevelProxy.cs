@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets._Scripts
 {
@@ -13,12 +14,13 @@ namespace Assets._Scripts
         public void Start()
         {
             DontDestroyOnLoad(gameObject);
+
+            SceneManager.sceneLoaded += SceneLoaded;
         }
 
-        [UnityMessage]
-        public void OnLevelWasLoaded(int levelId)
+        private void SceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (levelId != 1 || String.IsNullOrEmpty(LevelName))
+            if (scene.buildIndex != 1 || String.IsNullOrEmpty(LevelName))
                 return;
 
             StartCoroutine(WaitToLoadLevel());
