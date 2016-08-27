@@ -59,7 +59,7 @@ namespace Assets._Scripts.GameObjects
 
         private void Disarm()
         {
-            IsArmed = true;
+            IsArmed = false;
             SpriteRenderer.sprite = OffSprite;
         }
 
