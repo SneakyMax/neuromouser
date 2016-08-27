@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets._Scripts
@@ -101,6 +102,7 @@ namespace Assets._Scripts
         private void OnGameStarted()
         {
 			PowerCharge = MaxPowerCharge;
+            SetTerminal(TerminalType.Cameras);
         }
 
         /// <summary>
@@ -145,6 +147,9 @@ namespace Assets._Scripts
         {
             currentTerminal = type;
 
+            if(currentTerminalObject != null)
+                currentTerminalObject.SelectedOverlay.SetActive(false);
+
             switch (type)
             {
                 case TerminalType.Cameras:
@@ -163,8 +168,11 @@ namespace Assets._Scripts
                     currentTerminalObject = HackerInterface.Instance.TerminalCats;
                     spriteRenderer.sprite = CatHackerSprite;
                     break;
+                default:
+                    throw new NotSupportedException();
             }
 
+            currentTerminalObject.SelectedOverlay.SetActive(true);
             transform.position = currentTerminalObject.HackerSpritePosition.transform.position;
         }
 

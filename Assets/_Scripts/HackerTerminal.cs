@@ -55,6 +55,9 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public Transform HackerSpritePosition;
 
+        [AssignedInUnity]
+        public GameObject SelectedOverlay;
+
         /// <summary>
         /// The amount of power allocated to the terminal.
         /// </summary>
@@ -80,6 +83,7 @@ namespace Assets._Scripts
         private void Start()
         {
             PowerReader.OnPowerLevelChange += OnPowerLevelChange;
+            SelectedOverlay.SetActive(false);
 
             GameStateController.Instance.GameStarted += OnGameStarted;
         }
