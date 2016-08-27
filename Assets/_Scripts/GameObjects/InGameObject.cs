@@ -43,10 +43,18 @@ namespace Assets._Scripts.GameObjects
             {
                 SpriteRenderer.sortingOrder = GetSortPosition(transform.position, Layer);
             }
+            PostInitialize();
         }
+
+        protected virtual void PostInitialize() { }
 
         /// <summary>Call this in Update if an object moves.</summary>
         protected void SortObjectThatMoves()
+        {
+            SetSortPosition();
+        }
+
+        private void SetSortPosition()
         {
             if (SpriteRenderer != null)
             {

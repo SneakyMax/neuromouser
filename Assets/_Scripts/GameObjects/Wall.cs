@@ -55,6 +55,8 @@ namespace Assets._Scripts.GameObjects
 
         private SpriteRenderer mainSpriteRenderer;
         private SpriteRenderer overlaySpriteRenderer;
+
+        private GameObject whiteOverlay;
         
         public override void Deserialize(string serialized)
         {
@@ -74,6 +76,24 @@ namespace Assets._Scripts.GameObjects
             
             mainSpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
             overlaySpriteRenderer.gameObject.layer = LevelLoader.RunnerLayer;
+
+            whiteOverlay = new GameObject("White Overlay");
+            whiteOverlay.transform.SetParent(mainSpriteRenderer.transform, false);
+            var whiteOverlaySpriteRenderer = whiteOverlay.AddComponent<SpriteRenderer>();
+
+            whiteOverlaySpriteRenderer.material = new Material(Shader.Find("Custom/WhiteOverlay"));
+            whiteOverlaySpriteRenderer.color = Color.white.WithAlpha(0.3f);
+            whiteOverlaySpriteRenderer.sprite = mainSpriteRenderer.sprite;
+            whiteOverlaySpriteRenderer.sortingLayerName = "RunnerMain";
+
+            whiteOverlay.layer = LevelLoader.RunnerLayer;
+
+            whiteOverlay.SetActive(false);
+        }
+
+        protected override void PostInitialize()
+        {
+            whiteOverlay.GetComponent<SpriteRenderer>().sortingOrder = mainSpriteRenderer.sortingOrder + 1;
         }
 
         public void SetNotChewed()
@@ -119,6 +139,16 @@ namespace Assets._Scripts.GameObjects
         public override void PostAllDeserialized()
         {
             CheckForWallAbove();
+        }
+
+        public void SetHighlighted()
+        {
+            whiteOverlay.SetActive(true);
+        }
+
+        public void UnsetHighlighted()
+        {
+            whiteOverlay.SetActive(false);
         }
 
         private void CheckForWallAbove()

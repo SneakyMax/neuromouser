@@ -80,6 +80,7 @@ namespace Assets._Scripts
 #pragma warning restore 414
         private float targettedWallChewTime;
         private float chewAccumulator;
+        private Wall lastFacingWall;
 
         [UnityMessage]
         public void Start()
@@ -275,8 +276,7 @@ namespace Assets._Scripts
             var results = Physics2D.RaycastAll(transform.position, facingUnitVector, MaxDistanceForWallChewing);
             if (results.Length == 0)
             {
-                ChewPrompt.gameObject.SetActive(false);
-                StopChewing();
+                WallNotNearby();
                 return;
             }
 
@@ -306,12 +306,20 @@ namespace Assets._Scripts
 
         private void WallNearby(Wall wall)
         {
-			if ( wall.IsChewedThrough || wall.WallType == Assets._Scripts.LevelEditor.Objects.WallType.Glass )
+			if (wall.IsChewedThrough || wall.WallType == LevelEditor.Objects.WallType.Glass)
 			{
 				StopChewing();
 				PlayerMovementFrozen = false;
 				return;
 			}
+
+            if (lastFacingWall != null && lastFacingWall != wall)
+            {
+                lastFacingWall.UnsetHighlighted();
+            }
+
+            lastFacingWall = wall;
+            wall.SetHighlighted();
 
             ChewPrompt.SetActive(true);
 
@@ -354,6 +362,9 @@ namespace Assets._Scripts
 
         private void WallNotNearby()
         {
+            if (lastFacingWall != null)
+                lastFacingWall.UnsetHighlighted();
+
             StopChewing();
 
             ChewPrompt.SetActive(false);
