@@ -175,7 +175,10 @@ namespace Assets._Scripts
         {
             HackProjectilePrompt.SetActive(true);
 
-            if (Input.GetButtonDown("Hack") == false || currentProbe != null)
+            if (Input.GetButton("Hack") == false)
+                return;
+
+            if (currentProbe != null)
                 return;
 
             currentProbe = Instantiate(HackingProbePrefab);
