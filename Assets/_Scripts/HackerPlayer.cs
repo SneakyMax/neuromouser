@@ -147,8 +147,16 @@ namespace Assets._Scripts
         {
             currentTerminal = type;
 
-            if(currentTerminalObject != null)
+            if (currentTerminalObject != null)
+            {
                 currentTerminalObject.SelectedOverlay.SetActive(false);
+
+                foreach (var system in currentTerminalObject.Particles)
+                {
+                    system.Stop();
+                }
+            }
+
 
             switch (type)
             {
@@ -173,6 +181,7 @@ namespace Assets._Scripts
             }
 
             currentTerminalObject.SelectedOverlay.SetActive(true);
+
             transform.position = currentTerminalObject.HackerSpritePosition.transform.position;
         }
 
@@ -215,15 +224,11 @@ namespace Assets._Scripts
         
             if (Input.GetButtonDown("Fire1"))
             {
-                if (shootingCoroutine != null)
-                    StopCoroutine(shootingCoroutine);
-
-                shootingCoroutine = StartCoroutine(FireRepeatedly());
+                StartShooting();
             }
             else if (Input.GetButtonUp("Fire1"))
             {
-                if (shootingCoroutine != null)
-                    StopCoroutine(shootingCoroutine);
+                StopShooting();
             }
 
             PowerCharge += PowerChargeRate * Time.deltaTime;
@@ -232,10 +237,35 @@ namespace Assets._Scripts
                 PowerCharge = MaxPowerCharge;
         }
 
+        private void StopShooting()
+        {
+            foreach (var system in currentTerminalObject.Particles)
+            {
+                system.Stop();
+            }
+
+            if (shootingCoroutine != null)
+                StopCoroutine(shootingCoroutine);
+        }
+
+        private void StartShooting()
+        {
+            if (shootingCoroutine != null)
+                StopCoroutine(shootingCoroutine);
+
+            shootingCoroutine = StartCoroutine(FireRepeatedly());
+        }
+
         private IEnumerator FireRepeatedly()
         {
             while (true)
             {
+                foreach (var system in currentTerminalObject.Particles)
+                {
+                    if(system.isPlaying == false)
+                        system.Play();
+                }
+
                 ShootNormal();
                 yield return new WaitForSeconds(FireRate);
             }

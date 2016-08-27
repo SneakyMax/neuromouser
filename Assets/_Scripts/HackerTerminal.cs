@@ -58,6 +58,9 @@ namespace Assets._Scripts
         [AssignedInUnity]
         public GameObject SelectedOverlay;
 
+        [AssignedInUnity]
+        public ParticleSystem[] Particles;
+
         /// <summary>
         /// The amount of power allocated to the terminal.
         /// </summary>
