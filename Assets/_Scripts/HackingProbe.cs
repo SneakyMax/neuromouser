@@ -24,6 +24,8 @@ namespace Assets._Scripts
             rigidbody = GetComponent<Rigidbody2D>();
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), parent.GetComponent<Collider2D>());
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+            Destroy(gameObject, 3);
         }
 
         public void SetInfo(RunnerPlayer player, Vector2 direction)
