@@ -7,10 +7,13 @@ namespace Assets._Scripts.GameObjects
 	[RequireComponent (typeof(Collider2D))]
     public class Door : InGameObject
     {
+        [AssignedInUnity]
 		public Color Level1Color;
 
+        [AssignedInUnity]
 		public Color Level2Color;
 
+        [AssignedInUnity]
 		public Color Level3Color;
 
         public override int Layer { get { return 2; } }

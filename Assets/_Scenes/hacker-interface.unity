@@ -2399,9 +2399,9 @@ MonoBehaviour:
   - Cameras Level 3
   DoorMessages:
   - All Doors Locked
-  - Level 1 Doors Unlocked
-  - Level 2 Doors Unlocked
-  - Level 3 Doors Unlocked
+  - Level 1 (Green) Doors Unlocked
+  - Level 2 (Yellow) Doors Unlocked
+  - Level 3 (Red) Doors Unlocked
   TrapMessages:
   - Traps Active
   - Snaps & Alarms Disabled
